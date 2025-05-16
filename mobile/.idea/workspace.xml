@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="80426622-61f7-44b1-9476-882bdfafeeb0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/index.tsx" afterDir="false" />
+    <list default="true" id="80426622-61f7-44b1-9476-882bdfafeeb0" name="Changes" comment="routing of main screens">
+      <change afterPath="$PROJECT_DIR$/components/ui/TabBar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/(tabs)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/_layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(tabs)/explore.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(tabs)/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/+not-found.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/Colors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/constants/Colors.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,11 +85,28 @@
       <workItem from="1746057290920" duration="45000" />
       <workItem from="1747325630773" duration="707000" />
       <workItem from="1747331440269" duration="3847000" />
-      <workItem from="1747403399454" duration="2718000" />
+      <workItem from="1747403399454" duration="3903000" />
+      <workItem from="1747415979283" duration="1226000" />
+      <workItem from="1747417218060" duration="791000" />
+      <workItem from="1747418076730" duration="62000" />
+      <workItem from="1747418341701" duration="8989000" />
     </task>
+    <task id="LOCAL-00001" summary="routing of main screens">
+      <option name="closed" value="true" />
+      <created>1747414909670</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1747414909670</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="routing of main screens" />
+    <option name="LAST_COMMIT_MESSAGE" value="routing of main screens" />
   </component>
 </project>
