@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, GestureResponderEvent, View } from 'react-native';
+import { PrimaryButton } from '../../components/ui/PrimaryButton';
 import { useRouter } from 'expo-router';
 import { AuthScreenWrapper } from '../../components/AuthScreenWrapper';
 import { AuthInput } from '../../components/ui/AuthInput';
@@ -12,27 +13,45 @@ const LoginScreen: React.FC = () => {
     const [senha, setSenha] = useState('');
 
     return (
-        <AuthScreenWrapper title="Entrar">
+        <AuthScreenWrapper title="Login">
             <AuthInput
-                placeholder="Email"
+                label="EMAIL"
+                placeholder=""
                 value={email}
                 onChangeText={setEmail}
             />
             <AuthInput
-                placeholder="Senha"
+                label="SENHA"
+                placeholder=""
                 value={senha}
                 onChangeText={setSenha}
                 secureTextEntry
             />
-            <TouchableOpacity style={styles.primaryButton}>
-                <Text style={styles.primaryButtonText}>Entrar</Text>
+
+            <TouchableOpacity style={styles.forgotPassword}>
+                <Text style={styles.forgotPasswordText}>Esqueceu sua senha?</Text>
             </TouchableOpacity>
 
-            <GoogleLoginButton onPress={() => console.log('Google login')} />
+            <PrimaryButton
+                title="Login"
+                onPress={function (_event: GestureResponderEvent): void {
+                    throw new Error('Function not implemented.');
+                }}
+            />
 
-            <TouchableOpacity>
-                <Text style={styles.switchText}>Não tem conta? Cadastre-se</Text>
+            <TouchableOpacity onPress={() => router.push('/cadastro')}>
+                <Text style={styles.linkText}>
+                    AINDA NÃO TEM UMA CONTA? <Text style={styles.linkBold}>CADASTRE-SE</Text>
+                </Text>
             </TouchableOpacity>
+
+            <View style={styles.separatorContainer}>
+                <View style={styles.line} />
+                <Text style={styles.separatorText}>ou</Text>
+                <View style={styles.line} />
+            </View>
+
+            <GoogleLoginButton title="ENTRAR COM O GOOGLE" onPress={() => console.log('Google login')} />
         </AuthScreenWrapper>
     );
 };
@@ -40,21 +59,38 @@ const LoginScreen: React.FC = () => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
-    primaryButton: {
-        backgroundColor: Colors.light.text,
-        paddingVertical: 12,
-        borderRadius: 8,
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    primaryButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: '600',
-    },
-    switchText: {
-        textAlign: 'center',
-        color: Colors.light.text,
+    forgotPassword: {
+        alignItems: 'flex-start',
         marginTop: 8,
+        marginBottom: 12,
     },
-})
+    forgotPasswordText: {
+        color: Colors.light.text,
+        fontSize: 10,
+    },
+    linkText: {
+        textAlign: 'center',
+        fontSize: 8,
+        color: Colors.light.text,
+        marginTop: 0,
+        marginBottom: 4
+    },
+    linkBold: {
+        fontWeight: 'bold',
+    },
+    separatorContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 20,
+    },
+    line: {
+        flex: 1,
+        height: 1,
+        backgroundColor: Colors.light.icon,
+    },
+    separatorText: {
+        marginHorizontal: 10,
+        fontSize: 12,
+        color: Colors.light.icon,
+    },
+});

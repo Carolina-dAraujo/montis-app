@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { Colors } from '@/mobile/constants/Colors';
 
 type AuthScreenWrapperProps = {
@@ -7,8 +7,16 @@ type AuthScreenWrapperProps = {
     children: React.ReactNode;
 };
 
-export const AuthScreenWrapper: React.FC<AuthScreenWrapperProps> = ({ title, children }) => (
+export const AuthScreenWrapper: React.FC<AuthScreenWrapperProps> = ({
+                                                                        title,
+                                                                        children,
+                                                                    }) => (
     <View style={styles.wrapper}>
+        <Image
+            source={require('@/mobile/assets/images/tree-leaf.png')}
+            style={styles.logo}
+            resizeMode="contain"
+        />
         <Text style={styles.title}>{title}</Text>
         {children}
     </View>
@@ -17,15 +25,23 @@ export const AuthScreenWrapper: React.FC<AuthScreenWrapperProps> = ({ title, chi
 const styles = StyleSheet.create({
     wrapper: {
         flex: 1,
-        padding: 20,
+        padding: 40,
         justifyContent: 'center',
         backgroundColor: Colors.light.background,
     },
+    logo: {
+        width: 36,
+        height: 45,
+        alignSelf: 'center',
+        marginBottom: 0,
+    },
     title: {
-        fontSize: 24,
-        fontWeight: '600',
+        fontSize: 38,
+        fontWeight: 'bold',
+        fontFamily: 'Inter-Bold',
         textAlign: 'center',
         marginBottom: 32,
+        marginTop: 0,
         color: Colors.light.text,
     },
 });
