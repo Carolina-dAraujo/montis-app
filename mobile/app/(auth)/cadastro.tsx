@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, GestureResponderEvent, View } from 'react-native';
+import { PrimaryButton } from '../../components/ui/PrimaryButton';
 import { useRouter } from 'expo-router';
 import { AuthScreenWrapper } from '@/mobile/components/AuthScreenWrapper';
 import { AuthInput } from '@/mobile/components/ui/AuthInput';
@@ -8,37 +9,48 @@ import { Colors } from '@/mobile/constants/Colors';
 
 const RegisterScreen: React.FC = () => {
     const router = useRouter();
-    const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
 
     return (
-        <AuthScreenWrapper title="Cadastrar-se">
+        <AuthScreenWrapper title="Cadastro">
             <AuthInput
-                placeholder="Nome"
-                value={nome}
-                onChangeText={setNome}
-            />
-            <AuthInput
-                placeholder="Email"
+                label="EMAIL"
+                placeholder=""
                 value={email}
                 onChangeText={setEmail}
             />
             <AuthInput
-                placeholder="Senha"
+                label="SENHA"
+                placeholder=""
                 value={senha}
                 onChangeText={setSenha}
                 secureTextEntry
             />
-            <TouchableOpacity style={styles.primaryButton}>
-                <Text style={styles.primaryButtonText}>Criar conta</Text>
-            </TouchableOpacity>
 
-            <GoogleLoginButton onPress={() => console.log('Google signup')} />
+            <PrimaryButton
+                title="Cadastrar"
+                onPress={function (_event: GestureResponderEvent): void {
+                    throw new Error('Function not implemented.');
+                }}
+            />
 
             <TouchableOpacity onPress={() => router.push('/login')}>
-                <Text style={styles.switchText}>Já tem conta? Entrar</Text>
+                <Text style={styles.linkText}>
+                    JÁ TEM UMA CONTA? <Text style={styles.linkBold}>FAZER LOGIN</Text>
+                </Text>
             </TouchableOpacity>
+
+            <View style={styles.separatorContainer}>
+                <View style={styles.line} />
+                <Text style={styles.separatorText}>ou</Text>
+                <View style={styles.line} />
+            </View>
+
+            <GoogleLoginButton
+                title="CADASTRAR COM O GOOGLE"
+                onPress={() => console.log('Google signup')}
+            />
         </AuthScreenWrapper>
     );
 };
@@ -46,21 +58,29 @@ const RegisterScreen: React.FC = () => {
 export default RegisterScreen;
 
 const styles = StyleSheet.create({
-    primaryButton: {
-        backgroundColor: Colors.light.text,
-        paddingVertical: 12,
-        borderRadius: 8,
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    primaryButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: '600',
-    },
-    switchText: {
+    linkText: {
         textAlign: 'center',
+        fontSize: 8,
         color: Colors.light.text,
-        marginTop: 8,
+        marginTop: 0,
+        marginBottom: 4
+    },
+    linkBold: {
+        fontWeight: 'bold',
+    },
+    separatorContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 20,
+    },
+    line: {
+        flex: 1,
+        height: 1,
+        backgroundColor: Colors.light.icon,
+    },
+    separatorText: {
+        marginHorizontal: 10,
+        fontSize: 12,
+        color: Colors.light.icon,
     },
 });

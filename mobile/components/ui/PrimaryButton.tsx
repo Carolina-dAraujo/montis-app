@@ -19,11 +19,15 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({ title, onPress, di
 
 const styles = StyleSheet.create({
     primaryButton: {
-        backgroundColor: Colors.light.icon,
-        paddingVertical: 12,
+        backgroundColor: Colors.light.text,
+        height: 38,
+        paddingHorizontal: 70,
+        marginBottom: 10,
+        marginTop: 25,
         borderRadius: 8,
         alignItems: 'center',
-        marginBottom: 12,
+        justifyContent: 'center',
+        alignSelf: 'center',
     },
     disabledButton: {
         backgroundColor: Colors.light.background,
