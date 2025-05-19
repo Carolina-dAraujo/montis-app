@@ -1,6 +1,6 @@
-import { FirebaseService } from 'src/firebase/firebase.service';
-import { Injectable } from '@nestjs/common';
-import { RegisterUserDto } from './dtos/register-user.dto';
+import { FirebaseService } from "src/firebase/firebase.service";
+import { Injectable } from "@nestjs/common";
+import { RegisterUserDto } from "./dtos/register-user.dto";
 
 @Injectable()
 export class UsersService {
