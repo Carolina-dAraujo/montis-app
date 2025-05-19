@@ -1,7 +1,7 @@
-import * as firebaseAdmin from 'firebase-admin';
-import { Injectable } from '@nestjs/common';
-import { CreateRequest } from 'firebase-admin/lib/auth/auth-config';
-import { UserRecord } from 'firebase-admin/lib/auth/user-record';
+import * as firebaseAdmin from "firebase-admin";
+import { Injectable } from "@nestjs/common";
+import { CreateRequest } from "firebase-admin/lib/auth/auth-config";
+import { UserRecord } from "firebase-admin/lib/auth/user-record";
 
 @Injectable()
 export class FirebaseService {

@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@nestjs/common": "^11.1.1",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/testing": "^11.1.1",
+    "firebase-admin": "^13.4.0",
+    "nestjs": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14"
+  }
+}
