@@ -10,3 +10,12 @@ export class AppController {
     return this.appService.getHello();
   }
 }
+
+@Controller('users')
+export class UsersController {
+  @Get()
+  getUsers(): string {
+    // Substitua por lógica real de busca de usuários se necessário
+    return "List of users";
+  }
+}
