@@ -5,6 +5,10 @@ import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Habilita o CORS para permitir requisições do React Native
+  app.enableCors();
+
   configureSwagger(app);
   configureValidationPipe(app);
   await app.listen(process.env.PORT ?? 3000);
