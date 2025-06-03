@@ -30,5 +30,8 @@ export const Colors = {
 		blue: '#254A8E',
 		blueLight: '#3A6EA5',
 	},
+	icon: {
+		gray: '#A6A6A6',
+	},
 	black: '#000000',
 };

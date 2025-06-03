@@ -1,8 +1,10 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Colors } from '@/mobile/constants/Colors';
+import { useRouter } from 'expo-router';
 
 export function HomeHeader() {
+    const router = useRouter();
     const currentDate = new Date();
     const day = currentDate.getDate();
     const month = currentDate.toLocaleDateString('pt-BR', { month: 'long' });
@@ -14,7 +16,7 @@ export function HomeHeader() {
             <Text style={styles.date}>{formattedDate}</Text>
             <Pressable
                 onPress={() => {
-                    // TODO: Implement config navigation
+                    router.push('/config' as any);
                 }}
             >
                 <FontAwesome6 name="gear" size={24} color="black" />
