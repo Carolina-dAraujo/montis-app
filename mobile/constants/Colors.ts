@@ -34,4 +34,5 @@ export const Colors = {
 		gray: '#A6A6A6',
 	},
 	black: '#000000',
+	input: '#E8E8E8',
 };
