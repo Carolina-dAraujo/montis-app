@@ -22,7 +22,7 @@ export default function ConfigScreen() {
 					icon="circle-user"
 					title="Conta"
 					onPress={() => {
-						// TODO: Navigate to account settings
+						router.push('/(config)/accountData');
 					}}
 				/>
 				<ConfigCard
