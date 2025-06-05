@@ -25,7 +25,7 @@ Firebase Admin SDK – 13.4.0
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seuusuario/montis-app.git](https://github.com/Carolina-dAraujo/montis-app.git
+git clone https://github.com/Carolina-dAraujo/montis-app.git
 
 # Acesse o diretório
 cd montis-app/mobile
