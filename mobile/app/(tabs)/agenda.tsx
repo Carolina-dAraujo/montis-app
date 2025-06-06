@@ -1,12 +1,29 @@
-import {View, Text} from 'react-native';
-import React from 'react';
+import React from "react";
+import { ScrollView, StyleSheet } from "react-native";
+import { MonthCalendar } from "components/agenda/month-calendar";
+import { useRouter } from "expo-router";
+import dayjs from "dayjs";
 
-const agenda = () => {
+export default function AgendaScreen() {
+    const router = useRouter();
+
+    const handleDayPress = (date: string) => {
+        router.push(`/tracking/${date}`);
+    };
+
     return (
-        <View>
-            <Text>agenda</Text>
-        </View>
-    )
+            <MonthCalendar
+                onSelectDate={handleDayPress}
+                currentMonth={dayjs()}
+                selectedDate={""}
+                filledDates={[]}
+            />
+    );
 }
 
-export default agenda;
+const styles = StyleSheet.create({
+    container: {
+        padding: 16,
+        backgroundColor: "#FFF",
+    },
+});
