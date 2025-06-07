@@ -35,4 +35,5 @@ export const Colors = {
 	},
 	black: '#000000',
 	input: '#E8E8E8',
+	lightGray: '#F3F3F3',
 };

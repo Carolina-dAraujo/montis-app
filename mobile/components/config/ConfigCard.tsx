@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 	},
 	title: {
-		fontSize: 16,
+		fontSize: 20,
 		fontWeight: '300',
 		color: Colors.light.background,
 		marginBottom: 8,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 		gap: 8,
 	},
 	accessText: {
-		fontSize: 12,
+		fontSize: 14,
 		fontWeight: '600',
 		color: Colors.light.background,
 	},
