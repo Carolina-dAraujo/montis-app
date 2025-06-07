@@ -24,7 +24,7 @@ export default function EditFieldScreen() {
 
 	const alertMessages = {
 		name: 'Nome atualizado com sucesso!',
-		phone: 'Telefone atualizado com sucesso!',
+		phone: 'Número de celular atualizado com sucesso!',
 		email: 'Email atualizado com sucesso!',
 		password: 'Senha atualizada com sucesso!',
 	};
@@ -62,7 +62,7 @@ export default function EditFieldScreen() {
 		if (!validation.isValid) {
 			setError(validation.error || null);
 			Alert.alert(
-				'Erro de Validação',
+				'Erro de validação',
 				validation.error || 'Por favor, corrija os erros antes de salvar.',
 				[{ text: 'OK' }]
 			);
@@ -74,7 +74,16 @@ export default function EditFieldScreen() {
 		Alert.alert(
 			'Sucesso',
 			alertMessages[field as keyof typeof alertMessages],
-			[{ text: 'OK', onPress: () => router.back() }]
+			[{
+				text: 'OK',
+				onPress: () => {
+					if (field === 'password') {
+						router.replace('/(config)/accountData');
+					} else {
+						router.back();
+					}
+				}
+			}]
 		);
 	};
 

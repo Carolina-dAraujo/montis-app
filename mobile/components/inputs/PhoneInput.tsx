@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, StyleSheet, View, Text } from 'react-native';
+import { TextInput, StyleSheet, View } from 'react-native';
 import { Colors } from '@/mobile/constants/Colors';
 
 interface PhoneInputProps {
@@ -23,7 +23,7 @@ const formatPhoneNumber = (text: string): string => {
 export const validatePhone = (value: string): { isValid: boolean; error?: string } => {
 	const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
 	if (!value.trim()) {
-		return { isValid: false, error: 'Número de elular não pode estar vazio' };
+		return { isValid: false, error: 'Número de celular não pode estar vazio' };
 	}
 	if (!phoneRegex.test(value)) {
 		return { isValid: false, error: 'Formato inválido. Use (00) 00000-0000' };
