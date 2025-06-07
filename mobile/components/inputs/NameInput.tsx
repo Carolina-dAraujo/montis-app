@@ -2,25 +2,21 @@ import React from 'react';
 import { TextInput, StyleSheet, View, Text } from 'react-native';
 import { Colors } from '@/mobile/constants/Colors';
 
-interface EmailInputProps {
+interface NameInputProps {
 	value: string;
 	onChangeText: (text: string) => void;
 	error?: string | null;
 	placeholder: string;
 }
 
-export const validateEmail = (value: string): { isValid: boolean; error?: string } => {
-	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const validateName = (value: string): { isValid: boolean; error?: string } => {
 	if (!value.trim()) {
-		return { isValid: false, error: 'Email não pode estar vazio' };
-	}
-	if (!emailRegex.test(value)) {
-		return { isValid: false, error: 'Email inválido' };
+		return { isValid: false, error: 'Nome não pode estar vazio' };
 	}
 	return { isValid: true };
 };
 
-export const EmailInput: React.FC<EmailInputProps> = ({ value, onChangeText, error, placeholder }) => {
+export const NameInput: React.FC<NameInputProps> = ({ value, onChangeText, error, placeholder }) => {
 	return (
 		<View>
 			<TextInput
@@ -29,8 +25,8 @@ export const EmailInput: React.FC<EmailInputProps> = ({ value, onChangeText, err
 				onChangeText={onChangeText}
 				placeholder={placeholder}
 				placeholderTextColor={Colors.icon.gray}
-				keyboardType="email-address"
-				autoCapitalize="none"
+				keyboardType="default"
+				autoCapitalize="words"
 				autoCorrect={false}
 				autoFocus
 			/>
