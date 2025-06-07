@@ -30,7 +30,6 @@ export const NameInput: React.FC<NameInputProps> = ({ value, onChangeText, error
 				autoCorrect={false}
 				autoFocus
 			/>
-			{error && <Text style={styles.errorText}>{error}</Text>}
 		</View>
 	);
 };
