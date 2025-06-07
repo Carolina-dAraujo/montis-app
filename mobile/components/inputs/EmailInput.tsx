@@ -34,7 +34,6 @@ export const EmailInput: React.FC<EmailInputProps> = ({ value, onChangeText, err
 				autoCorrect={false}
 				autoFocus
 			/>
-			{error && <Text style={styles.errorText}>{error}</Text>}
 		</View>
 	);
 };
