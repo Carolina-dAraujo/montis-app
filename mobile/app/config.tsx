@@ -10,11 +10,13 @@ export default function ConfigScreen() {
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
-				<View style={styles.backIconContainer}>
-					<ChevronLeft onPress={() => router.back()} />
-				</View>
-				<View style={styles.titleContainer}>
-					<Text style={styles.title}>Configurações</Text>
+				<View style={styles.headerRow}>
+					<View style={styles.backIconContainer}>
+						<ChevronLeft onPress={() => router.back()} />
+					</View>
+					<View style={styles.titleContainer}>
+						<Text style={styles.title}>Configurações</Text>
+					</View>
 				</View>
 			</View>
 			<ScrollView style={styles.content}>
@@ -49,17 +51,19 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: Colors.light.background,
 	},
+	header: {
+		paddingBottom: 28,
+	},
+	headerRow: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 12,
+	},
 	backIconContainer: {
 		paddingTop: 8,
 	},
 	titleContainer: {
-		paddingLeft: 20,
-	},
-	header: {
-		paddingBottom: 28,
-		flexDirection: 'column',
-		alignItems: 'flex-start',
-		gap: 12,
+		paddingTop: 8,
 	},
 	content: {
 		flex: 1,
