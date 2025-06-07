@@ -1,27 +1,29 @@
+import { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable, Alert, Image } from 'react-native';
 import { Colors } from '@/mobile/constants/Colors';
 import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
 import { useRouter } from 'expo-router';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import * as ImagePicker from 'expo-image-picker';
-import { useState, useRef } from 'react';
-import { PasswordInput } from '@/mobile/components/inputs/PasswordInput';
-import { PhoneInput } from '@/mobile/components/inputs/PhoneInput';
-import { EmailInput } from '@/mobile/components/inputs/EmailInput';
+import { BottomSheet } from '@/mobile/components/ui/BottomSheet';
+import { fieldConfig } from '@/mobile/constants/fieldConfig';
 
 export default function AccountDataScreen() {
 	const router = useRouter();
 	const [profileImage, setProfileImage] = useState<string | null>(null);
-	const [password, setPassword] = useState('');
-	const [phone, setPhone] = useState('(00) 00000-0000');
-	const [email, setEmail] = useState('joao@example.com');
-	const [editingField, setEditingField] = useState<string | null>(null);
-	const [hasChanges, setHasChanges] = useState(false);
 	const [showMoreOptions, setShowMoreOptions] = useState(false);
 	const scrollViewRef = useRef<ScrollView>(null);
+	const [name, setName] = useState('');
+	const [phone, setPhone] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
 
-	const userMock = {
-		name: 'João da Silva',
+	useEffect(() => {
+		fetchUserProfile();
+	}, []);
+
+	const fetchUserProfile = async () => {
+		// TODO: Implement fetchUserProfile
 	};
 
 	const pickImage = async () => {
@@ -70,61 +72,68 @@ export default function AccountDataScreen() {
 		);
 	};
 
-	const toggleEditing = (field: string) => {
-		setEditingField(editingField === field ? null : field);
-		setShowMoreOptions(false);
+	const handleLogout = () => {
+		Alert.alert(
+			'Sair',
+			'Tem certeza que deseja sair?',
+			[
+				{
+					text: 'Cancelar',
+					style: 'cancel',
+				},
+				{
+					text: 'Sair',
+					style: 'destructive',
+					onPress: () => {
+						// TODO: Implement logout
+						router.replace('/login');
+					},
+				},
+			],
+		);
 	};
 
-	const handleMoreOptionsPress = () => {
-		setShowMoreOptions(!showMoreOptions);
-		setEditingField(null);
-	};
+	const handleFieldPress = (field: string) => {
+		const config = fieldConfig[field];
+		if (!config) return;
 
-	const handleFieldChange = (field: string, value: string) => {
-		setHasChanges(true);
-		switch (field) {
-			case 'phone':
-				setPhone(value);
-				break;
-			case 'email':
-				setEmail(value);
-				break;
-			case 'password':
-				setPassword(value);
-				break;
+		if (field === 'password') {
+			router.push({
+				pathname: '/confirmPassword',
+				params: {
+					title: 'Confirme sua senha',
+					placeholder: 'Digite sua senha atual'
+				}
+			});
+			return;
 		}
-	};
 
-	const handleSaveChanges = () => {
-		// TODO: Implement save changes to server
-		setHasChanges(false);
-		setEditingField(null);
-	};
-
-	const handleOutsidePress = () => {
-		if (editingField) {
-			setEditingField(null);
-		}
-		if (showMoreOptions) {
-			setShowMoreOptions(false);
-		}
+		router.push({
+			pathname: '/editField',
+			params: {
+				field,
+				value: field === 'name' ? name :
+					   field === 'phone' ? phone :
+					   field === 'email' ? email : '',
+				...config,
+				secureTextEntry: config.secureTextEntry ? 'true' : 'false'
+			},
+		});
 	};
 
 	return (
-		<Pressable style={styles.container} onPress={handleOutsidePress}>
+		<Pressable style={styles.container}>
 			<View style={styles.header}>
-				<View style={styles.headerTop}>
+				<View style={styles.headerRow}>
 					<View style={styles.backIconContainer}>
 						<ChevronLeft onPress={() => router.back()} />
 					</View>
-				</View>
-				<View style={styles.titleRow}>
 					<View style={styles.titleContainer}>
 						<Text style={styles.title}>Dados da conta</Text>
 					</View>
 					<Pressable
 						style={styles.moreOptionsButton}
-						onPress={handleMoreOptionsPress}
+						onPress={() => setShowMoreOptions(!showMoreOptions)}
 					>
 						<FontAwesome6
 							name="ellipsis-vertical"
@@ -135,16 +144,24 @@ export default function AccountDataScreen() {
 				</View>
 			</View>
 
-			{showMoreOptions && (
-				<View style={styles.dropdownContainer}>
-					<Pressable
-						style={styles.deleteSection}
-						onPress={handleDeleteAccount}
-					>
-						<Text style={styles.deleteText}>Apagar conta</Text>
-					</Pressable>
-				</View>
-			)}
+			<BottomSheet
+				visible={showMoreOptions}
+				onClose={() => setShowMoreOptions(false)}
+			>
+				<Pressable
+					style={styles.deleteSection}
+					onPress={handleLogout}
+				>
+					<Text style={styles.deleteText}>Sair</Text>
+				</Pressable>
+				<View style={styles.separator} />
+				<Pressable
+					style={styles.deleteSection}
+					onPress={handleDeleteAccount}
+				>
+					<Text style={styles.deleteText}>Apagar conta</Text>
+				</Pressable>
+			</BottomSheet>
 
 			<ScrollView
 				ref={scrollViewRef}
@@ -162,43 +179,52 @@ export default function AccountDataScreen() {
 							<FontAwesome6 name="camera" size={16} color={Colors.light.background} />
 						</View>
 					</Pressable>
-					<Text style={styles.name}>{userMock.name}</Text>
+					<Pressable style={styles.nameContainer} onPress={() => handleFieldPress('name')}>
+						<Text style={styles.name}>{name || 'João da Silva'}</Text>
+						<FontAwesome6 name="edit" size={16} color={Colors.icon.gray} />
+					</Pressable>
 				</View>
 
 				<View style={styles.formSection}>
-					<PhoneInput
-						value={phone}
-						onChange={(value) => handleFieldChange('phone', value)}
-						label="Número de celular"
-						isEditing={editingField === 'phone'}
-						onEdit={() => toggleEditing('phone')}
-					/>
+					<View style={styles.fieldContainer}>
+						<Text style={styles.fieldLabel}>Número de celular</Text>
+						<Pressable
+							style={styles.fieldButton}
+							onPress={() => handleFieldPress('phone')}
+						>
+							<View>
+								<Text style={styles.fieldValue}>{phone || '(00) 00000-0000'}</Text>
+							</View>
+							<FontAwesome6 name="chevron-right" size={16} color={Colors.icon.gray} />
+						</Pressable>
+					</View>
 
-					<EmailInput
-						value={email}
-						onChange={(value) => handleFieldChange('email', value)}
-						label="Email"
-						isEditing={editingField === 'email'}
-						onEdit={() => toggleEditing('email')}
-					/>
+					<View style={styles.fieldContainer}>
+						<Text style={styles.fieldLabel}>Email</Text>
+						<Pressable
+							style={styles.fieldButton}
+							onPress={() => handleFieldPress('email')}
+						>
+							<View>
+								<Text style={styles.fieldValue}>{email || 'seu@email.com'}</Text>
+							</View>
+							<FontAwesome6 name="chevron-right" size={16} color={Colors.icon.gray} />
+						</Pressable>
+					</View>
 
-					<PasswordInput
-						value={password}
-						onChange={(value) => handleFieldChange('password', value)}
-						label="Senha"
-						isEditing={editingField === 'password'}
-						onEdit={() => toggleEditing('password')}
-					/>
+					<View style={styles.fieldContainer}>
+						<Text style={styles.fieldLabel}>Senha</Text>
+						<Pressable
+							style={styles.fieldButton}
+							onPress={() => handleFieldPress('password')}
+						>
+							<View>
+								<Text style={styles.fieldValue}>••••••••</Text>
+							</View>
+							<FontAwesome6 name="chevron-right" size={16} color={Colors.icon.gray} />
+						</Pressable>
+					</View>
 				</View>
-
-				{hasChanges && (
-					<Pressable
-						style={styles.saveButton}
-						onPress={handleSaveChanges}
-					>
-						<Text style={styles.saveButtonText}>Salvar alterações</Text>
-					</Pressable>
-				)}
 			</ScrollView>
 		</Pressable>
 	);
@@ -211,33 +237,19 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		paddingBottom: 28,
-		flexDirection: 'column',
-		alignItems: 'flex-start',
+	},
+	headerRow: {
+		flexDirection: 'row',
+		alignItems: 'center',
 		gap: 12,
-	},
-	headerTop: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		width: '100%',
-		paddingHorizontal: 20,
-	},
-	titleRow: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		width: '100%',
-		paddingHorizontal: 20,
+		paddingRight: 20,
 	},
 	backIconContainer: {
 		paddingTop: 8,
 	},
 	titleContainer: {
 		flex: 1,
-	},
-	moreOptionsButton: {
-		padding: 8,
-		marginLeft: 8,
+		paddingTop: 8,
 	},
 	title: {
 		fontSize: 20,
@@ -287,6 +299,11 @@ const styles = StyleSheet.create({
 		borderWidth: 2,
 		borderColor: Colors.light.background,
 	},
+	nameContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 8,
+	},
 	name: {
 		fontSize: 18,
 		color: Colors.light.text,
@@ -295,30 +312,43 @@ const styles = StyleSheet.create({
 	formSection: {
 		gap: 24,
 	},
-	dropdownContainer: {
-		position: 'absolute',
-		top: 100,
-		right: 20,
-		backgroundColor: Colors.light.background,
-		borderRadius: 8,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 2,
-		},
-		shadowOpacity: 0.25,
-		shadowRadius: 3.84,
-		elevation: 5,
-		zIndex: 1000,
-		minWidth: 160,
+	moreOptionsButton: {
+		paddingTop: 8,
+		paddingHorizontal: 8,
 	},
 	deleteSection: {
-		paddingVertical: 12,
-		paddingHorizontal: 16,
+		paddingVertical: 16,
+		paddingHorizontal: 20,
 	},
 	deleteText: {
-		fontSize: 14,
-		color: Colors.black,
+		color: Colors.light.text,
+		fontSize: 16,
 		fontWeight: '500',
+	},
+	separator: {
+		height: 1,
+		backgroundColor: Colors.light.shadow,
+		marginHorizontal: 20,
+	},
+	fieldButton: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		backgroundColor: Colors.input,
+		borderRadius: 12,
+		padding: 16,
+	},
+	fieldLabel: {
+		fontSize: 14,
+		color: Colors.light.text,
+		fontWeight: '500',
+		marginBottom: 4,
+	},
+	fieldValue: {
+		fontSize: 16,
+		color: Colors.icon.gray,
+	},
+	fieldContainer: {
+		gap: 8,
 	},
 });
