@@ -110,11 +110,7 @@ export default function TrackingScreen() {
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.headerRow}>
-                    <TouchableOpacity 
-                        style={styles.backIconWrapper} 
-                        onPress={() => router.push('/agenda')}
-                        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                    >
+                    <TouchableOpacity style={styles.backIconWrapper} onPress={() => router.back()}>
                         <ChevronLeft />
                     </TouchableOpacity>
                     <Text style={styles.dateText} numberOfLines={2}>
@@ -201,11 +197,9 @@ const styles = StyleSheet.create({
         minHeight: 48,
     },
     backIconWrapper: {
-        width: 40,
-        height: 40,
-        alignItems: 'center',
+        width: 32,
+        alignItems: 'flex-start',
         justifyContent: 'center',
-        zIndex: 1,
     },
     dateText: {
         flex: 1,
@@ -301,4 +295,4 @@ const styles = StyleSheet.create({
     saveButtonTextInactive: {
         color: '#fff',
     },
-}); 
+});

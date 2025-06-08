@@ -16,7 +16,11 @@ export default function AgendaScreen() {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.backIconContainer} onPress={() => router.replace('/home')}>
+                <TouchableOpacity 
+                    style={styles.backIconContainer} 
+                    onPress={() => router.navigate('/home')}
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
                     <ChevronLeft />
                 </TouchableOpacity>
                 <Text style={styles.title}>Agenda</Text>
@@ -36,22 +40,23 @@ const styles = StyleSheet.create({
         backgroundColor: '#F9FAFB',
     },
     header: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: 'column',
         paddingHorizontal: 20,
         paddingBottom: 8,
         backgroundColor: '#F9FAFB',
     },
     backIconContainer: {
-        marginRight: 8,
-        alignItems: 'flex-start',
+        marginBottom: 8,
+        alignItems: 'center',
         justifyContent: 'center',
-        width: 32,
+        width: 40,
+        height: 40,
+        zIndex: 1,
     },
     title: {
         fontSize: 20,
         fontFamily: 'Inter-Bold',
         color: '#111827',
-        flex: 1,
+        textAlign: 'left',
     },
 });
