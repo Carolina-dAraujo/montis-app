@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
-import { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface CalendarListProps {
     selectedDate: Date;
     onDateSelect: (date: Date) => void;
+    trackedDays?: string[]; // Array of date strings (e.g., date.toDateString())
 }
 
 interface MonthData {
@@ -19,7 +20,7 @@ const GAP_BETWEEN_DAYS = 4;
 const DAYS_IN_WEEK = 7;
 const DAY_SIZE = (screenWidth - PADDING_HORIZONTAL - GAP_BETWEEN_DAYS * (DAYS_IN_WEEK * 2)) / DAYS_IN_WEEK;
 
-export default function CalendarList({ selectedDate, onDateSelect }: CalendarListProps) {
+export default function CalendarList({ selectedDate, onDateSelect, trackedDays = [] }: CalendarListProps) {
     const router = useRouter();
     const [months, setMonths] = useState<MonthData[]>([]);
 
@@ -83,10 +84,14 @@ export default function CalendarList({ selectedDate, onDateSelect }: CalendarLis
         return date.getFullYear() === year && date.getMonth() === month;
     };
 
-    const hasActivity = (date: Date | null) => {
+    const isTracked = (date: Date | null) => {
         if (!date) return false;
-        const day = date.getDate();
-        return day % 3 === 0 || day % 7 === 0;
+        return trackedDays.includes(date.toDateString());
+    };
+
+    const handleDateSelect = (date: Date) => {
+        onDateSelect(date);
+        router.push({ pathname: '/tracking/[date]', params: { date: date.toISOString() } });
     };
 
     const renderMonth = (monthData: MonthData) => {
@@ -109,35 +114,35 @@ export default function CalendarList({ selectedDate, onDateSelect }: CalendarLis
                 <View style={styles.calendar}>
                     {monthData.days.map((date, index) => {
                         const inCurrentMonth = isCurrentMonth(date, monthData.year, monthData.month);
+                        const today = isToday(date);
+                        const selected = isSelectedDate(date);
+                        const tracked = isTracked(date);
 
                         return (
                             <TouchableOpacity
                                 key={index}
                                 style={[
                                     styles.dayContainer,
-                                    isSelectedDate(date) && styles.selectedDay,
-                                    isToday(date) && !isSelectedDate(date) && styles.todayDay,
+                                    selected && styles.selectedDay,
+                                    today && !selected && styles.todayDay,
+                                    !today && !selected && tracked && styles.trackedDay,
                                     !inCurrentMonth && styles.otherMonth,
                                 ]}
-                                onPress={() => date && onDateSelect(date)}
+                                onPress={() => date && handleDateSelect(date)}
                                 disabled={!date}
                             >
                                 {date && (
-                                    <>
-                                        <Text
-                                            style={[
-                                                styles.dayText,
-                                                isSelectedDate(date) && styles.selectedDayText,
-                                                isToday(date) && !isSelectedDate(date) && styles.todayDayText,
-                                                !inCurrentMonth && styles.otherMonthText,
-                                            ]}
-                                        >
-                                            {date.getDate()}
-                                        </Text>
-                                        {hasActivity(date) && !isSelectedDate(date) && (
-                                            <View style={styles.activityDot} />
-                                        )}
-                                    </>
+                                    <Text
+                                        style={[
+                                            styles.dayText,
+                                            selected && styles.selectedDayText,
+                                            today && !selected && styles.todayDayText,
+                                            !today && !selected && tracked && styles.trackedDayText,
+                                            !inCurrentMonth && styles.otherMonthText,
+                                        ]}
+                                    >
+                                        {date.getDate()}
+                                    </Text>
                                 )}
                             </TouchableOpacity>
                         );
@@ -244,12 +249,11 @@ const styles = StyleSheet.create({
     otherMonthText: {
         color: '#9CA3AF',
     },
-    activityDot: {
-        position: 'absolute',
-        bottom: 4,
-        width: 4,
-        height: 4,
-        borderRadius: 2,
-        backgroundColor: '#254A8E',
+    trackedDay: {
+        backgroundColor: '#60A5FA', // medium blue
+    },
+    trackedDayText: {
+        color: '#fff',
+        fontFamily: 'Inter-SemiBold',
     },
 });
