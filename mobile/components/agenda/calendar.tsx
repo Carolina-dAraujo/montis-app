@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface CalendarListProps {
@@ -23,6 +23,7 @@ const DAY_SIZE = (screenWidth - PADDING_HORIZONTAL - GAP_BETWEEN_DAYS * (DAYS_IN
 export default function CalendarList({ selectedDate, onDateSelect, trackedDays = [] }: CalendarListProps) {
     const router = useRouter();
     const [months, setMonths] = useState<MonthData[]>([]);
+    const scrollViewRef = useRef<ScrollView>(null);
 
     const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
     const monthNames = [
@@ -33,6 +34,30 @@ export default function CalendarList({ selectedDate, onDateSelect, trackedDays =
     useEffect(() => {
         generateMonths();
     }, []);
+
+    useEffect(() => {
+        if (months.length > 0) {
+            // Find the index of the current month
+            const currentDate = new Date();
+            const currentMonthIndex = months.findIndex(
+                month => month.year === currentDate.getFullYear() && month.month === currentDate.getMonth()
+            );
+
+            if (currentMonthIndex !== -1) {
+                // Calculate the approximate position to scroll to
+                const monthHeight = 400; // Approximate height of a month component
+                const scrollPosition = currentMonthIndex * monthHeight;
+
+                // Scroll to the current month
+                setTimeout(() => {
+                    scrollViewRef.current?.scrollTo({
+                        y: scrollPosition,
+                        animated: false
+                    });
+                }, 100);
+            }
+        }
+    }, [months]);
 
     const generateMonths = () => {
         const monthsData: MonthData[] = [];
@@ -154,6 +179,7 @@ export default function CalendarList({ selectedDate, onDateSelect, trackedDays =
 
     return (
         <ScrollView
+            ref={scrollViewRef}
             style={styles.container}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scrollContent}
