@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface TrackingOption {
     id: string;
@@ -18,41 +18,36 @@ export default function TrackingSection({ title, options, selectedValue, onValue
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{title}</Text>
-            <View style={styles.optionsContainer}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.optionsRow}>
                 {options.map((option) => {
                     const isSelected = selectedValue === option.id;
                     const IconComponent = option.icon;
-
                     return (
-                        <TouchableOpacity
-                            key={option.id}
-                            style={[
-                                styles.optionButton,
-                                {
-                                    backgroundColor: isSelected ? option.color : '#FFFFFF',
-                                    borderColor: isSelected ? option.color : '#E5E7EB',
-                                },
-                            ]}
-                            onPress={() => onValueChange(option.id)}
-                        >
-                            <IconComponent
-                                size={24}
-                                color={isSelected ? '#FFFFFF' : option.color}
-                            />
-                            <Text
+                        <View key={option.id} style={styles.optionWrapper}>
+                            <TouchableOpacity
                                 style={[
-                                    styles.optionText,
+                                    styles.optionButton,
                                     {
-                                        color: isSelected ? '#FFFFFF' : '#111827',
+                                        borderColor: isSelected ? option.color : '#E5E7EB',
+                                        borderWidth: isSelected ? 3 : 2,
+                                        backgroundColor: '#fff',
                                     },
                                 ]}
+                                onPress={() => onValueChange(option.id)}
+                                activeOpacity={0.8}
                             >
+                                <IconComponent
+                                    size={36}
+                                    color={isSelected ? option.color : '#111'}
+                                />
+                            </TouchableOpacity>
+                            <Text style={styles.optionText} numberOfLines={2} ellipsizeMode="tail">
                                 {option.label}
                             </Text>
-                        </TouchableOpacity>
+                        </View>
                     );
                 })}
-            </View>
+            </ScrollView>
         </View>
     );
 }
@@ -60,39 +55,40 @@ export default function TrackingSection({ title, options, selectedValue, onValue
 const styles = StyleSheet.create({
     container: {
         marginBottom: 32,
+        backgroundColor: '#fff',
     },
     title: {
         fontSize: 18,
         fontFamily: 'Inter-SemiBold',
         color: '#111827',
         marginBottom: 16,
+        backgroundColor: '#fff',
     },
-    optionsContainer: {
+    optionsRow: {
         flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: 12,
+        gap: 16,
+        backgroundColor: '#fff',
+        paddingBottom: 4,
+    },
+    optionWrapper: {
+        alignItems: 'center',
+        width: 90,
+        backgroundColor: '#fff',
     },
     optionButton: {
-        flexDirection: 'row',
+        width: 90,
+        height: 90,
+        borderRadius: 16,
+        justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-        borderRadius: 12,
-        borderWidth: 2,
-        minWidth: '45%',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.05,
-        shadowRadius: 2,
-        elevation: 1,
+        backgroundColor: '#fff',
+        marginBottom: 6,
     },
     optionText: {
-        fontSize: 14,
+        fontSize: 13,
         fontFamily: 'Inter-Medium',
-        marginLeft: 8,
-        flex: 1,
+        textAlign: 'center',
+        color: '#111',
+        backgroundColor: '#fff',
     },
 });

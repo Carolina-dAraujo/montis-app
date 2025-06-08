@@ -19,14 +19,16 @@ const TabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation })
         ajuda: (props) => <FontAwesome6 name="hand-holding-medical" size={26} {...props} />,
     };
 
+    // Only show the 5 main tabs
+    const visibleRoutes = state.routes.filter(route => 
+        ['home', 'grupos', 'crise', 'agenda', 'ajuda'].includes(route.name)
+    );
+
     return (
         <View style={styles.tabbar}>
-            {state.routes.map((route, index) => {
+            {visibleRoutes.map((route, idx) => {
                 const { options } = descriptors[route.key];
-
-                if (['_sitemap', '+not_found'].includes(route.name)) return null;
-
-                const isFocused = state.index === index;
+                const isFocused = state.index === idx;
 
                 const onPress = () => {
                     const event = navigation.emit({
