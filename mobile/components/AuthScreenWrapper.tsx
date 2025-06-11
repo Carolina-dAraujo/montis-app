@@ -8,9 +8,9 @@ type AuthScreenWrapperProps = {
 };
 
 export const AuthScreenWrapper: React.FC<AuthScreenWrapperProps> = ({
-                                                                        title,
-                                                                        children,
-                                                                    }) => (
+    title,
+    children,
+}) => (
     <View style={styles.wrapper}>
         <Image
             source={require('@/mobile/assets/images/tree-leaf.png')}
