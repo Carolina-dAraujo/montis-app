@@ -1,7 +1,7 @@
-import { Tabs } from "expo-router"
 import TabBar from "components/ui/TabBar"
+import { Tabs } from "expo-router"
 
-export default () => {
+export default function TabLayout() {
     return (
         <Tabs
             screenOptions={{
