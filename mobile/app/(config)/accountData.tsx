@@ -7,6 +7,7 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import * as ImagePicker from 'expo-image-picker';
 import { BottomSheet } from '@/mobile/components/ui/BottomSheet';
 import { fieldConfig } from '@/mobile/constants/fieldConfig';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function AccountDataScreen() {
 	const router = useRouter();
@@ -122,7 +123,7 @@ export default function AccountDataScreen() {
 	};
 
 	return (
-		<Pressable style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
 				<View style={styles.headerRow}>
 					<View style={styles.backIconContainer}>
@@ -226,7 +227,7 @@ export default function AccountDataScreen() {
 					</View>
 				</View>
 			</ScrollView>
-		</Pressable>
+		</SafeAreaView>
 	);
 }
 

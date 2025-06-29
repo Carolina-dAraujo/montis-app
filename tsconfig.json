@@ -1,4 +1,7 @@
 {
-  "compilerOptions": {},
-  "extends": "expo/tsconfig.base"
+  "extends": "./mobile/tsconfig.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

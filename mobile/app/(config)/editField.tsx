@@ -7,6 +7,7 @@ import { NameInput, validateName } from '@/mobile/components/inputs/NameInput';
 import { PhoneInput, validatePhone } from '@/mobile/components/inputs/PhoneInput';
 import { EmailInput, validateEmail } from '@/mobile/components/inputs/EmailInput';
 import { PasswordInput, validatePassword } from '@/mobile/components/inputs/PasswordInput';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function EditFieldScreen() {
 	const { field, value, title, description, placeholder } = useLocalSearchParams<{
@@ -119,7 +120,7 @@ export default function EditFieldScreen() {
 	};
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
 				<View style={styles.headerRow}>
 					<View style={styles.backIconContainer}>
@@ -141,7 +142,7 @@ export default function EditFieldScreen() {
 				{renderInput()}
 				{error && <Text style={styles.errorText}>{error}</Text>}
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 }
 

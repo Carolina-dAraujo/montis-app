@@ -2,9 +2,11 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Colors } from '@/mobile/constants/Colors';
 import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function HomeHeader() {
     const router = useRouter();
+    const insets = useSafeAreaInsets();
     const currentDate = new Date();
     const day = currentDate.getDate();
     const month = currentDate.toLocaleDateString('pt-BR', { month: 'long' });
@@ -12,7 +14,7 @@ export function HomeHeader() {
     const formattedDate = `${day} de ${month}, ${year}`;
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { paddingTop: insets.top + 16 }]}>
             <Text style={styles.date}>{formattedDate}</Text>
             <Pressable
                 onPress={() => {
@@ -31,7 +33,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 20,
-        paddingVertical: 16,
+        paddingBottom: 16,
+        backgroundColor: Colors.light.background,
     },
     date: {
         fontSize: 18,

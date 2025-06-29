@@ -1,0 +1,97 @@
+import { getApiUrl } from '../config/api';
+
+const API_BASE_URL = getApiUrl();
+
+export interface RegisterRequest {
+    email: string;
+    password: string;
+}
+
+export interface LoginRequest {
+    email: string;
+    password: string;
+}
+
+export interface AuthResponse {
+    token: string;
+    user: {
+        uid: string;
+        email: string;
+        displayName?: string;
+    };
+    message: string;
+}
+
+export interface ApiError {
+    message: string;
+    code?: string;
+}
+
+class ApiService {
+    private async makeRequest<T>(
+        endpoint: string,
+        options: RequestInit = {}
+    ): Promise<T> {
+        const url = `${API_BASE_URL}${endpoint}`;
+
+        console.log('Making API request to:', url);
+
+        const defaultOptions: RequestInit = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers,
+            },
+        };
+
+        try {
+            const response = await fetch(url, {
+                ...defaultOptions,
+                ...options,
+            });
+
+            console.log('API Response status:', response.status);
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ message: 'Network error' }));
+                throw new Error(errorData.message || `HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('API Request failed:', error);
+            if (error instanceof TypeError && error.message.includes('Network request failed')) {
+                throw new Error('Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.');
+            }
+            throw error;
+        }
+    }
+
+    async register(userData: RegisterRequest): Promise<AuthResponse> {
+        return this.makeRequest<AuthResponse>('/auth/register', {
+            method: 'POST',
+            body: JSON.stringify(userData),
+        });
+    }
+
+    async login(userData: LoginRequest): Promise<AuthResponse> {
+        return this.makeRequest<AuthResponse>('/auth/login', {
+            method: 'POST',
+            body: JSON.stringify(userData),
+        });
+    }
+
+    async getPasswordRules(): Promise<{ rules: string[] }> {
+        return this.makeRequest<{ rules: string[] }>('/auth/password-rules');
+    }
+
+    async getProfile(token: string): Promise<any> {
+        return this.makeRequest('/auth/profile', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+    }
+}
+
+export const apiService = new ApiService(); 

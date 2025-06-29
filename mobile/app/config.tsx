@@ -3,12 +3,13 @@ import { ConfigCard } from '@/mobile/components/config/ConfigCard';
 import { Colors } from '@/mobile/constants/Colors';
 import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
 import { useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ConfigScreen() {
 	const router = useRouter();
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
 				<View style={styles.headerRow}>
 					<View style={styles.backIconContainer}>
@@ -42,7 +43,7 @@ export default function ConfigScreen() {
 					}}
 				/>
 			</ScrollView>
-		</View>
+		</SafeAreaView>
 	);
 }
 
