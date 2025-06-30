@@ -1,3 +1,25 @@
-node_modules
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Firebase credentials
+**/firebase-credentials.json
+
+# Expo
 .expo/
-dist/server/firebase-credentials.json
+web-build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
