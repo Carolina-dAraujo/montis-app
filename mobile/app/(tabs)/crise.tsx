@@ -1,5 +1,4 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/mobile/constants/Colors';
 import { router } from 'expo-router';
@@ -10,9 +9,9 @@ const crise = () => {
             <View style={styles.content}>
                 <Text style={styles.title}>Crise</Text>
                 <Text style={styles.subtitle}>Você está enfrentando uma crise?</Text>
-                
+
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         style={styles.button}
                         onPress={() => router.push('/(auth)/login')}
                     >

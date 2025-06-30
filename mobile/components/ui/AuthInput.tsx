@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {StyleSheet, Text, TextInput, TextInputProps, View} from 'react-native';
+import { StyleSheet, Text, TextInput, TextInputProps, View } from 'react-native';
 import { Colors } from '@/mobile/constants/Colors';
 
 interface AuthInputProps extends TextInputProps {
@@ -12,11 +12,11 @@ interface AuthInputProps extends TextInputProps {
 }
 
 export const AuthInput: React.FC<AuthInputProps> = ({
-    label, 
-    placeholder, 
-    value, 
-    onChangeText, 
-    secureTextEntry, 
+    label,
+    placeholder,
+    value,
+    onChangeText,
+    secureTextEntry,
     error,
     ...rest
 }) => {
@@ -27,7 +27,7 @@ export const AuthInput: React.FC<AuthInputProps> = ({
             <Text style={styles.label}>{label}</Text>
             <TextInput
                 style={[
-                    styles.input, 
+                    styles.input,
                     isFocused && styles.inputFocused,
                     error && styles.inputError
                 ]}

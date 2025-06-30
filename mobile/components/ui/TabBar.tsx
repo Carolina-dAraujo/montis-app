@@ -22,7 +22,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation })
     };
 
     // Only show the 5 main tabs
-    const visibleRoutes = state.routes.filter(route => 
+    const visibleRoutes = state.routes.filter(route =>
         ['home', 'grupos', 'crise', 'agenda', 'ajuda'].includes(route.name)
     );
 

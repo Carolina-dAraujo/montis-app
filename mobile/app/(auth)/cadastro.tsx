@@ -45,7 +45,7 @@ const RegisterScreen: React.FC = () => {
 
         } catch (error: any) {
             console.error('Registration error:', error);
-            
+
             // Handle specific error types
             if (error.message.includes('Email inválido')) {
                 setErrors({ email: 'Email inválido' });
@@ -107,21 +107,21 @@ const RegisterScreen: React.FC = () => {
             />
 
             <TouchableOpacity onPress={() => router.push('/(auth)/login')}>
-                <Text style={styles.linkText}>
-                    JÁ TEM UMA CONTA? <Text style={styles.linkBold}>FAZER LOGIN</Text>
-                </Text>
-            </TouchableOpacity>
+                    <Text style={styles.linkText}>
+                        JÁ TEM UMA CONTA? <Text style={styles.linkBold}>FAZER LOGIN</Text>
+                    </Text>
+                </TouchableOpacity>
 
-            <View style={styles.separatorContainer}>
-                <View style={styles.line} />
-                <Text style={styles.separatorText}>ou</Text>
-                <View style={styles.line} />
-            </View>
+                <View style={styles.separatorContainer}>
+                    <View style={styles.line} />
+                    <Text style={styles.separatorText}>ou</Text>
+                    <View style={styles.line} />
+                </View>
 
-            <GoogleLoginButton
-                title="CADASTRAR COM O GOOGLE"
-                onPress={() => console.log('Google signup')}
-            />
+                <GoogleLoginButton
+                    title="CADASTRAR COM O GOOGLE"
+                    onPress={() => console.log('Google signup')}
+                />
         </AuthScreenWrapper>
     );
 };

@@ -1,7 +1,7 @@
 {
-  "extends": "./mobile/tsconfig.json",
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+	"extends": "./mobile/tsconfig.json",
+	"include": [
+		"**/*.ts",
+		"**/*.tsx"
+	]
 }
