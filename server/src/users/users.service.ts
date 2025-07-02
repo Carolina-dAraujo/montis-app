@@ -1,8 +1,7 @@
 import { FirebaseService } from "src/firebase/firebase.service";
 import { Injectable, ConflictException, UnauthorizedException, BadRequestException } from "@nestjs/common";
-import { RegisterUserDto } from "./dtos/register-user.dto";
-import { LoginUserDto } from "./dtos/login-user.dto";
-import { AuthResponseDto } from "./dtos/auth-response.dto";
+import { RegisterUserDto, LoginUserDto, AuthResponseDto } from "./dtos/auth";
+import { UpdateProfileDto, UpdatePasswordDto } from "./dtos/profile";
 import { validatePassword } from "../common/password.validator";
 import * as firebaseAdmin from "firebase-admin";
 
@@ -10,17 +9,17 @@ import * as firebaseAdmin from "firebase-admin";
 export class UsersService {
   constructor(private readonly firebaseService: FirebaseService) { }
 
-  async registerUser(registerUser: RegisterUserDto): Promise<AuthResponseDto> {
+  async registerUser(registerUserDto: RegisterUserDto): Promise<AuthResponseDto> {
     try {
-      const passwordValidation = validatePassword(registerUser.password);
+      const passwordValidation = validatePassword(registerUserDto.password);
       if (!passwordValidation.isValid) {
         throw new BadRequestException(passwordValidation.error);
       }
 
       const userRecord = await this.firebaseService.createUser({
-        email: registerUser.email,
-        password: registerUser.password,
-        displayName: registerUser.email.split("@")[0],
+        email: registerUserDto.email,
+        password: registerUserDto.password,
+        displayName: registerUserDto.email.split("@")[0],
       });
 
       const customToken = await this.firebaseService.createCustomToken(userRecord.uid);
@@ -58,15 +57,13 @@ export class UsersService {
     }
   }
 
-  async loginUser(loginUser: LoginUserDto): Promise<AuthResponseDto> {
+  async loginUser(loginUserDto: LoginUserDto): Promise<AuthResponseDto> {
     try {
-      // First, try to sign in with email and password to validate credentials
       const signInResult = await this.firebaseService.signInWithEmailAndPassword(
-        loginUser.email,
-        loginUser.password
+        loginUserDto.email,
+        loginUserDto.password
       );
 
-      // If sign in is successful, create a custom token
       const customToken = await this.firebaseService.createCustomToken(signInResult.uid);
 
       return {
@@ -80,11 +77,11 @@ export class UsersService {
       };
     } catch (error) {
       console.error('Login error:', error);
-      
+
       // Handle specific Firebase auth errors
-      if (error.code === 'auth/user-not-found' || 
-          error.code === 'auth/wrong-password' ||
-          error.code === 'auth/invalid-email') {
+      if (error.code === 'auth/user-not-found' ||
+        error.code === 'auth/wrong-password' ||
+        error.code === 'auth/invalid-email') {
         throw new UnauthorizedException({
           message: "Email ou senha incorretos",
           code: "INVALID_CREDENTIALS"
@@ -107,5 +104,114 @@ export class UsersService {
 
   async verifyToken(token: string): Promise<firebaseAdmin.auth.DecodedIdToken> {
     return await this.firebaseService.verifyIdToken(token);
+  }
+
+  async getUserProfile(uid: string): Promise<any> {
+    try {
+      const userRecord = await this.firebaseService.getUser(uid);
+
+      return {
+        uid: userRecord.uid,
+        email: userRecord.email,
+        displayName: userRecord.displayName,
+        phoneNumber: userRecord.phoneNumber,
+      };
+    } catch (error) {
+      console.error("Get profile error:", error);
+      throw new BadRequestException("Não foi possível carregar o perfil");
+    }
+  }
+
+  async updateUserProfile(uid: string, updateData: UpdateProfileDto): Promise<any> {
+    try {
+      const updateFields: any = {};
+
+      if (updateData.displayName !== undefined) {
+        updateFields.displayName = updateData.displayName;
+      }
+
+      if (updateData.phone !== undefined) {
+        updateFields.phoneNumber = updateData.phone;
+      }
+
+      if (updateData.email !== undefined) {
+        updateFields.email = updateData.email;
+      }
+
+      const userRecord = await this.firebaseService.updateUser(uid, updateFields);
+
+      return {
+        uid: userRecord.uid,
+        email: userRecord.email,
+        displayName: userRecord.displayName,
+        phoneNumber: userRecord.phoneNumber,
+        message: "Perfil atualizado com sucesso",
+      };
+    } catch (error) {
+      console.error("UpdateUserProfile - Error details:", {
+        message: error.message,
+        code: error.code,
+        stack: error.stack,
+        response: error.response?.data
+      });
+
+      // Handle specific Firebase errors
+      if (error.code === 'auth/user-not-found') {
+        throw new BadRequestException("Usuário não encontrado");
+      }
+
+      if (error.code === 'auth/email-already-exists') {
+        throw new BadRequestException("Este email já está em uso");
+      }
+
+      if (error.code === 'auth/invalid-email') {
+        throw new BadRequestException("Email inválido");
+      }
+
+      if (error.code === 'auth/phone-number-already-exists') {
+        throw new BadRequestException("Este número de telefone já está em uso");
+      }
+
+      throw new BadRequestException("Não foi possível atualizar o perfil");
+    }
+  }
+
+  async updateUserPassword(uid: string, passwordData: UpdatePasswordDto): Promise<any> {
+    try {
+      const { currentPassword, newPassword } = passwordData;
+
+      const userRecord = await this.firebaseService.getUser(uid);
+
+      if (!userRecord.email) {
+        throw new BadRequestException("Email do usuário não encontrado");
+      }
+
+      await this.firebaseService.verifyUserCredentials(userRecord.email, currentPassword);
+
+      await this.firebaseService.updateUser(uid, { password: newPassword });
+
+      return {
+        message: "Senha atualizada com sucesso",
+      };
+    } catch (error) {
+      console.error("Update password error:", error);
+      if (error instanceof UnauthorizedException) {
+        throw new BadRequestException("Senha atual incorreta");
+      }
+      throw new BadRequestException("Não foi possível atualizar a senha");
+    }
+  }
+
+  async deleteUserAccount(uid: string): Promise<any> {
+    try {
+      await this.firebaseService.deleteUser(uid);
+
+      return {
+        message: "Conta excluída com sucesso",
+      };
+    } catch (error) {
+      console.error("Delete account error:", error);
+      throw new BadRequestException("Não foi possível excluir a conta");
+    }
   }
 }

@@ -16,7 +16,6 @@ const LoginScreen: React.FC = () => {
     const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Email validation function
     const validateEmail = (email: string): boolean => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
@@ -25,22 +24,17 @@ const LoginScreen: React.FC = () => {
     const handleLogin = async (event: GestureResponderEvent) => {
         event.preventDefault();
 
-        // Prevent multiple submissions
         if (isSubmitting || isLoading) {
-            console.log('Login - Already submitting, ignoring request');
             return;
         }
 
         setErrors({});
         setIsSubmitting(true);
-        console.log('Login - Starting login process');
 
         try {
-            // Enhanced validation
             const trimmedEmail = email.trim();
             const trimmedPassword = senha.trim();
 
-            // Email validation
             if (!trimmedEmail) {
                 setErrors({ email: 'Email é obrigatório' });
                 setIsSubmitting(false);
@@ -53,7 +47,6 @@ const LoginScreen: React.FC = () => {
                 return;
             }
 
-            // Password validation
             if (!trimmedPassword) {
                 setErrors({ password: 'Senha é obrigatória' });
                 setIsSubmitting(false);
@@ -66,14 +59,11 @@ const LoginScreen: React.FC = () => {
                 return;
             }
 
-            // Use auth context to login
             await login(trimmedEmail, trimmedPassword);
-            console.log('Login - Login successful, navigation should happen automatically');
 
         } catch (error: any) {
             console.error('Login error:', error);
 
-            // Handle specific login errors
             if (error.message.includes('Email ou senha incorretos') ||
                 error.message.includes('Invalid email or password')) {
                 Alert.alert(
@@ -109,7 +99,6 @@ const LoginScreen: React.FC = () => {
             }
         } finally {
             setIsSubmitting(false);
-            console.log('Login - Login process completed');
         }
     };
 

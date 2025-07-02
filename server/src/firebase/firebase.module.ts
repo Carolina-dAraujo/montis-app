@@ -79,9 +79,17 @@ export class FirebaseModule {
 			},
 		};
 
+		const firebaseServiceProvider = {
+			provide: FirebaseService,
+			inject: [ConfigService],
+			useFactory: (configService: ConfigService) => {
+				return new FirebaseService(configService);
+			},
+		};
+
 		return {
 			module: FirebaseModule,
-			providers: [firebaseConfigProvider, firebaseProvider, FirebaseService],
+			providers: [firebaseConfigProvider, firebaseProvider, firebaseServiceProvider],
 			exports: [firebaseConfigProvider, firebaseProvider, FirebaseService],
 		};
 	}

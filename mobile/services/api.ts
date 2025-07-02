@@ -18,8 +18,27 @@ export interface AuthResponse {
         uid: string;
         email: string;
         displayName?: string;
+        phoneNumber?: string;
     };
     message: string;
+}
+
+export interface UpdateProfileRequest {
+    displayName?: string;
+    phone?: string;
+    email?: string;
+}
+
+export interface UpdatePasswordRequest {
+    currentPassword: string;
+    newPassword: string;
+}
+
+export interface UserProfile {
+    uid: string;
+    email: string;
+    displayName?: string;
+    phoneNumber?: string;
 }
 
 export interface ApiError {
@@ -67,6 +86,20 @@ class ApiService {
         }
     }
 
+    private async makeAuthenticatedRequest<T>(
+        endpoint: string,
+        token: string,
+        options: RequestInit = {}
+    ): Promise<T> {
+        return this.makeRequest<T>(endpoint, {
+            ...options,
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                ...options.headers,
+            },
+        });
+    }
+
     async register(userData: RegisterRequest): Promise<AuthResponse> {
         return this.makeRequest<AuthResponse>('/auth/register', {
             method: 'POST',
@@ -85,11 +118,29 @@ class ApiService {
         return this.makeRequest<{ rules: string[] }>('/auth/password-rules');
     }
 
-    async getProfile(token: string): Promise<any> {
-        return this.makeRequest('/auth/profile', {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
+    async getProfile(token: string): Promise<UserProfile> {
+        return this.makeAuthenticatedRequest<UserProfile>('/auth/profile', token, {
+            method: 'GET',
+        });
+    }
+
+    async updateProfile(token: string, profileData: UpdateProfileRequest): Promise<UserProfile> {
+        return this.makeAuthenticatedRequest<UserProfile>('/auth/profile', token, {
+            method: 'PUT',
+            body: JSON.stringify(profileData),
+        });
+    }
+
+    async updatePassword(token: string, passwordData: UpdatePasswordRequest): Promise<{ message: string }> {
+        return this.makeAuthenticatedRequest<{ message: string }>('/auth/profile/password', token, {
+            method: 'PUT',
+            body: JSON.stringify(passwordData),
+        });
+    }
+
+    async deleteAccount(token: string): Promise<{ message: string }> {
+        return this.makeAuthenticatedRequest<{ message: string }>('/auth/profile', token, {
+            method: 'DELETE',
         });
     }
 }

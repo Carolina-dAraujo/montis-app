@@ -30,36 +30,28 @@ const getLocalIP = (): string => {
 
 export const getApiUrl = (): string => {
     if (__DEV__) {
-        // Development environment
-        
-        // First, check if we have a custom API URL configured (physical device)
         if (Constants.expoConfig?.extra?.apiUrl) {
             const url = Constants.expoConfig.extra.apiUrl;
             console.log('🔍 Using Physical Device URL (configured):', url);
             return url;
         }
-        
-        // If no custom URL, use platform-specific defaults
+
         if (Platform.OS === 'ios') {
-            // iOS Simulator
             const url = API_CONFIG.development.ios;
             console.log('🔍 Using iOS Simulator URL:', url);
             return url;
         } else if (Platform.OS === 'android') {
-            // Android Emulator
             const url = API_CONFIG.development.android;
             console.log('🔍 Using Android Emulator URL:', url);
             return url;
         }
-        
-        // Fallback for physical devices
+
         const localIP = getLocalIP();
         const url = `http://${localIP}:3000`;
         console.log('🔍 Using Physical Device URL (fallback):', url);
         return url;
     }
-    
-    // Production environment
+
     const url = API_CONFIG.production;
     console.log('🔍 Using Production URL:', url);
     return url;
@@ -69,7 +61,7 @@ export const getApiUrl = (): string => {
 /*
 1. For iOS Simulator: Uses localhost:3000 automatically
 2. For Android Emulator: Uses 10.0.2.2:3000 automatically
-3. For Physical Device: 
+3. For Physical Device:
    - MUST set apiUrl in app.config.js
    - Create app.config.js with: extra: { apiUrl: 'http://YOUR_IP:3000' }
    - Make sure your phone and computer are on the same WiFi network
