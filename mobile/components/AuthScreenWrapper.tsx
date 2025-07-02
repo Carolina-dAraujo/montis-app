@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/mobile/constants/Colors';
 
 type AuthScreenWrapperProps = {
@@ -11,18 +12,24 @@ export const AuthScreenWrapper: React.FC<AuthScreenWrapperProps> = ({
     title,
     children,
 }) => (
-    <View style={styles.wrapper}>
-        <Image
-            source={require('@/mobile/assets/images/tree-leaf.png')}
-            style={styles.logo}
-            resizeMode="contain"
-        />
-        <Text style={styles.title}>{title}</Text>
-        {children}
-    </View>
+    <SafeAreaView style={styles.safeArea}>
+        <View style={styles.wrapper}>
+            <Image
+                source={require('@/mobile/assets/images/tree-leaf.png')}
+                style={styles.logo}
+                resizeMode="contain"
+            />
+            <Text style={styles.title}>{title}</Text>
+            {children}
+        </View>
+    </SafeAreaView>
 );
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: Colors.light.background,
+    },
     wrapper: {
         flex: 1,
         padding: 40,
