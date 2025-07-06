@@ -2,6 +2,7 @@ import { View, Text, Pressable } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Colors } from '@/mobile/constants/Colors';
 import { styles } from './styles';
+import { useOnboarding } from '@/mobile/contexts/OnboardingContext';
 
 type Reminder = {
     id: string;
@@ -32,6 +33,14 @@ const todayReminders: Reminder[] = [
 const isDailyCheckCompleted = false;
 
 export function DailyReminders() {
+    const { onboardingData } = useOnboarding();
+    
+    // TODO: Replace with actual check from user's daily check-in data
+    const isDailyCheckCompleted = false;
+    
+    // Check if user has enabled daily reminders
+    const hasDailyReminders = onboardingData?.dailyReminders ?? false;
+
     const hasMeetings = todayReminders.some(reminder => reminder.type === 'meeting');
 
     return (
@@ -82,43 +91,42 @@ export function DailyReminders() {
                     )}
                 </View>
 
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Agenda</Text>
-                    <Pressable
-                        style={[
-                            styles.reminderButton,
-                            isDailyCheckCompleted ? styles.checkInButtonCompleted : styles.checkInButton
-                        ]}
-                        onPress={() => {
-                            // TODO: Navigate to daily check-in form or view
-                        }}
-                    >
-                        <View style={[
-                            styles.iconContainer,
-                            isDailyCheckCompleted ? styles.checkInIconCompleted : styles.checkInIcon
-                        ]}>
-                            <FontAwesome6
-                                name={isDailyCheckCompleted ? "check" : "note-sticky"}
-                                size={24}
-                                color={isDailyCheckCompleted ? Colors.containers.blue : Colors.light.background} 
-                            />
-                        </View>
-                        <View style={styles.textContainer}>
-                            <Text style={[
-                                styles.reminderTitle,
-                                isDailyCheckCompleted ? styles.checkInTitleCompleted : styles.checkInTitle
+                {hasDailyReminders && (
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Agenda</Text>
+                        <Pressable
+                            style={[
+                                styles.reminderButton,
+                                isDailyCheckCompleted ? styles.checkInButtonCompleted : styles.checkInButton
+                            ]}
+                            onPress={() => {
+                                // TODO: Navigate to daily check-in form or view
+                            }}
+                        >
+                            <View style={[
+                                styles.iconContainer,
+                                isDailyCheckCompleted ? styles.checkInIconCompleted : styles.checkInIcon
                             ]}>
-                                Registro Diário
-                            </Text>
-                            <Text style={[
-                                styles.reminderTime,
-                                isDailyCheckCompleted ? styles.checkInTimeCompleted : styles.checkInTime
-                            ]}>
-                                {isDailyCheckCompleted ? 'Completo' : 'Pendente'}
-                            </Text>
-                        </View>
-                    </Pressable>
-                </View>
+                                <FontAwesome6
+                                    name={isDailyCheckCompleted ? "check" : "note-sticky"}
+                                    size={24}
+                                    color={isDailyCheckCompleted ? Colors.containers.blue : Colors.light.background} 
+                                />
+                            </View>
+                            <View style={styles.textContainer}>
+                                <Text style={[
+                                    styles.reminderTitle,
+                                    isDailyCheckCompleted ? styles.checkInTitleCompleted : styles.checkInTitle
+                                ]}>
+                                    Registro Diário
+                                </Text>
+                                <Text style={styles.reminderTime}>
+                                    {isDailyCheckCompleted ? 'Completo' : 'Pendente'}
+                                </Text>
+                            </View>
+                        </Pressable>
+                    </View>
+                )}
             </View>
         </View>
     );

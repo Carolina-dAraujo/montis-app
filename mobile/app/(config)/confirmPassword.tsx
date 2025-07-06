@@ -4,6 +4,7 @@ import { Colors } from '@/mobile/constants/Colors';
 import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { PasswordInput } from '@/mobile/components/inputs/PasswordInput';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ConfirmPasswordScreen() {
 	const router = useRouter();
@@ -30,7 +31,7 @@ export default function ConfirmPasswordScreen() {
 	};
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
 				<View style={styles.headerRow}>
 					<View style={styles.backIconContainer}>
@@ -59,7 +60,7 @@ export default function ConfirmPasswordScreen() {
 					placeholder="Digite sua senha atual"
 				/>
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 }
 

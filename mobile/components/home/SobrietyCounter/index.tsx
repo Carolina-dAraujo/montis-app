@@ -5,12 +5,18 @@ import { MILESTONES } from './constants';
 import { getMilestone } from './utils';
 import { MilestoneItem } from './MilestoneItem';
 import { Connector } from './Connector';
+import { useOnboarding } from '@/mobile/contexts/OnboardingContext';
 
 export function SobrietyCounter() {
-	// TODO: Replace with actual sobriety date from user data
-	const sobrietyDate = new Date('2025-05-15');
+	const { onboardingData } = useOnboarding();
 	const today = new Date();
-	const days = Math.floor((today.getTime() - sobrietyDate.getTime()) / (1000 * 60 * 60 * 24));
+	
+	// Use actual sobriety date from onboarding data, or last drink date if not currently sober
+	const sobrietyDate = onboardingData?.isCurrentlySober 
+		? (onboardingData?.sobrietyStartDate ? new Date(onboardingData.sobrietyStartDate) : new Date())
+		: (onboardingData?.lastDrinkDate ? new Date(onboardingData.lastDrinkDate) : new Date());
+	
+	const days = Math.ceil(Math.abs(today.getTime() - sobrietyDate.getTime()) / (1000 * 60 * 60 * 24));
 	const currentMilestone = getMilestone(days);
 
 	return (

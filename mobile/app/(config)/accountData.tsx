@@ -7,23 +7,39 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import * as ImagePicker from 'expo-image-picker';
 import { BottomSheet } from '@/mobile/components/ui/BottomSheet';
 import { fieldConfig } from '@/mobile/constants/fieldConfig';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAuth } from '../../contexts/AuthContext';
+import { apiService } from '../../services/api';
+import { storageService } from '../../services/storage';
 
 export default function AccountDataScreen() {
 	const router = useRouter();
+	const { user, logout, updateUser } = useAuth();
 	const [profileImage, setProfileImage] = useState<string | null>(null);
 	const [showMoreOptions, setShowMoreOptions] = useState(false);
 	const scrollViewRef = useRef<ScrollView>(null);
-	const [name, setName] = useState('');
-	const [phone, setPhone] = useState('');
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		fetchUserProfile();
 	}, []);
 
 	const fetchUserProfile = async () => {
-		// TODO: Implement fetchUserProfile
+		try {
+			setIsLoading(true);
+
+			const token = await storageService.getAuthToken();
+
+			if (token) {
+				const profile = await apiService.getProfile(token);
+				await updateUser(profile);
+			}
+		} catch (error) {
+			console.error('Error fetching profile:', error);
+			Alert.alert('Erro', 'Não foi possível carregar os dados do perfil');
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const pickImage = async () => {
@@ -48,6 +64,7 @@ export default function AccountDataScreen() {
 		if (!result.canceled) {
 			setProfileImage(result.assets[0].uri);
 			// TODO: Upload image to server
+			Alert.alert('Sucesso', 'Imagem de perfil atualizada!');
 		}
 	};
 
@@ -63,9 +80,18 @@ export default function AccountDataScreen() {
 				{
 					text: 'Apagar',
 					style: 'destructive',
-					onPress: () => {
-						// TODO: Implement account deletion
-						console.log('Account deletion requested');
+					onPress: async () => {
+						try {
+							const token = await storageService.getAuthToken();
+							if (token) {
+								await apiService.deleteAccount(token);
+								await logout();
+								router.replace('/(auth)/login');
+							}
+						} catch (error) {
+							console.error('Error deleting account:', error);
+							Alert.alert('Erro', 'Não foi possível apagar a conta');
+						}
 					},
 				},
 			],
@@ -84,9 +110,9 @@ export default function AccountDataScreen() {
 				{
 					text: 'Sair',
 					style: 'destructive',
-					onPress: () => {
-						// TODO: Implement logout
-						router.replace('/login');
+					onPress: async () => {
+						await logout();
+						router.replace('/(auth)/login');
 					},
 				},
 			],
@@ -112,9 +138,9 @@ export default function AccountDataScreen() {
 			pathname: '/editField',
 			params: {
 				field,
-				value: field === 'name' ? name :
-					   field === 'phone' ? phone :
-					   field === 'email' ? email : '',
+				value: field === 'name' ? user?.displayName || '' :
+					   field === 'phone' ? user?.phoneNumber || '' :
+					   field === 'email' ? user?.email || '' : '',
 				...config,
 				secureTextEntry: config.secureTextEntry ? 'true' : 'false'
 			},
@@ -122,7 +148,7 @@ export default function AccountDataScreen() {
 	};
 
 	return (
-		<Pressable style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
 				<View style={styles.headerRow}>
 					<View style={styles.backIconContainer}>
@@ -180,7 +206,7 @@ export default function AccountDataScreen() {
 						</View>
 					</Pressable>
 					<Pressable style={styles.nameContainer} onPress={() => handleFieldPress('name')}>
-						<Text style={styles.name}>{name || 'João da Silva'}</Text>
+						<Text style={styles.name}>{user?.displayName || 'Adicionar nome'}</Text>
 						<FontAwesome6 name="edit" size={16} color={Colors.icon.gray} />
 					</Pressable>
 				</View>
@@ -193,7 +219,7 @@ export default function AccountDataScreen() {
 							onPress={() => handleFieldPress('phone')}
 						>
 							<View>
-								<Text style={styles.fieldValue}>{phone || '(00) 00000-0000'}</Text>
+								<Text style={styles.fieldValue}>{user?.phoneNumber || 'Adicionar telefone'}</Text>
 							</View>
 							<FontAwesome6 name="chevron-right" size={16} color={Colors.icon.gray} />
 						</Pressable>
@@ -206,7 +232,7 @@ export default function AccountDataScreen() {
 							onPress={() => handleFieldPress('email')}
 						>
 							<View>
-								<Text style={styles.fieldValue}>{email || 'seu@email.com'}</Text>
+								<Text style={styles.fieldValue}>{user?.email || 'seu@email.com'}</Text>
 							</View>
 							<FontAwesome6 name="chevron-right" size={16} color={Colors.icon.gray} />
 						</Pressable>
@@ -226,7 +252,7 @@ export default function AccountDataScreen() {
 					</View>
 				</View>
 			</ScrollView>
-		</Pressable>
+		</SafeAreaView>
 	);
 }
 
