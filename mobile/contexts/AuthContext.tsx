@@ -28,114 +28,119 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const checkAuthStatus = async () => {
         try {
-            // Avoid checking if already loading or authenticated
-            if (isLoading || isAuthenticated) {
-                console.log('AuthContext - Skipping checkAuthStatus, already loading or authenticated');
-                return;
-            }
-            
-            setIsLoading(true);
-            console.log('AuthContext - Starting auth status check');
-            
-            // Check if user is logged in
-            const isLoggedIn = await storageService.isLoggedIn();
-            
-            if (isLoggedIn) {
-                // Get stored user data
-                const userData = await storageService.getUserData();
-                const token = await storageService.getAuthToken();
-                
-                if (userData && token) {
-                    // Verify token with server
-                    try {
-                        const profile = await apiService.getProfile(token);
-                        setUser(userData);
-                        setIsAuthenticated(true);
-                        console.log('AuthContext - User authenticated from storage');
-                    } catch (error) {
-                        console.log('Token invalid, clearing auth data');
-                        await logout();
-                    }
-                } else {
-                    await logout();
-                }
-            } else {
+            // Get stored token
+            const token = await storageService.getAuthToken();
+
+            if (!token) {
                 setUser(null);
                 setIsAuthenticated(false);
-                console.log('AuthContext - No stored auth data found');
+                return;
             }
+
+            // Always verify with database/server
+            try {
+                const profile = await apiService.getProfile(token);
+
+                // Token is valid, user is authenticated
+                setUser(profile);
+                setIsAuthenticated(true);
+
+                // Update local storage with fresh data
+                await storageService.setUserData(profile);
+                await storageService.setAuthToken(token);
+
+                // Check onboarding status and redirect if needed
+                try {
+                    const onboardingStatus = await apiService.checkOnboardingStatus(token);
+                    
+                    if (!onboardingStatus.onboardingCompleted) {
+                        // User hasn't completed onboarding, redirect to onboarding
+                        router.replace('/onboarding/welcome' as any);
+                        return;
+                    }
+                } catch (error) {
+                    // If onboarding status check fails, assume onboarding is needed
+                    router.replace('/onboarding/welcome' as any);
+                    return;
+                }
+
+            } catch (error) {
+                // Token is invalid, clear everything
+                await logout();
+            }
+
         } catch (error) {
             console.error('Error checking auth status:', error);
             await logout();
         } finally {
             setIsLoading(false);
             setHasCheckedAuth(true);
-            console.log('AuthContext - Auth status check completed');
         }
     };
 
     const login = async (email: string, password: string) => {
         try {
             setIsLoading(true);
-            console.log('AuthContext - Starting login process');
-            
+
             const response = await apiService.login({ email, password });
-            console.log('AuthContext - Login API response received:', response.user.email);
-            
+
             // Store auth data
             await storageService.setAuthToken(response.token);
             await storageService.setUserData(response.user);
-            console.log('AuthContext - Auth data stored');
-            
-            // Update state directly without calling checkAuthStatus
+
+            // Update state
             setUser(response.user);
             setIsAuthenticated(true);
 
-            // Navigate to home screen
-            router.replace('/(tabs)/home' as any);
+            // Check onboarding status
+            try {
+                const onboardingStatus = await apiService.checkOnboardingStatus(response.token);
+                
+                if (onboardingStatus.onboardingCompleted) {
+                    // User has completed onboarding, go to home
+                    router.replace('/(tabs)/home' as any);
+                } else {
+                    // User hasn't completed onboarding, go to onboarding
+                    router.replace('/onboarding/welcome' as any);
+                }
+            } catch (error) {
+                // If onboarding status check fails, assume onboarding is needed
+                router.replace('/onboarding/welcome' as any);
+            }
         } catch (error) {
             console.error('Login error:', error);
             throw error;
         } finally {
             setIsLoading(false);
-            console.log('AuthContext - Login process completed');
         }
     };
 
     const register = async (email: string, password: string) => {
         try {
             setIsLoading(true);
-            console.log('AuthContext - Starting registration process');
-            
+
             const response = await apiService.register({ email, password });
-            console.log('AuthContext - Registration API response received:', response.user.email);
-            
-            // Store auth data
+
             await storageService.setAuthToken(response.token);
             await storageService.setUserData(response.user);
-            console.log('AuthContext - Auth data stored');
-            
-            // Update state directly without calling checkAuthStatus
+
             setUser(response.user);
             setIsAuthenticated(true);
 
-            // Navigate to home screen
-            router.replace('/(tabs)/home' as any);
+            // New users should always go to onboarding
+            router.replace('/onboarding/welcome' as any);
         } catch (error) {
             console.error('Registration error:', error);
             throw error;
         } finally {
             setIsLoading(false);
-            console.log('AuthContext - Registration process completed');
         }
     };
 
     const logout = async () => {
         try {
-            // Clear stored data
             await storageService.clearAuthData();
-            
-            // Update state
+
             setUser(null);
             setIsAuthenticated(false);
         } catch (error) {
@@ -156,10 +161,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     };
 
-    // Check auth status on app start
     useEffect(() => {
         if (!hasCheckedAuth) {
-            console.log('AuthContext - useEffect triggered, checking auth status');
             checkAuthStatus();
         }
     }, [hasCheckedAuth]);
@@ -174,13 +177,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         checkAuthStatus,
         updateUser,
     };
-
-    console.log('AuthContext - Current state:', { 
-        isAuthenticated, 
-        isLoading, 
-        userEmail: user?.email,
-        hasUser: !!user 
-    });
 
     return (
         <AuthContext.Provider value={value}>

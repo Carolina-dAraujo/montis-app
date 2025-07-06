@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, forwardRef } from 'react';
 import { TextInput, StyleSheet, View } from 'react-native';
 import { Colors } from '@/mobile/constants/Colors';
 
@@ -13,14 +13,24 @@ export const validateName = (value: string): { isValid: boolean; error?: string 
 	if (!value.trim()) {
 		return { isValid: false, error: 'Nome não pode estar vazio' };
 	}
+	if (value.trim().length < 2) {
+		return { isValid: false, error: 'Nome deve ter pelo menos 2 caracteres' };
+	}
 	return { isValid: true };
 };
 
-export const NameInput: React.FC<NameInputProps> = ({ value, onChangeText, error, placeholder }) => {
+export const NameInput = forwardRef<TextInput, NameInputProps>(({ value, onChangeText, error, placeholder }, ref) => {
+	const [isFocused, setIsFocused] = useState(false);
+
 	return (
 		<View>
 			<TextInput
-				style={[styles.input, error && styles.inputError]}
+				ref={ref}
+				style={[
+					styles.input,
+					error && styles.inputError,
+					isFocused && !error && styles.inputFocused
+				]}
 				value={value}
 				onChangeText={onChangeText}
 				placeholder={placeholder}
@@ -28,21 +38,26 @@ export const NameInput: React.FC<NameInputProps> = ({ value, onChangeText, error
 				keyboardType="default"
 				autoCapitalize="words"
 				autoCorrect={false}
-				autoFocus
+				onFocus={() => setIsFocused(true)}
+				onBlur={() => setIsFocused(false)}
 			/>
 		</View>
 	);
-};
+});
 
 const styles = StyleSheet.create({
 	input: {
 		height: 48,
 		borderWidth: 1,
-		borderColor: Colors.containers.blue,
+		borderColor: Colors.light.shadow,
 		borderRadius: 8,
 		paddingHorizontal: 16,
 		fontSize: 16,
 		color: Colors.light.text,
+		backgroundColor: Colors.light.background,
+	},
+	inputFocused: {
+		borderColor: Colors.containers.blue,
 	},
 	inputError: {
 		borderColor: '#FF3B30',

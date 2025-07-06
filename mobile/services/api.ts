@@ -41,6 +41,42 @@ export interface UserProfile {
     phoneNumber?: string;
 }
 
+export interface OnboardingRequest {
+    displayName: string;
+    phone?: string;
+    birthDate?: string;
+    sobrietyGoal: 'abstinence' | 'reduction' | 'maintenance';
+    sobrietyStartDate?: string;
+    lastDrinkDate?: string;
+    dailyReminders: boolean;
+    notificationFrequency: 'daily' | 'weekly' | 'monthly' | 'never';
+    crisisSupport: boolean;
+    shareProgress: boolean;
+}
+
+export interface PreferencesRequest {
+    dailyReminders: boolean;
+    notificationFrequency: 'daily' | 'weekly' | 'monthly' | 'never';
+    crisisSupport: boolean;
+    shareProgress: boolean;
+}
+
+export interface PermissionsRequest {
+    notifications: boolean;
+    location: boolean;
+}
+
+export interface PermissionsResponse {
+    notifications: {
+        granted: boolean;
+        canRequest: boolean;
+    };
+    location: {
+        granted: boolean;
+        canRequest: boolean;
+    };
+}
+
 export interface ApiError {
     message: string;
     code?: string;
@@ -53,12 +89,9 @@ class ApiService {
     ): Promise<T> {
         const url = `${API_BASE_URL}${endpoint}`;
 
-        console.log('Making API request to:', url);
-
         const defaultOptions: RequestInit = {
             headers: {
                 'Content-Type': 'application/json',
-                ...options.headers,
             },
         };
 
@@ -66,12 +99,15 @@ class ApiService {
             const response = await fetch(url, {
                 ...defaultOptions,
                 ...options,
+                headers: {
+                    ...defaultOptions.headers,
+                    ...options.headers,
+                },
             });
-
-            console.log('API Response status:', response.status);
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({ message: 'Network error' }));
+                console.error('API Error response:', errorData);
                 throw new Error(errorData.message || `HTTP ${response.status}`);
             }
 
@@ -142,6 +178,102 @@ class ApiService {
         return this.makeAuthenticatedRequest<{ message: string }>('/auth/profile', token, {
             method: 'DELETE',
         });
+    }
+
+    async completeOnboarding(token: string, onboardingData: OnboardingRequest): Promise<{ message: string; user: UserProfile }> {
+        try {
+            const result = await this.makeAuthenticatedRequest<{ message: string; user: UserProfile }>('/auth/onboarding', token, {
+                method: 'POST',
+                body: JSON.stringify(onboardingData),
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - completeOnboarding error:', error);
+            throw error;
+        }
+    }
+
+    async checkOnboardingStatus(token: string): Promise<{ onboardingCompleted: boolean }> {
+        try {
+            // Call a new endpoint to check onboarding status
+            const response = await this.makeAuthenticatedRequest<{ onboardingCompleted: boolean }>('/auth/onboarding/status', token, {
+                method: 'GET',
+            });
+            return response;
+        } catch (error) {
+            // If endpoint doesn't exist yet, fall back to profile check
+            try {
+                const profile = await this.getProfile(token);
+                // For now, assume if we can get a profile, onboarding is complete
+                // In the future, the profile will include an onboardingCompleted field
+                return { onboardingCompleted: true };
+            } catch (profileError) {
+                return { onboardingCompleted: false };
+            }
+        }
+    }
+
+    async testOnboarding(token: string, onboardingData: any): Promise<any> {
+        try {
+            const result = await this.makeAuthenticatedRequest<any>('/auth/onboarding/test', token, {
+                method: 'POST',
+                body: JSON.stringify(onboardingData),
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - testOnboarding error:', error);
+            throw error;
+        }
+    }
+
+    async updatePreferences(token: string, preferences: PreferencesRequest): Promise<{ message: string }> {
+        try {
+            const result = await this.makeAuthenticatedRequest<{ message: string }>('/user/preferences', token, {
+                method: 'PUT',
+                body: JSON.stringify(preferences),
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - updatePreferences error:', error);
+            throw error;
+        }
+    }
+
+    async getPreferences(token: string): Promise<PreferencesRequest> {
+        try {
+            const result = await this.makeAuthenticatedRequest<PreferencesRequest>('/user/preferences', token, {
+                method: 'GET',
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - getPreferences error:', error);
+            throw error;
+        }
+    }
+
+    async updatePermissions(token: string, permissions: PermissionsRequest): Promise<{ message: string }> {
+        try {
+            const result = await this.makeAuthenticatedRequest<{ message: string }>('/user/permissions', token, {
+                method: 'PUT',
+                body: JSON.stringify(permissions),
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - updatePermissions error:', error);
+            throw error;
+        }
+    }
+
+    async getPermissions(token: string): Promise<PermissionsResponse> {
+        try {
+            const result = await this.makeAuthenticatedRequest<PermissionsResponse>('/user/permissions', token, {
+                method: 'GET',
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - getPermissions error:', error);
+            throw error;
+        }
     }
 }
 

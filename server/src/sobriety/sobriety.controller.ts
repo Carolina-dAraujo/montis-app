@@ -3,7 +3,6 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagg
 import { SobrietyService, SobrietyData, Milestone } from "./sobriety.service";
 import { AuthGuard } from "../auth/auth.guard";
 import { CurrentUser } from "../auth/current-user.decorator";
-
 @ApiTags("Sobriety")
 @Controller("sobriety")
 @UseGuards(AuthGuard)

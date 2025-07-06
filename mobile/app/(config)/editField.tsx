@@ -136,11 +136,11 @@ export default function EditFieldScreen() {
 
 		switch (field) {
 			case 'name':
-				return <NameInput {...commonProps} />;
+				return <NameInput {...commonProps} ref={inputRef} />;
 			case 'phone':
-				return <PhoneInput {...commonProps} />;
+				return <PhoneInput {...commonProps} ref={inputRef} />;
 			case 'email':
-				return <EmailInput {...commonProps} />;
+				return <EmailInput {...commonProps} ref={inputRef} />;
 			case 'password':
 				return (
 					<PasswordInput

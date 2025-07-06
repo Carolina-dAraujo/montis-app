@@ -1,8 +1,9 @@
-import { Controller, Post, Body, HttpCode, HttpStatus, Get, UseGuards, Put, Delete } from "@nestjs/common";
+import { Controller, Post, Body, HttpCode, HttpStatus, Get, UseGuards, Put, Delete, Req } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { UsersService } from "./users.service";
 import { RegisterUserDto, LoginUserDto, AuthResponseDto } from "./dtos/auth";
 import { UpdateProfileDto, UpdatePasswordDto } from "./dtos/profile";
+import { OnboardingDto } from "./dtos/onboarding";
 import { AuthGuard } from "../auth/auth.guard";
 import { CurrentUser } from "../auth/current-user.decorator";
 import { getPasswordRules } from "../common/password.validator";
@@ -50,19 +51,12 @@ export class UsersController {
 		type: AuthResponseDto,
 	})
 	@ApiResponse({
-		status: 409,
-		description: "Registration failed (email may already exist)",
-		schema: {
-			type: "object",
-			properties: {
-				message: { type: "string", example: "Não foi possível criar a conta. Verifique os dados e tente novamente." },
-				code: { type: "string", example: "REGISTRATION_FAILED" }
-			}
-		}
+		status: 400,
+		description: "Validation error",
 	})
 	@ApiResponse({
-		status: 400,
-		description: "Validation error - password doesn't meet requirements",
+		status: 409,
+		description: "User already exists",
 	})
 	async register(@Body() registerUserDto: RegisterUserDto): Promise<AuthResponseDto> {
 		return await this.usersService.registerUser(registerUserDto);
@@ -77,18 +71,44 @@ export class UsersController {
 		type: AuthResponseDto,
 	})
 	@ApiResponse({
+		status: 400,
+		description: "Validation error",
+	})
+	@ApiResponse({
 		status: 401,
 		description: "Invalid credentials",
-		schema: {
-			type: "object",
-			properties: {
-				message: { type: "string", example: "Email ou senha incorretos" },
-				code: { type: "string", example: "INVALID_CREDENTIALS" }
-			}
-		}
 	})
 	async login(@Body() loginUserDto: LoginUserDto): Promise<AuthResponseDto> {
 		return await this.usersService.loginUser(loginUserDto);
+	}
+
+	@Post("onboarding")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
+	@ApiOperation({ summary: "Complete user onboarding" })
+	@ApiResponse({
+		status: 200,
+		description: "Onboarding completed successfully",
+	})
+	@ApiResponse({
+		status: 400,
+		description: "Validation error",
+	})
+	@ApiResponse({
+		status: 401,
+		description: "Unauthorized",
+	})
+	async completeOnboarding(@CurrentUser() user: any, @Body() onboardingData: OnboardingDto) {
+		try {
+			const result = await this.usersService.completeOnboarding(user.uid, onboardingData);
+			return {
+				message: "Onboarding concluído com sucesso",
+				user: result,
+			};
+		} catch (error) {
+			console.error("Onboarding error:", error);
+			throw new BadRequestException("Não foi possível completar o onboarding");
+		}
 	}
 
 	@Get("profile")
@@ -179,5 +199,88 @@ export class UsersController {
 	})
 	async deleteAccount(@CurrentUser() user: any) {
 		return await this.usersService.deleteUserAccount(user.uid);
+	}
+
+	@Get("onboarding/status")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
+	@ApiOperation({ summary: "Check user onboarding status" })
+	@ApiResponse({
+		status: 200,
+		description: "Onboarding status retrieved successfully",
+	})
+	@ApiResponse({
+		status: 401,
+		description: "Unauthorized",
+	})
+	async checkOnboardingStatus(@CurrentUser() user: any) {
+		try {
+			const onboardingData = await this.usersService.getOnboardingStatus(user.uid);
+			return {
+				onboardingCompleted: !!onboardingData?.onboardingCompleted,
+			};
+		} catch (error) {
+			console.error("Check onboarding status error:", error);
+			return {
+				onboardingCompleted: false,
+			};
+		}
+	}
+
+	@Get("debug/user-data")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
+	@ApiOperation({ summary: "Get all user data for debugging" })
+	@ApiResponse({
+		status: 200,
+		description: "User data retrieved successfully",
+	})
+	@ApiResponse({
+		status: 401,
+		description: "Unauthorized",
+	})
+	async getUserData(@CurrentUser() user: any) {
+		try {
+			const userData = await this.usersService.getAllUserData(user.uid);
+			return {
+				uid: user.uid,
+				data: userData,
+			};
+		} catch (error) {
+			console.error("Get user data error:", error);
+			throw new BadRequestException("Não foi possível carregar os dados do usuário");
+		}
+	}
+
+	@Post("onboarding/test")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
+	@ApiOperation({ summary: "Test onboarding data" })
+	@ApiResponse({
+		status: 200,
+		description: "Onboarding data received successfully",
+	})
+	@ApiResponse({
+		status: 400,
+		description: "Validation error",
+	})
+	@ApiResponse({
+		status: 401,
+		description: "Unauthorized",
+	})
+	async testOnboarding(@CurrentUser() user: any, @Body() onboardingData: any) {
+		try {
+			console.log('Test onboarding - User:', user.uid);
+			console.log('Test onboarding - Data received:', JSON.stringify(onboardingData, null, 2));
+			
+			return {
+				message: "Dados recebidos com sucesso",
+				receivedData: onboardingData,
+				userId: user.uid,
+			};
+		} catch (error) {
+			console.error("Test onboarding error:", error);
+			throw new BadRequestException("Erro no teste de onboarding");
+		}
 	}
 }

@@ -32,14 +32,14 @@ export default function ConfigScreen() {
 					icon="screwdriver-wrench"
 					title="Preferências"
 					onPress={() => {
-						// TODO: Navigate to preferences
+						router.push('/(config)/preferences');
 					}}
 				/>
 				<ConfigCard
 					icon="unlock"
 					title="Permissões"
 					onPress={() => {
-						// TODO: Navigate to permissions
+						router.push('/(config)/permissions');
 					}}
 				/>
 			</ScrollView>

@@ -101,7 +101,6 @@ export default function TrackingScreen() {
             ...prev,
             [selectedDate.toDateString()]: tracking,
         }));
-        console.log('Saving tracking data:', tracking);
     };
 
     const weekDays = getCurrentWeekDays(selectedDate);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, forwardRef } from 'react';
 import { TextInput, StyleSheet, View } from 'react-native';
 import { Colors } from '@/mobile/constants/Colors';
 
@@ -31,32 +31,44 @@ export const validatePhone = (value: string): { isValid: boolean; error?: string
 	return { isValid: true };
 };
 
-export const PhoneInput: React.FC<PhoneInputProps> = ({ value, onChangeText, error, placeholder }) => {
+export const PhoneInput = forwardRef<TextInput, PhoneInputProps>(({ value, onChangeText, error, placeholder }, ref) => {
+	const [isFocused, setIsFocused] = useState(false);
+
 	return (
 		<View>
 			<TextInput
-				style={[styles.input, error && styles.inputError]}
+				ref={ref}
+				style={[
+					styles.input,
+					error && styles.inputError,
+					isFocused && !error && styles.inputFocused
+				]}
 				value={value}
 				onChangeText={(text) => onChangeText(formatPhoneNumber(text))}
 				placeholder={placeholder}
 				placeholderTextColor={Colors.icon.gray}
 				keyboardType="phone-pad"
 				maxLength={15}
-				autoFocus
+				onFocus={() => setIsFocused(true)}
+				onBlur={() => setIsFocused(false)}
 			/>
 		</View>
 	);
-};
+});
 
 const styles = StyleSheet.create({
 	input: {
 		height: 48,
 		borderWidth: 1,
-		borderColor: Colors.containers.blue,
+		borderColor: Colors.light.shadow,
 		borderRadius: 8,
 		paddingHorizontal: 16,
 		fontSize: 16,
 		color: Colors.light.text,
+		backgroundColor: Colors.light.background,
+	},
+	inputFocused: {
+		borderColor: Colors.containers.blue,
 	},
 	inputError: {
 		borderColor: '#FF3B30',

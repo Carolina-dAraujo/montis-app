@@ -9,6 +9,7 @@ import axios from "axios";
 @Injectable()
 export class FirebaseService implements OnModuleInit {
 	private firebaseApp: firebaseAdmin.app.App;
+	private database: firebaseAdmin.database.Database;
 
 	constructor(private configService: ConfigService) {}
 
@@ -16,10 +17,14 @@ export class FirebaseService implements OnModuleInit {
 		if (!firebaseAdmin.apps.length) {
 			this.firebaseApp = firebaseAdmin.initializeApp({
 				credential: firebaseAdmin.credential.applicationDefault(),
+				databaseURL: "https://montis-892b4-default-rtdb.firebaseio.com"
 			});
 		} else {
 			this.firebaseApp = firebaseAdmin.app();
 		}
+		
+		// Initialize Realtime Database
+		this.database = this.firebaseApp.database();
 	}
 
 	async createUser(props: CreateRequest): Promise<UserRecord> {
@@ -175,5 +180,80 @@ export class FirebaseService implements OnModuleInit {
 			console.error('Token exchange error:', error.response?.data || error.message);
 			throw new UnauthorizedException("Invalid custom token");
 		}
+	}
+
+	// Realtime Database Methods
+	async saveUserData(uid: string, data: any, path: string = ''): Promise<void> {
+		try {
+			const ref = this.database.ref(`users/${uid}${path ? '/' + path : ''}`);
+			await ref.set(data);
+			console.log(`FirebaseService - Saved user data for ${uid} at path: ${path}`);
+		} catch (error) {
+			console.error('FirebaseService - Save user data error:', error);
+			throw error;
+		}
+	}
+
+	async getUserData(uid: string, path: string = ''): Promise<any> {
+		try {
+			const ref = this.database.ref(`users/${uid}${path ? '/' + path : ''}`);
+			const snapshot = await ref.once('value');
+			const data = snapshot.val();
+			console.log(`FirebaseService - Retrieved user data for ${uid} at path: ${path}`);
+			return data;
+		} catch (error) {
+			console.error('FirebaseService - Get user data error:', error);
+			throw error;
+		}
+	}
+
+	async updateUserData(uid: string, data: any, path: string = ''): Promise<void> {
+		try {
+			const ref = this.database.ref(`users/${uid}${path ? '/' + path : ''}`);
+			await ref.update(data);
+			console.log(`FirebaseService - Updated user data for ${uid} at path: ${path}`);
+		} catch (error) {
+			console.error('FirebaseService - Update user data error:', error);
+			throw error;
+		}
+	}
+
+	async deleteUserData(uid: string, path: string = ''): Promise<void> {
+		try {
+			const ref = this.database.ref(`users/${uid}${path ? '/' + path : ''}`);
+			await ref.remove();
+			console.log(`FirebaseService - Deleted user data for ${uid} at path: ${path}`);
+		} catch (error) {
+			console.error('FirebaseService - Delete user data error:', error);
+			throw error;
+		}
+	}
+
+	async saveOnboardingData(uid: string, onboardingData: any): Promise<void> {
+		await this.saveUserData(uid, {
+			...onboardingData,
+			onboardingCompleted: true,
+			onboardingCompletedAt: new Date().toISOString(),
+		}, 'onboarding');
+	}
+
+	async getOnboardingData(uid: string): Promise<any> {
+		return await this.getUserData(uid, 'onboarding');
+	}
+
+	async saveSobrietyData(uid: string, sobrietyData: any): Promise<void> {
+		await this.saveUserData(uid, sobrietyData, 'sobriety');
+	}
+
+	async getSobrietyData(uid: string): Promise<any> {
+		return await this.getUserData(uid, 'sobriety');
+	}
+
+	async savePreferences(uid: string, preferences: any): Promise<void> {
+		await this.saveUserData(uid, preferences, 'preferences');
+	}
+
+	async getPreferences(uid: string): Promise<any> {
+		return await this.getUserData(uid, 'preferences');
 	}
 }

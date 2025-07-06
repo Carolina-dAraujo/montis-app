@@ -2,6 +2,7 @@ import { FirebaseService } from "src/firebase/firebase.service";
 import { Injectable, ConflictException, UnauthorizedException, BadRequestException } from "@nestjs/common";
 import { RegisterUserDto, LoginUserDto, AuthResponseDto } from "./dtos/auth";
 import { UpdateProfileDto, UpdatePasswordDto } from "./dtos/profile";
+import { OnboardingDto } from "./dtos/onboarding";
 import { validatePassword } from "../common/password.validator";
 import * as firebaseAdmin from "firebase-admin";
 
@@ -59,47 +60,124 @@ export class UsersService {
 
   async loginUser(loginUserDto: LoginUserDto): Promise<AuthResponseDto> {
     try {
-      const signInResult = await this.firebaseService.signInWithEmailAndPassword(
+      const userRecord = await this.firebaseService.signInWithEmailAndPassword(
         loginUserDto.email,
         loginUserDto.password
       );
 
-      const customToken = await this.firebaseService.createCustomToken(signInResult.uid);
+      const customToken = await this.firebaseService.createCustomToken(userRecord.uid);
 
       return {
         token: customToken,
         user: {
-          uid: signInResult.uid,
-          email: signInResult.email || "",
-          displayName: signInResult.displayName,
+          uid: userRecord.uid,
+          email: userRecord.email || "",
+          displayName: userRecord.displayName,
         },
         message: "Login realizado com sucesso",
       };
     } catch (error) {
-      console.error('Login error:', error);
-
-      // Handle specific Firebase auth errors
-      if (error.code === 'auth/user-not-found' ||
-        error.code === 'auth/wrong-password' ||
-        error.code === 'auth/invalid-email') {
-        throw new UnauthorizedException({
-          message: "Email ou senha incorretos",
-          code: "INVALID_CREDENTIALS"
-        });
-      }
-
-      if (error.code === 'auth/too-many-requests') {
-        throw new UnauthorizedException({
-          message: "Muitas tentativas de login. Tente novamente em alguns minutos.",
-          code: "TOO_MANY_ATTEMPTS"
-        });
-      }
-
-      throw new UnauthorizedException({
-        message: "Email ou senha incorretos",
-        code: "INVALID_CREDENTIALS"
-      });
+      console.error("Login error:", error);
+      throw new UnauthorizedException("Email ou senha incorretos");
     }
+  }
+
+  async completeOnboarding(uid: string, onboardingData: OnboardingDto): Promise<any> {
+    try {
+      // Update user profile with onboarding data
+      const updateFields: any = {
+        displayName: onboardingData.displayName,
+      };
+
+      // Note: We'll skip updating phone number in Firebase Auth for now
+      // since it requires E.164 format and we're storing it in the database anyway
+      // if (onboardingData.phone) {
+      //   updateFields.phoneNumber = onboardingData.phone;
+      // }
+
+      // Update user in Firebase Auth
+      const userRecord = await this.firebaseService.updateUser(uid, updateFields);
+
+      // Store onboarding preferences in Firebase Realtime Database
+      const onboardingPreferences: any = {
+        birthDate: onboardingData.birthDate,
+        sobrietyGoal: onboardingData.sobrietyGoal,
+        lastDrinkDate: onboardingData.lastDrinkDate,
+        dailyReminders: onboardingData.dailyReminders,
+        notificationFrequency: onboardingData.notificationFrequency,
+        crisisSupport: onboardingData.crisisSupport,
+        shareProgress: onboardingData.shareProgress,
+        onboardingCompleted: true,
+        onboardingCompletedAt: new Date().toISOString(),
+      };
+
+      // Add phone number to preferences (stored in database, not Firebase Auth)
+      if (onboardingData.phone) {
+        onboardingPreferences.phone = onboardingData.phone;
+      }
+
+      // Only add sobrietyStartDate if it exists
+      if (onboardingData.sobrietyStartDate) {
+        onboardingPreferences.sobrietyStartDate = onboardingData.sobrietyStartDate;
+      }
+
+      // Only add emergency contact info if they exist
+      if (onboardingData.emergencyContactName) {
+        onboardingPreferences.emergencyContactName = onboardingData.emergencyContactName;
+      }
+
+      if (onboardingData.emergencyContactPhone) {
+        onboardingPreferences.emergencyContactPhone = onboardingData.emergencyContactPhone;
+      }
+
+      // Clean undefined values from the data
+      const cleanOnboardingPreferences = this.removeUndefinedValues(onboardingPreferences);
+
+      // Save to Realtime Database
+      await this.firebaseService.saveOnboardingData(uid, cleanOnboardingPreferences);
+
+      // Also save initial sobriety data
+      const sobrietyData: any = {
+        userId: uid,
+        lastDrinkDate: onboardingData.lastDrinkDate,
+        currentStreak: 0,
+        totalDays: 0,
+        milestones: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      // Only add startDate if sobrietyStartDate exists
+      if (onboardingData.sobrietyStartDate) {
+        sobrietyData.startDate = onboardingData.sobrietyStartDate;
+      }
+
+      const cleanSobrietyData = this.removeUndefinedValues(sobrietyData);
+      await this.firebaseService.saveSobrietyData(uid, cleanSobrietyData);
+
+      return {
+        uid: userRecord.uid,
+        email: userRecord.email,
+        displayName: userRecord.displayName,
+        phoneNumber: userRecord.phoneNumber,
+        onboardingCompleted: true,
+        preferences: cleanOnboardingPreferences,
+        sobrietyData: cleanSobrietyData,
+      };
+    } catch (error) {
+      console.error("Complete onboarding error:", error);
+      throw new BadRequestException("Não foi possível completar o onboarding");
+    }
+  }
+
+  private removeUndefinedValues(obj: any): any {
+    const cleaned: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+      if (value !== undefined && value !== null) {
+        cleaned[key] = value;
+      }
+    }
+    return cleaned;
   }
 
   async verifyToken(token: string): Promise<firebaseAdmin.auth.DecodedIdToken> {
@@ -212,6 +290,26 @@ export class UsersService {
     } catch (error) {
       console.error("Delete account error:", error);
       throw new BadRequestException("Não foi possível excluir a conta");
+    }
+  }
+
+  async getOnboardingStatus(uid: string): Promise<any> {
+    try {
+      const onboardingData = await this.firebaseService.getOnboardingData(uid);
+      return onboardingData;
+    } catch (error) {
+      console.error("Get onboarding status error:", error);
+      return null;
+    }
+  }
+
+  async getAllUserData(uid: string): Promise<any> {
+    try {
+      const userData = await this.firebaseService.getUserData(uid);
+      return userData;
+    } catch (error) {
+      console.error("Get all user data error:", error);
+      return null;
     }
   }
 }

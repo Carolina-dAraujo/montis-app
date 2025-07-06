@@ -27,7 +27,9 @@ export default function AccountDataScreen() {
 	const fetchUserProfile = async () => {
 		try {
 			setIsLoading(true);
+
 			const token = await storageService.getAuthToken();
+
 			if (token) {
 				const profile = await apiService.getProfile(token);
 				await updateUser(profile);
