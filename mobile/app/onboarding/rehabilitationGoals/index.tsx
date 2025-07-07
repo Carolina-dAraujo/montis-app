@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,9 +6,9 @@ import { Colors } from '@/mobile/constants/Colors';
 import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
 import { useOnboarding } from '@/mobile/contexts/OnboardingContext';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { styles as welcomeButtonStyles } from '@/mobile/app/onboarding/welcome/styles';
-import { styles } from './styles';
-import { rehabilitationGoals } from './constants';
+import { styles as welcomeButtonStyles } from 'app/onboarding/welcome/_styles';
+import { styles } from './_styles';
+import { rehabilitationGoals } from './_constants';
 
 export default function RehabilitationGoalsScreen() {
 	const router = useRouter();

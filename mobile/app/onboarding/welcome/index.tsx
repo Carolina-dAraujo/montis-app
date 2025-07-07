@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { View, Text, Pressable, Animated } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { styles } from './styles';
-import { FEATURES, WELCOME_TEXT, INTRO_TEXT } from './constants';
+import { styles } from './_styles';
+import { FEATURES, WELCOME_TEXT, INTRO_TEXT } from './_constants';
 
 export default function WelcomeScreen() {
 	const router = useRouter();
 	const [showContent, setShowContent] = useState(false);
 	const [showWhiteTransition, setShowWhiteTransition] = useState(false);
-	const contentFadeAnim = React.useRef(new Animated.Value(0)).current;
-	const welcomeFadeAnim = React.useRef(new Animated.Value(1)).current;
+	const contentFadeAnim = useRef(new Animated.Value(0)).current;
+	const welcomeFadeAnim = useRef(new Animated.Value(1)).current;
 
 	const handleGetStarted = () => {
-		router.push('/onboarding/personal-info');
+		router.push('/onboarding/personalInfo');
 	};
 
 	useEffect(() => {

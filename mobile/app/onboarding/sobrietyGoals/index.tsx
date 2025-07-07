@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,15 +6,15 @@ import { Colors } from '@/mobile/constants/Colors';
 import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
 import { useOnboarding, SobrietyGoal } from '@/mobile/contexts/OnboardingContext';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { styles as welcomeButtonStyles } from '@/mobile/app/onboarding/welcome/styles';
-import { styles } from './styles';
-import { goalOptions } from './constants';
+import { styles as welcomeButtonStyles } from 'app/onboarding/welcome/_styles';
+import { styles } from './_styles';
+import { goalOptions } from './_constants';
 
 export default function SobrietyGoalsScreen() {
 	const router = useRouter();
 	const { onboardingData, updateOnboardingData } = useOnboarding();
 	const [selectedGoal, setSelectedGoal] = useState<SobrietyGoal | undefined>(
-		onboardingData.sobrietyGoal
+		onboardingData.sobrietyGoal as SobrietyGoal ?? SobrietyGoal.ABSTINENCE
 	);
 
 	const handleNext = () => {
@@ -24,7 +24,7 @@ export default function SobrietyGoalsScreen() {
 			sobrietyGoal: selectedGoal
 		});
 
-		router.push('/onboarding/rehabilitation-goals');
+		router.push('/onboarding/rehabilitationGoals');
 	};
 
 	const handleBack = () => {

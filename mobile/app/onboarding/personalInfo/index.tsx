@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { styles } from './styles';
+import { styles } from './_styles';
 import { NameInput, validateName } from '@/mobile/components/inputs/NameInput';
 import { PhoneInput, validatePhone } from '@/mobile/components/inputs/PhoneInput';
 import { CustomDateInput } from '@/mobile/components/inputs/CustomDateInput';
 import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
 import { useOnboarding } from '@/mobile/contexts/OnboardingContext';
-import { styles as welcomeButtonStyles } from '../welcome/styles';
+import { useAuth } from '@/mobile/contexts/AuthContext';
+import { styles as welcomeButtonStyles } from '../welcome/_styles';
 
 export default function PersonalInfoScreen() {
 	const router = useRouter();
 	const { onboardingData, updateOnboardingData } = useOnboarding();
+	const { updateUserFromOnboarding } = useAuth();
 	const [name, setName] = useState(onboardingData.displayName || '');
 	const [phone, setPhone] = useState(onboardingData.phone || '');
 	const [birthDate, setBirthDate] = useState<Date | null>(
@@ -40,13 +42,16 @@ export default function PersonalInfoScreen() {
 			return;
 		}
 
-		updateOnboardingData({
+		const userData = {
 			displayName: name,
 			phone: phone || undefined,
 			birthDate: birthDate?.toISOString(),
-		});
+		};
 
-		router.push('/onboarding/sobriety-status');
+		updateOnboardingData(userData);
+		updateUserFromOnboarding(userData);
+
+		router.push('/onboarding/sobrietyStatus');
 	};
 
 	const handleBack = () => {

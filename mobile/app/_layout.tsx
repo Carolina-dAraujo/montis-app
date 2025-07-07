@@ -13,11 +13,11 @@ const StackLayout = () => {
                     <Stack.Screen name="(auth)/login" />
                     <Stack.Screen name="tracking/[date]" />
                     <Stack.Screen name="onboarding/welcome" />
-                    <Stack.Screen name="onboarding/personal-info" />
-                    <Stack.Screen name="onboarding/sobriety-status" />
-                    <Stack.Screen name="onboarding/sobriety-timeline" />
-                    <Stack.Screen name="onboarding/sobriety-goals" />
-                    <Stack.Screen name="onboarding/rehabilitation-goals" />
+                    <Stack.Screen name="onboarding/personalInfo" />
+                    <Stack.Screen name="onboarding/sobrietyStatus" />
+                    <Stack.Screen name="onboarding/sobrietyTimeline" />
+                    <Stack.Screen name="onboarding/sobrietyGoals" />
+                    <Stack.Screen name="onboarding/rehabilitationGoals" />
                     <Stack.Screen name="onboarding/preferences" />
                     <Stack.Screen name="onboarding/completion" />
                 </Stack>

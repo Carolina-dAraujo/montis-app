@@ -11,10 +11,19 @@ export function SobrietyCounter() {
 	const { onboardingData } = useOnboarding();
 	const today = new Date();
 	
-	// Use actual sobriety date from onboarding data, or last drink date if not currently sober
-	const sobrietyDate = onboardingData?.isCurrentlySober 
-		? (onboardingData?.sobrietyStartDate ? new Date(onboardingData.sobrietyStartDate) : new Date())
-		: (onboardingData?.lastDrinkDate ? new Date(onboardingData.lastDrinkDate) : new Date());
+	// Determine which date to use for calculation
+	let sobrietyDate: Date;
+	
+	if (onboardingData?.sobrietyStartDate) {
+		// User is currently sober and has a start date
+		sobrietyDate = new Date(onboardingData.sobrietyStartDate);
+	} else if (onboardingData?.lastDrinkDate) {
+		// User is not currently sober, use last drink date
+		sobrietyDate = new Date(onboardingData.lastDrinkDate);
+	} else {
+		// Fallback to today if no dates available
+		sobrietyDate = today;
+	}
 	
 	const days = Math.ceil(Math.abs(today.getTime() - sobrietyDate.getTime()) / (1000 * 60 * 60 * 24));
 	const currentMilestone = getMilestone(days);

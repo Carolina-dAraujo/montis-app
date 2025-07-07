@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
 import { useOnboarding } from '@/mobile/contexts/OnboardingContext';
-import { styles as welcomeButtonStyles } from '@/mobile/app/onboarding/welcome/styles';
-import { styles } from './styles';
+import { styles as welcomeButtonStyles } from 'app/onboarding/welcome/_styles';
+import { styles } from './_styles';
 import { CustomDateInput } from '@/mobile/components/inputs/CustomDateInput';
 
 export default function SobrietyTimelineScreen() {
@@ -37,7 +37,7 @@ export default function SobrietyTimelineScreen() {
 			lastDrinkDate: lastDrinkDate?.toISOString(),
 		});
 
-		router.push('/onboarding/sobriety-goals');
+		router.push('/onboarding/sobrietyGoals');
 	};
 
 	const handleBack = () => {

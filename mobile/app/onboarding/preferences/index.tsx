@@ -7,15 +7,15 @@ import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
 import { useOnboarding, NotificationFrequency } from '@/mobile/contexts/OnboardingContext';
 import { styles as welcomeButtonStyles } from '@/mobile/components/onboarding/styles';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { styles } from './styles';
-import { notificationOptions } from './constants';
+import { styles } from './_styles';
+import { notificationOptions } from './_constants';
 
 export default function PreferencesScreen() {
 	const router = useRouter();
 	const { onboardingData, updateOnboardingData } = useOnboarding();
 	const [dailyReminders, setDailyReminders] = useState(onboardingData.dailyReminders ?? true);
 	const [notificationFrequency, setNotificationFrequency] = useState<NotificationFrequency>(
-		onboardingData.notificationFrequency ?? NotificationFrequency.DAILY
+		onboardingData.notificationFrequency as NotificationFrequency ?? NotificationFrequency.DAILY
 	);
 	const [crisisSupport, setCrisisSupport] = useState(onboardingData.crisisSupport ?? true);
 	const [shareProgress, setShareProgress] = useState(onboardingData.shareProgress ?? false);

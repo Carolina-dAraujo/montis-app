@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import * as SecureStore from 'expo-secure-store';
+import { apiService } from '../services/api';
+import { storageService } from '../services/storage';
 
 export enum SobrietyGoal {
 	ABSTINENCE = 'abstinence',
@@ -19,11 +21,11 @@ export interface OnboardingData {
 	phone?: string;
 	birthDate?: string;
 	isCurrentlySober?: boolean;
-	sobrietyGoal?: SobrietyGoal;
+	sobrietyGoal?: 'abstinence' | 'reduction' | 'maintenance';
 	sobrietyStartDate?: string;
 	lastDrinkDate?: string;
 	dailyReminders?: boolean;
-	notificationFrequency?: NotificationFrequency;
+	notificationFrequency?: 'daily' | 'weekly' | 'monthly' | 'never';
 	crisisSupport?: boolean;
 	shareProgress?: boolean;
 	emergencyContactName?: string;
@@ -56,6 +58,19 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
 				if (storedData) {
 					const parsedData = JSON.parse(storedData);
 					setOnboardingData(parsedData);
+				} else {
+					// Try to load from database if local storage is empty
+					try {
+						const token = await storageService.getAuthToken();
+						if (token) {
+							const dbData = await apiService.getOnboardingData(token);
+							setOnboardingData(dbData);
+							// Save to local storage for future use
+							await SecureStore.setItemAsync(ONBOARDING_DATA_KEY, JSON.stringify(dbData));
+						}
+					} catch (dbError) {
+						// Silently handle database loading errors
+					}
 				}
 			} catch (error) {
 				console.error('OnboardingContext - Error loading data:', error);

@@ -303,6 +303,16 @@ export class UsersService {
     }
   }
 
+  async getOnboardingData(uid: string): Promise<any> {
+    try {
+      const onboardingData = await this.firebaseService.getOnboardingData(uid);
+      return onboardingData;
+    } catch (error) {
+      console.error("Get onboarding data error:", error);
+      return null;
+    }
+  }
+
   async getAllUserData(uid: string): Promise<any> {
     try {
       const userData = await this.firebaseService.getUserData(uid);

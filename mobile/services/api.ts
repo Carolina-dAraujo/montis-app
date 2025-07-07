@@ -213,6 +213,18 @@ class ApiService {
         }
     }
 
+    async getOnboardingData(token: string): Promise<OnboardingRequest> {
+        try {
+            const result = await this.makeAuthenticatedRequest<OnboardingRequest>('/auth/onboarding', token, {
+                method: 'GET',
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - getOnboardingData error:', error);
+            throw error;
+        }
+    }
+
     async testOnboarding(token: string, onboardingData: any): Promise<any> {
         try {
             const result = await this.makeAuthenticatedRequest<any>('/auth/onboarding/test', token, {

@@ -3,15 +3,17 @@ import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/mobile/constants/Colors';
 import { useOnboarding } from '@/mobile/contexts/OnboardingContext';
+import { useAuth } from '@/mobile/contexts/AuthContext';
 import { apiService, OnboardingRequest } from '@/mobile/services/api';
 import { storageService } from '@/mobile/services/storage';
-import { styles as welcomeButtonStyles } from '../welcome/styles';
+import { styles as welcomeButtonStyles } from '../welcome/_styles';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { styles } from './styles'
+import { styles } from './_styles'
 
 export default function CompletionScreen() {
 	const router = useRouter();
 	const { onboardingData, clearOnboardingData } = useOnboarding();
+	const { updateUser } = useAuth();
 
 	const handleCompleteOnboarding = async () => {
 		try {
@@ -63,7 +65,13 @@ export default function CompletionScreen() {
 
 			await apiService.completeOnboarding(token, onboardingPayload as OnboardingRequest);
 
-			clearOnboardingData();
+			// Don't clear onboarding data - we need it for the sobriety counter
+			// clearOnboardingData();
+
+			// Update user profile with display name
+			if (onboardingData.displayName) {
+				updateUser({ displayName: onboardingData.displayName });
+			}
 
 			router.replace('/(tabs)/home');
 		} catch (error) {

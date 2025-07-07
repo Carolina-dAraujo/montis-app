@@ -227,6 +227,28 @@ export class UsersController {
 		}
 	}
 
+	@Get("onboarding")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
+	@ApiOperation({ summary: "Get user onboarding data" })
+	@ApiResponse({
+		status: 200,
+		description: "Onboarding data retrieved successfully",
+	})
+	@ApiResponse({
+		status: 401,
+		description: "Unauthorized",
+	})
+	async getOnboardingData(@CurrentUser() user: any) {
+		try {
+			const onboardingData = await this.usersService.getOnboardingData(user.uid);
+			return onboardingData;
+		} catch (error) {
+			console.error("Get onboarding data error:", error);
+			throw new BadRequestException("Não foi possível carregar os dados de onboarding");
+		}
+	}
+
 	@Get("debug/user-data")
 	@UseGuards(AuthGuard)
 	@ApiBearerAuth()

@@ -21,4 +21,4 @@ export const notificationOptions = [
 		title: 'Nunca',
 		description: 'Não receber lembretes',
 	},
-]; 
+];

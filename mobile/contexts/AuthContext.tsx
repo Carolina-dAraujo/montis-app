@@ -12,6 +12,7 @@ interface AuthContextType {
     logout: () => Promise<void>;
     checkAuthStatus: () => Promise<void>;
     updateUser: (userData: Partial<StoredUserData>) => Promise<void>;
+    updateUserFromOnboarding: (onboardingData: any) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -161,6 +162,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     };
 
+    const updateUserFromOnboarding = async (onboardingData: any) => {
+        try {
+            if (user && onboardingData.displayName) {
+                const updatedUser = { ...user, displayName: onboardingData.displayName };
+                await storageService.updateUserData({ displayName: onboardingData.displayName });
+                setUser(updatedUser);
+            }
+        } catch (error) {
+            console.error('Update user from onboarding error:', error);
+            throw error;
+        }
+    };
+
     useEffect(() => {
         if (!hasCheckedAuth) {
             checkAuthStatus();
@@ -176,6 +190,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         logout,
         checkAuthStatus,
         updateUser,
+        updateUserFromOnboarding,
     };
 
     return (

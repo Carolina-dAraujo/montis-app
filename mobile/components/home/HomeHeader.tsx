@@ -10,6 +10,7 @@ export function HomeHeader() {
     const insets = useSafeAreaInsets();
     const { user } = useAuth();
     const currentDate = new Date();
+    
     const day = currentDate.getDate();
     const month = currentDate.toLocaleDateString('pt-BR', { month: 'long' });
     const year = currentDate.getFullYear();
