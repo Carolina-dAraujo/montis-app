@@ -252,7 +252,9 @@ export default function GroupDetailScreen() {
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
-				<ChevronLeft onPress={() => router.back()} style={styles.backButton} />
+				<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+					<ChevronLeft size={24} color={Colors.icon.gray} />
+				</TouchableOpacity>
 				<Text style={styles.headerTitle}>{group.groupName}</Text>
 				<View style={styles.headerSpacer} />
 				<TouchableOpacity
@@ -362,7 +364,7 @@ const styles = StyleSheet.create({
 		paddingTop: 16,
 	},
 	backButton: {
-		padding: 8,
+		paddingRight: 8,
 	},
 	headerTitle: {
 		fontSize: 18,

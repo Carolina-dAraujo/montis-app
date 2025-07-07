@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import { Colors } from '@/mobile/constants/Colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
+import { ChevronLeft } from 'lucide-react-native';
 import { apiService } from '@/mobile/services/api';
 import { storageService } from '@/mobile/services/storage';
 
@@ -56,7 +56,6 @@ export default function AAServicesScreen() {
 	const [userGroups, setUserGroups] = useState<Array<{ groupId: string }>>([]);
 	const [loadingGroups, setLoadingGroups] = useState(true);
 
-	// Load user groups on component mount
 	React.useEffect(() => {
 		loadUserGroups();
 	}, []);
@@ -136,19 +135,16 @@ export default function AAServicesScreen() {
 				return;
 			}
 
-			// Only save the groupId and notificationsEnabled to the database
 			const groupData = {
 				groupId: service.id,
-				notificationsEnabled: true, // Default to enabled
+				notificationsEnabled: true,
 			};
 
 			const result = await apiService.addAAGroup(token, groupData);
 			console.log('Group added successfully:', result);
 
-			// Update local state to reflect the new group
 			setUserGroups(prev => [...prev, { groupId: service.id }]);
 
-			// Show success feedback
 			Alert.alert(
 				'Grupo Adicionado!',
 				`"${service.name}" foi adicionado aos seus grupos com sucesso.`,
@@ -175,12 +171,9 @@ export default function AAServicesScreen() {
 	};
 
 	const parseScheduleToMeetingSchedules = (schedule: string): Array<{ day: string; time: string; enabled: boolean }> => {
-		// This is a simple parser - you might want to make it more sophisticated
-		// based on your actual schedule format
 		const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 		const schedules: Array<{ day: string; time: string; enabled: boolean }> = [];
 
-		// For now, we'll create a basic schedule based on common patterns
 		if (schedule.toLowerCase().includes('segunda') || schedule.toLowerCase().includes('monday')) {
 			schedules.push({ day: 'monday', time: '19:00', enabled: true });
 		}
@@ -203,7 +196,6 @@ export default function AAServicesScreen() {
 			schedules.push({ day: 'sunday', time: '19:00', enabled: true });
 		}
 
-		// If no specific days found, add a default schedule
 		if (schedules.length === 0) {
 			schedules.push({ day: 'monday', time: '19:00', enabled: true });
 		}
@@ -215,7 +207,9 @@ export default function AAServicesScreen() {
 		<SafeAreaView style={[styles.container, { paddingTop: insets.top }]}>
 			<View style={styles.header}>
 				<View style={styles.headerRow}>
-					<ChevronLeft onPress={() => router.back()} />
+					<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+					<ChevronLeft size={24} color={Colors.icon.gray} />
+				</TouchableOpacity>
 					<View style={styles.titleContainer}>
 						<Image
 							source={require('@/mobile/assets/images/aa.png')}
@@ -343,11 +337,15 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		paddingBottom: 16,
+		paddingHorizontal: 20,
 	},
 	headerRow: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		gap: 8,
+	},
+	backButton: {
+		paddingRight: 8,
+		paddingVertical: 8,
 	},
 	title: {
 		fontSize: 20,

@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import { View, Text, ScrollView, Pressable, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/mobile/constants/Colors';
-import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
+import { ChevronLeft } from 'lucide-react-native';
 import { useOnboarding } from '@/mobile/contexts/OnboardingContext';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { styles as welcomeButtonStyles } from 'app/onboarding/welcome/_styles';
@@ -50,7 +50,9 @@ export default function RehabilitationGoalsScreen() {
 			<View style={styles.header}>
 				<View style={styles.headerRow}>
 					<View style={styles.backIconContainer}>
-						<ChevronLeft onPress={handleBack} />
+						<TouchableOpacity style={styles.backButton} onPress={handleBack}>
+					<ChevronLeft size={24} color={Colors.icon.gray} />
+				</TouchableOpacity>
 					</View>
 					<View style={styles.titleContainer}>
 						<Text style={styles.title}>Quais são suas prioridades?</Text>

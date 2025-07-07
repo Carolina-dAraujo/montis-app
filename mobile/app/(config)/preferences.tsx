@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Switch, Alert, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Switch, Alert, Pressable, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/mobile/constants/Colors';
-import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
+import { ChevronLeft } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { NotificationFrequency } from '@/mobile/contexts/OnboardingContext';
 import { usePreferences } from '@/mobile/hooks/usePreferences';
@@ -67,7 +67,9 @@ export default function PreferencesScreen() {
 			<View style={styles.header}>
 				<View style={styles.headerRow}>
 					<View style={styles.backIconContainer}>
-						<ChevronLeft onPress={() => router.back()} />
+						<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+					<ChevronLeft size={24} color={Colors.icon.gray} />
+				</TouchableOpacity>
 					</View>
 					<View style={styles.titleContainer}>
 						<Text style={styles.title}>Preferências</Text>
@@ -257,6 +259,9 @@ const styles = StyleSheet.create({
 	},
 	backIconContainer: {
 		paddingTop: 8,
+	},
+	backButton: {
+		padding: 8,
 	},
 	titleContainer: {
 		paddingTop: 8,

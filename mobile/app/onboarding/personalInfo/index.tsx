@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import { View, Text, ScrollView, Pressable, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './_styles';
 import { NameInput, validateName } from '@/mobile/components/inputs/NameInput';
 import { PhoneInput, validatePhone } from '@/mobile/components/inputs/PhoneInput';
 import { CustomDateInput } from '@/mobile/components/inputs/CustomDateInput';
-import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
+import { ChevronLeft } from 'lucide-react-native';
 import { useOnboarding } from '@/mobile/contexts/OnboardingContext';
 import { useAuth } from '@/mobile/contexts/AuthContext';
+import { Colors } from '@/mobile/constants/Colors';
 import { styles as welcomeButtonStyles } from '../welcome/_styles';
 
 export default function PersonalInfoScreen() {
@@ -68,7 +69,9 @@ export default function PersonalInfoScreen() {
 			<View style={styles.header}>
 				<View style={styles.headerRow}>
 					<View style={styles.backIconContainer}>
-						<ChevronLeft onPress={handleBack} />
+						<TouchableOpacity style={styles.backButton} onPress={handleBack}>
+					<ChevronLeft size={24} color={Colors.icon.gray} />
+				</TouchableOpacity>
 					</View>
 					<View style={styles.titleContainer}>
 						<Text style={styles.title}>Informações pessoais</Text>

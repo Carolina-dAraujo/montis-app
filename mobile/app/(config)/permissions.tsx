@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, Alert, Switch } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Alert, Switch, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/mobile/constants/Colors';
-import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
+import { ChevronLeft } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import * as Notifications from 'expo-notifications';
@@ -140,7 +140,9 @@ export default function PermissionsScreen() {
 			<View style={styles.header}>
 				<View style={styles.headerRow}>
 					<View style={styles.backIconContainer}>
-						<ChevronLeft onPress={() => router.back()} />
+						<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+					<ChevronLeft size={24} color={Colors.icon.gray} />
+				</TouchableOpacity>
 					</View>
 					<View style={styles.titleContainer}>
 						<Text style={styles.title}>Permissões</Text>
@@ -281,6 +283,9 @@ const styles = StyleSheet.create({
 	},
 	backIconContainer: {
 		paddingTop: 8,
+	},
+	backButton: {
+		padding: 8,
 	},
 	titleContainer: {
 		paddingTop: 8,
