@@ -18,12 +18,11 @@ const TabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation })
         grupos: (props) => <FontAwesome6 name="users" size={26} {...props} />,
         crise: (props) => <Foundation name="alert" size={30} {...props} />,
         agenda: (props) => <FontAwesome6 name="calendar-days" size={26} {...props} />,
-        ajuda: (props) => <FontAwesome6 name="hand-holding-medical" size={26} {...props} />,
+        services: (props) => <FontAwesome6 name="hand-holding-medical" size={26} {...props} />,
     };
 
-    // Only show the 5 main tabs
     const visibleRoutes = state.routes.filter(route =>
-        ['home', 'grupos', 'crise', 'agenda', 'ajuda'].includes(route.name)
+        ['home', 'grupos', 'crise', 'agenda', 'services'].includes(route.name)
     );
 
     return (

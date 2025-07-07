@@ -20,6 +20,8 @@ const StackLayout = () => {
                     <Stack.Screen name="onboarding/rehabilitationGoals" />
                     <Stack.Screen name="onboarding/preferences" />
                     <Stack.Screen name="onboarding/completion" />
+                    <Stack.Screen name="services/aa" />
+                    <Stack.Screen name="services/caps" />
                 </Stack>
             </OnboardingProvider>
         </AuthProvider>

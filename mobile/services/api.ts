@@ -127,6 +127,8 @@ class ApiService {
         token: string,
         options: RequestInit = {}
     ): Promise<T> {
+        // For now, we'll use the token as-is since the server should handle both custom and ID tokens
+        // In a production app, you'd want to exchange custom tokens for ID tokens here
         return this.makeRequest<T>(endpoint, {
             ...options,
             headers: {
@@ -284,6 +286,75 @@ class ApiService {
             return result;
         } catch (error) {
             console.error('API Service - getPermissions error:', error);
+            throw error;
+        }
+    }
+
+    async addAAGroup(token: string, groupData: {
+        groupId: string;
+        notificationsEnabled: boolean;
+    }): Promise<{
+        message: string;
+        groupId: string;
+        addedAt: string;
+    }> {
+        try {
+            const result = await this.makeAuthenticatedRequest<any>('/groups/add-aa-group', token, {
+                method: 'POST',
+                body: JSON.stringify(groupData),
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - addAAGroup error:', error);
+            throw error;
+        }
+    }
+
+    async getUserGroups(token: string): Promise<Array<{
+        groupId: string;
+        groupName: string;
+        type: string;
+        address: string;
+        phone: string;
+        schedule: string;
+        distance: string;
+        meetingSchedules: Array<{ day: string; time: string; enabled: boolean }>;
+        notificationsEnabled: boolean;
+        addedAt: string;
+    }>> {
+        try {
+            const result = await this.makeAuthenticatedRequest<any>('/groups/user-groups', token, {
+                method: 'GET',
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - getUserGroups error:', error);
+            throw error;
+        }
+    }
+
+    async updateGroupNotifications(token: string, groupId: string, notificationsEnabled: boolean): Promise<{ message: string }> {
+        try {
+            const result = await this.makeAuthenticatedRequest<{ message: string }>(`/groups/group/${groupId}/notifications`, token, {
+                method: 'PUT',
+                body: JSON.stringify({ notificationsEnabled }),
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - updateGroupNotifications error:', error);
+            throw error;
+        }
+    }
+
+    async updateMeetingSchedules(token: string, groupId: string, meetingSchedules: Array<{ day: string; time: string; enabled: boolean }>): Promise<{ message: string }> {
+        try {
+            const result = await this.makeAuthenticatedRequest<{ message: string }>(`/groups/group/${groupId}/schedules`, token, {
+                method: 'PUT',
+                body: JSON.stringify({ meetingSchedules }),
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - updateMeetingSchedules error:', error);
             throw error;
         }
     }

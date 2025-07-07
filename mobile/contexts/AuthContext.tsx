@@ -203,7 +203,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 export const useAuth = (): AuthContextType => {
     const context = useContext(AuthContext);
     if (context === undefined) {
-        throw new Error('useAuth must be used within an AuthProvider');
+        return {
+            user: null,
+            isLoading: true,
+            isAuthenticated: false,
+            login: async () => { throw new Error('Auth not initialized'); },
+            register: async () => { throw new Error('Auth not initialized'); },
+            logout: async () => { throw new Error('Auth not initialized'); },
+            checkAuthStatus: async () => { throw new Error('Auth not initialized'); },
+            updateUser: async () => { throw new Error('Auth not initialized'); },
+            updateUserFromOnboarding: async () => { throw new Error('Auth not initialized'); },
+        };
     }
     return context;
-}; 
+};

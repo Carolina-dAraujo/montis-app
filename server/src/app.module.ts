@@ -6,6 +6,7 @@ import { AuthModule } from "./auth/auth.module";
 import { UsersModule } from "./users/users.module";
 import { SobrietyModule } from "./sobriety/sobriety.module";
 import { PreferencesModule } from "./preferences/preferences.module";
+import { GroupsModule } from "./groups/groups.module";
 import { ConfigModule } from "@nestjs/config";
 
 @Module({
@@ -18,6 +19,7 @@ import { ConfigModule } from "@nestjs/config";
     UsersModule,
     SobrietyModule,
     PreferencesModule,
+    GroupsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
