@@ -365,7 +365,6 @@ class ApiService {
     async getAllAAGroups(): Promise<any[]> {
         try {
             const result = await this.makeRequest<any[]>('/groups/all-aa-groups');
-            console.log('[API DEBUG] getAllAAGroups result:', result);
             return result;
         } catch (error) {
             throw error;
