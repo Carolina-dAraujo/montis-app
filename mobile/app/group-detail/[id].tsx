@@ -188,11 +188,16 @@ export default function GroupDetailScreen() {
 							<MaterialCommunityIcons name="map-marker" size={18} color={Colors.containers.blue} />
 							<Text style={styles.infoTitle}>Localização</Text>
 						</View>
-						<Text style={styles.infoContent}>{group.address.street}, {group.address.number || 'S/N'}</Text>
-						<View style={styles.infoMeta}>
+						{group.address.street && (
+							<Text style={styles.infoContent}>{group.address.street}, {group.address.number || 'S/N'}</Text>
+						)}
+						{group.address.city && (
+							<Text style={styles.infoContent}>{group.address.city} - {group.address.state}</Text>
+						)}
+						{/* <View style={styles.infoMeta}>
 							<MaterialCommunityIcons name="map-marker-distance" size={14} color={Colors.icon.gray} />
 							<Text style={styles.infoMetaText}>{group.address.neighborhood}</Text>
-						</View>
+						</View> */}
 					</View>
 
 					{group.link && (
@@ -214,6 +219,8 @@ export default function GroupDetailScreen() {
 						{weekDays.map((day) => {
 							const schedule = group.schedule[day.key];
 							const isEnabled = schedule?.length > 0;
+
+							if (!schedule) return null;
 
 							return (
 								<View key={day.key} style={styles.scheduleItem}>
