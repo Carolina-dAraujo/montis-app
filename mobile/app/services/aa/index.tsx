@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, ScrollView, TextInput, Image, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, ScrollView, TextInput, Image, ActivityIndicator, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/mobile/constants/Colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { ChevronLeft } from 'lucide-react-native';
 import { apiService } from '@/mobile/services/api';
+import { storageService } from '@/mobile/services/storage';
 
 interface AAGroup {
 	id: string;
@@ -41,9 +42,12 @@ export default function AAGroupsScreen() {
 	const [selectedFilter, setSelectedFilter] = useState<'all' | 'online' | 'in-person'>('all');
 	const [aaGroups, setAAGroups] = useState<AAGroup[]>([]);
 	const [loadingAAGroups, setLoadingAAGroups] = useState(true);
+	const [userGroups, setUserGroups] = useState<string[]>([]); // store groupIds
+	const [addingGroupId, setAddingGroupId] = useState<string | null>(null);
 
 	useEffect(() => {
 		loadAAGroups();
+		loadUserGroups();
 	}, []);
 
 	const loadAAGroups = async () => {
@@ -56,6 +60,38 @@ export default function AAGroupsScreen() {
 			setAAGroups([]);
 		} finally {
 			setLoadingAAGroups(false);
+		}
+	};
+
+	const loadUserGroups = async () => {
+		try {
+			const token = await storageService.getAuthToken();
+			if (!token) return;
+			const groups = await apiService.getUserGroups(token);
+			setUserGroups(groups.map((g: any) => String(g.groupId ?? g.id ?? g.group_id)));
+		} catch (error) {
+			console.error('Error loading user groups:', error);
+			setUserGroups([]);
+		}
+	};
+
+	const handleAddGroup = async (groupId: string) => {
+		try {
+			setAddingGroupId(groupId);
+			const token = await storageService.getAuthToken();
+			if (!token) throw new Error('Usuário não autenticado');
+
+			await apiService.addAAGroup(token, { groupId, notificationsEnabled: false });
+
+			setUserGroups(prev => [...prev, groupId]);
+			Alert.alert('Sucesso', 'Adicionado aos seus grupos');
+
+			router.push('/groups');
+		} catch (error: any) {
+			console.error('Erro ao adicionar grupo:', error);
+			Alert.alert('Erro', error.message || 'Não foi possível adicionar o grupo');
+		} finally {
+			setAddingGroupId(null);
 		}
 	};
 
@@ -137,49 +173,61 @@ export default function AAGroupsScreen() {
 						<ActivityIndicator size="large" color={Colors.containers.blue} />
 						<Text style={styles.loadingText}>Carregando grupos de apoio...</Text>
 					</View>
-				) : filteredGroups.map((group) => (
-					<View key={group.id} style={styles.serviceCard}>
-						<View style={styles.serviceHeader}>
-							<Text style={styles.serviceName}>{group.name}</Text>
-							<View style={styles.headerActions}>
-								<View style={[styles.typeBadge, { backgroundColor: group.online ? '#007AFF' : '#34C759' }]}>
-									<MaterialCommunityIcons
-										name={group.online ? 'monitor' : 'account-group'}
-										size={12}
-										color="#FFFFFF"
-									/>
-									<Text style={styles.typeText}>{group.online ? 'Online' : 'Presencial'}</Text>
-								</View>
-							</View>
-						</View>
-						<View>
-							<View style={styles.infoRow}>
-								<MaterialCommunityIcons name="map-marker" size={16} color={Colors.icon.gray} />
-								<Text style={styles.infoText}>{group.address.split('#')[0]}</Text>
-							</View>
-							<View style={styles.infoRow}>
-								<MaterialCommunityIcons name="city" size={16} color={Colors.icon.gray} />
-								<Text style={styles.infoText}>{group.city} - {group.neighborhood}</Text>
-							</View>
-							{group.phone && group.phone.trim() !== '' && (
-								<View style={styles.infoRow}>
-									<MaterialCommunityIcons name="phone" size={16} color={Colors.icon.gray} />
-									<Text style={styles.infoText}>{group.phone}</Text>
-								</View>
-							)}
-							{weekDays.map(day => {
-								const meeting = group[day.key as keyof AAGroup] as null | { start: string; end: string };
-								if (!meeting) return null;
-								return (
-									<View key={day.key} style={styles.infoRow}>
-										<MaterialCommunityIcons name="calendar" size={16} color={Colors.icon.gray} />
-										<Text style={styles.infoText}>{day.label}: {meeting.start} às {meeting.end}</Text>
+				) : filteredGroups.map((group) => {
+					const alreadyAdded = userGroups.includes(String(group.id));
+					return (
+						<View key={group.id} style={styles.serviceCard}>
+							<View style={styles.serviceHeader}>
+								<Text style={styles.serviceName}>{group.name}</Text>
+								<View style={styles.headerActions}>
+									<View style={[styles.typeBadge, { backgroundColor: group.online ? '#007AFF' : '#34C759' }]}> 
+										<MaterialCommunityIcons
+											name={group.online ? 'monitor' : 'account-group'}
+											size={12}
+											color="#FFFFFF"
+										/>
+										<Text style={styles.typeText}>{group.online ? 'Online' : 'Presencial'}</Text>
 									</View>
-								);
-							})}
+									{!alreadyAdded && (
+										<TouchableOpacity
+											style={{ marginLeft: 12, padding: 6, borderRadius: 16, backgroundColor: Colors.containers.blue }}
+											onPress={() => handleAddGroup(group.id)}
+											disabled={addingGroupId === group.id}
+										>
+											<MaterialCommunityIcons name="plus" size={18} color="#fff" />
+										</TouchableOpacity>
+									)}
+								</View>
+							</View>
+							<View>
+								<View style={styles.infoRow}>
+									<MaterialCommunityIcons name="map-marker" size={16} color={Colors.icon.gray} />
+									<Text style={styles.infoText}>{group.address.split('#')[0]}</Text>
+								</View>
+								<View style={styles.infoRow}>
+									<MaterialCommunityIcons name="city" size={16} color={Colors.icon.gray} />
+									<Text style={styles.infoText}>{group.city} - {group.neighborhood}</Text>
+								</View>
+								{group.phone && group.phone.trim() !== '' && (
+									<View style={styles.infoRow}>
+										<MaterialCommunityIcons name="phone" size={16} color={Colors.icon.gray} />
+										<Text style={styles.infoText}>{group.phone}</Text>
+									</View>
+								)}
+								{weekDays.map(day => {
+									const meeting = group[day.key as keyof AAGroup] as null | { start: string; end: string };
+									if (!meeting) return null;
+									return (
+										<View key={day.key} style={styles.infoRow}>
+											<MaterialCommunityIcons name="calendar" size={16} color={Colors.icon.gray} />
+											<Text style={styles.infoText}>{day.label}: {meeting.start} às {meeting.end}</Text>
+										</View>
+									);
+								})}
+							</View>
 						</View>
-					</View>
-				))}
+					);
+				})}
 			</ScrollView>
 		</SafeAreaView>
 	);

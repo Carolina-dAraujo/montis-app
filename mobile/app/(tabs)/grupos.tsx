@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import {
 	View,
 	Text,
@@ -14,7 +14,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { apiService } from '@/mobile/services/api';
 import { storageService } from '@/mobile/services/storage';
 import { useAuth } from '@/mobile/contexts/AuthContext';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { useUserGroups } from '@/mobile/hooks/useUserGroups';
 
 interface MeetingSchedule {
@@ -58,12 +58,17 @@ export default function GruposScreen() {
 		handleNotificationToggle,
 	} = useUserGroups();
 
+	useFocusEffect(
+		useCallback(() => {
+			reloadGroups();
+		}, [reloadGroups])
+	);
+
 	const fadeAnim = useRef(new Animated.Value(0)).current;
 	const scaleAnim = useRef(new Animated.Value(0.8)).current;
 	const dot1Anim = useRef(new Animated.Value(0.3)).current;
 	const dot2Anim = useRef(new Animated.Value(0.6)).current;
 	const dot3Anim = useRef(new Animated.Value(1)).current;
-
 	useEffect(() => {
 		if (loading) {
 			Animated.parallel([
@@ -261,13 +266,13 @@ export default function GruposScreen() {
 							<View style={styles.cardContent}>
 								<View style={styles.mainInfo}>
 									<View style={styles.groupHeader}>
-										<Text style={styles.groupName}>{group.groupName}</Text>
+										<Text style={styles.groupName}>{group.groupName || (group as any)['name']}</Text>
 										<View style={styles.distanceInfo}>
 											<MaterialCommunityIcons name="map-marker-distance" size={12} color={Colors.icon.gray} />
 											<Text style={styles.distanceText}>{group.distance}</Text>
 										</View>
 									</View>
-									<Text style={styles.groupAddress}>{group.address}</Text>
+									<Text style={styles.groupAddress}>{group.address || (group as any)['local']}</Text>
 								</View>
 
 								<View style={styles.cardActions}>
@@ -279,7 +284,9 @@ export default function GruposScreen() {
 										/>
 										<Text style={styles.typeText}>
 											{group.type === 'online' ? 'Online' :
-												group.type === 'in-person' ? 'Presencial' : 'Híbrido'}
+												group.type === 'in-person' ? 'Presencial' :
+												group.type === 'hybrid' ? 'Híbrido' :
+												(group.type || 'Híbrido')}
 										</Text>
 									</View>
 
@@ -332,9 +339,9 @@ const styles = StyleSheet.create({
 		color: Colors.icon.gray,
 	},
 	content: {
-		flex: 1,
 		paddingHorizontal: 20,
 		paddingTop: 16,
+		paddingBottom: 100,
 	},
 	loadingContainer: {
 		flex: 1,

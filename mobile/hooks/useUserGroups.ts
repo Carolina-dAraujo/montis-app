@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { apiService } from '../services/api';
+import { storageService } from '../services/storage';
 
 export interface MeetingSchedule {
   day: string;
@@ -31,8 +32,29 @@ export function useUserGroups() {
     setLoading(true);
     setError(null);
     try {
-      const aaGroups = await apiService.getAllAAGroups();
-      setGroups(aaGroups);
+      const token = await storageService.getAuthToken();
+      if (!token) throw new Error('Usuário não autenticado');
+      // Busca todos os grupos disponíveis
+      const allAAGroups = await apiService.getAllAAGroups();
+      // Busca os grupos do usuário
+      const userGroups = await apiService.getUserGroups(token);
+      // Faz merge dos dados completos
+      const mergedGroups = userGroups.map((userGroup: any) => {
+        // Tenta encontrar o grupo completo usando todos os campos possíveis de ID
+        const userGroupId = String(userGroup.groupId ?? userGroup.id ?? userGroup.group_id);
+        const full = allAAGroups.find((g: any) => String(g.id ?? g.groupId ?? g.group_id) === userGroupId);
+        return {
+          ...userGroup,
+          groupName: full?.name || userGroup.groupName || userGroup.name || '',
+          address: full?.address || userGroup.address || '',
+          city: full?.city || userGroup.city || '',
+          neighborhood: full?.neighborhood || userGroup.neighborhood || '',
+          online: typeof full?.online === 'boolean' ? full.online : (userGroup.online ?? false),
+          // outros campos do full, mas só se full existir
+          ...(full ? full : {}),
+        };
+      });
+      setGroups(mergedGroups);
     } catch (err) {
       setError('Erro ao carregar grupos');
       setGroups([]);
