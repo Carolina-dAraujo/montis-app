@@ -91,7 +91,7 @@ export default function PreferencesScreen() {
 								/>
 							</View>
 							<View style={styles.textContainer}>
-								<Text style={styles.preferenceTitle}>Lembretes Diários</Text>
+								<Text style={styles.preferenceTitle}>Lembretes diários</Text>
 								<Text style={styles.preferenceDescription}>
 									Receba lembretes para fazer seu registro diário
 								</Text>
@@ -124,7 +124,7 @@ export default function PreferencesScreen() {
 								<Text style={[
 									styles.preferenceTitle,
 									!preferences.dailyReminders && styles.disabledText
-								]}>Frequência dos Lembretes</Text>
+								]}>Frequência dos lembretes</Text>
 								<Text style={[
 									styles.preferenceDescription,
 									!preferences.dailyReminders && styles.disabledText
@@ -197,7 +197,7 @@ export default function PreferencesScreen() {
 								/>
 							</View>
 							<View style={styles.textContainer}>
-								<Text style={styles.preferenceTitle}>Suporte em Crise</Text>
+								<Text style={styles.preferenceTitle}>Suporte em crise</Text>
 								<Text style={styles.preferenceDescription}>
 									Receba notificações de suporte quando necessário
 								</Text>
@@ -213,7 +213,7 @@ export default function PreferencesScreen() {
 				</View>
 
 				<View style={styles.section}>
-					<Text style={styles.sectionTitle}>Privacity</Text>
+					<Text style={styles.sectionTitle}>Privacidade</Text>
 
 					<View style={styles.preferenceItem}>
 						<View style={styles.preferenceInfo}>
@@ -225,7 +225,7 @@ export default function PreferencesScreen() {
 								/>
 							</View>
 							<View style={styles.textContainer}>
-								<Text style={styles.preferenceTitle}>Compartilhar Progresso</Text>
+								<Text style={styles.preferenceTitle}>Compartilhar progresso</Text>
 								<Text style={styles.preferenceDescription}>
 									Permitir que outros vejam seu progresso
 								</Text>

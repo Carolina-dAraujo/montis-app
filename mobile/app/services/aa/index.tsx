@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, ScrollView, TextInput, Image, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, ScrollView, TextInput, Image, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/mobile/constants/Colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { ChevronLeft } from 'lucide-react-native';
 import { apiService } from '@/mobile/services/api';
-import { storageService } from '@/mobile/services/storage';
 
 interface AAGroup {
 	id: string;
@@ -134,7 +133,10 @@ export default function AAGroupsScreen() {
 
 			<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
 				{loadingAAGroups ? (
-					<Text style={{ textAlign: 'center', marginTop: 32 }}>Carregando grupos...</Text>
+					<View style={styles.loadingContainer}>
+						<ActivityIndicator size="large" color={Colors.containers.blue} />
+						<Text style={styles.loadingText}>Carregando grupos de apoio...</Text>
+					</View>
 				) : filteredGroups.map((group) => (
 					<View key={group.id} style={styles.serviceCard}>
 						<View style={styles.serviceHeader}>
@@ -314,5 +316,16 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		color: Colors.light.text,
 		marginLeft: 8,
+	},
+	loadingContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginTop: 40,
+	},
+	loadingText: {
+		marginTop: 12,
+		fontSize: 16,
+		color: Colors.light.text,
 	},
 });
