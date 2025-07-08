@@ -56,7 +56,6 @@ export default function AAGroupsScreen() {
 			const groups = await apiService.getAllAAGroups();
 			setAAGroups(groups);
 		} catch (error) {
-			console.error('Error loading AA groups:', error);
 			setAAGroups([]);
 		} finally {
 			setLoadingAAGroups(false);
