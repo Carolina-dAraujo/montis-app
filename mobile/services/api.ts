@@ -52,6 +52,9 @@ export interface OnboardingRequest {
     notificationFrequency: 'daily' | 'weekly' | 'monthly' | 'never';
     crisisSupport: boolean;
     shareProgress: boolean;
+    address?: string;
+    city?: string;
+    neighborhood?: string;
 }
 
 export interface PreferencesRequest {
@@ -83,11 +86,17 @@ export interface ApiError {
 }
 
 class ApiService {
+    baseUrl: string;
+
+    constructor() {
+        this.baseUrl = API_BASE_URL;
+    }
+
     private async makeRequest<T>(
         endpoint: string,
         options: RequestInit = {}
     ): Promise<T> {
-        const url = `${API_BASE_URL}${endpoint}`;
+        const url = `${this.baseUrl}${endpoint}`;
 
         const defaultOptions: RequestInit = {
             headers: {
@@ -105,16 +114,16 @@ class ApiService {
                 },
             });
 
+
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({ message: 'Network error' }));
-                console.error('API Error response:', errorData);
                 throw new Error(errorData.message || `HTTP ${response.status}`);
             }
 
             const data = await response.json();
             return data;
         } catch (error) {
-            console.error('API Request failed:', error);
+            console.error('[API DEBUG] Request failed:', error);
             if (error instanceof TypeError && error.message.includes('Network request failed')) {
                 throw new Error('Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.');
             }
@@ -127,8 +136,6 @@ class ApiService {
         token: string,
         options: RequestInit = {}
     ): Promise<T> {
-        // For now, we'll use the token as-is since the server should handle both custom and ID tokens
-        // In a production app, you'd want to exchange custom tokens for ID tokens here
         return this.makeRequest<T>(endpoint, {
             ...options,
             headers: {
@@ -197,17 +204,13 @@ class ApiService {
 
     async checkOnboardingStatus(token: string): Promise<{ onboardingCompleted: boolean }> {
         try {
-            // Call a new endpoint to check onboarding status
             const response = await this.makeAuthenticatedRequest<{ onboardingCompleted: boolean }>('/auth/onboarding/status', token, {
                 method: 'GET',
             });
             return response;
         } catch (error) {
-            // If endpoint doesn't exist yet, fall back to profile check
             try {
                 const profile = await this.getProfile(token);
-                // For now, assume if we can get a profile, onboarding is complete
-                // In the future, the profile will include an onboardingCompleted field
                 return { onboardingCompleted: true };
             } catch (profileError) {
                 return { onboardingCompleted: false };
@@ -358,6 +361,23 @@ class ApiService {
             throw error;
         }
     }
+
+    async getAllAAGroups(): Promise<any[]> {
+        try {
+            const result = await this.makeRequest<any[]>('/groups/all-aa-groups');
+            console.log('[API DEBUG] getAllAAGroups result:', result);
+            return result;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async addUserGroup(token: string, groupId: string, notificationsEnabled = false): Promise<any> {
+        return this.makeAuthenticatedRequest('/groups/add-aa-group', token, {
+            method: 'POST',
+            body: JSON.stringify({ groupId, notificationsEnabled }),
+        });
+    }
 }
 
-export const apiService = new ApiService(); 
+export const apiService = new ApiService();

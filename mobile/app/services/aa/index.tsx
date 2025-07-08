@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, ScrollView, TextInput, Image, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/mobile/constants/Colors';
@@ -8,208 +8,77 @@ import { ChevronLeft } from 'lucide-react-native';
 import { apiService } from '@/mobile/services/api';
 import { storageService } from '@/mobile/services/storage';
 
-interface AAService {
+interface AAGroup {
 	id: string;
 	name: string;
 	address: string;
-	phone: string;
-	schedule: string;
-	type: 'online' | 'in-person' | 'hybrid';
-	distance: string;
+	city: string;
+	neighborhood: string;
+	online: boolean;
+	monday: null | { start: string; end: string };
+	tuesday: null | { start: string; end: string };
+	wednesday: null | { start: string; end: string };
+	thursday: null | { start: string; end: string };
+	friday: null | { start: string; end: string };
+	saturday: null | { start: string; end: string };
+	sunday: null | { start: string; end: string };
+	phone?: string;
 }
 
-const aaServices: AAService[] = [
-	{
-		id: '1',
-		name: 'Grupo AA Liberdade',
-		address: 'Rua das Flores, 123 - Centro',
-		phone: '(11) 9999-8888',
-		schedule: 'Segunda, Quarta, Sexta - 19:00',
-		type: 'in-person',
-		distance: '0.5 km',
-	},
-	{
-		id: '2',
-		name: 'Grupo AA Esperança',
-		address: 'Av. Paulista, 456 - Bela Vista',
-		phone: '(11) 8888-7777',
-		schedule: 'Terça, Quinta, Sábado - 20:00',
-		type: 'hybrid',
-		distance: '1.2 km',
-	},
-	{
-		id: '3',
-		name: 'Grupo AA Nova Vida',
-		address: 'Rua Augusta, 789 - Consolação',
-		phone: '(11) 7777-6666',
-		schedule: 'Domingo - 18:00',
-		type: 'online',
-		distance: '2.1 km',
-	},
+const weekDays = [
+	{ key: 'monday', label: 'Segunda' },
+	{ key: 'tuesday', label: 'Terça' },
+	{ key: 'wednesday', label: 'Quarta' },
+	{ key: 'thursday', label: 'Quinta' },
+	{ key: 'friday', label: 'Sexta' },
+	{ key: 'saturday', label: 'Sábado' },
+	{ key: 'sunday', label: 'Domingo' },
 ];
 
-export default function AAServicesScreen() {
+export default function AAGroupsScreen() {
 	const router = useRouter();
 	const insets = useSafeAreaInsets();
 	const [searchQuery, setSearchQuery] = useState('');
-	const [selectedFilter, setSelectedFilter] = useState<'all' | 'online' | 'in-person' | 'hybrid'>('all');
-	const [userGroups, setUserGroups] = useState<Array<{ groupId: string }>>([]);
-	const [loadingGroups, setLoadingGroups] = useState(true);
+	const [selectedFilter, setSelectedFilter] = useState<'all' | 'online' | 'in-person'>('all');
+	const [aaGroups, setAAGroups] = useState<AAGroup[]>([]);
+	const [loadingAAGroups, setLoadingAAGroups] = useState(true);
 
-	React.useEffect(() => {
-		loadUserGroups();
+	useEffect(() => {
+		loadAAGroups();
 	}, []);
 
-	const loadUserGroups = async () => {
+	const loadAAGroups = async () => {
+		setLoadingAAGroups(true);
 		try {
-			const token = await storageService.getAuthToken();
-			if (!token) {
-				console.error('No auth token available');
-				return;
-			}
-
-			const groups = await apiService.getUserGroups(token);
-			setUserGroups(groups.map(group => ({ groupId: group.groupId })));
+			const groups = await apiService.getAllAAGroups();
+			setAAGroups(groups);
 		} catch (error) {
-			console.error('Error loading user groups:', error);
+			console.error('Error loading AA groups:', error);
+			setAAGroups([]);
 		} finally {
-			setLoadingGroups(false);
+			setLoadingAAGroups(false);
 		}
 	};
 
-	const filteredServices = aaServices.filter(service => {
-		const matchesSearch = service.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-			service.address.toLowerCase().includes(searchQuery.toLowerCase());
-		const matchesFilter = selectedFilter === 'all' || service.type === selectedFilter;
+	const filteredGroups = aaGroups.filter(group => {
+		const matchesSearch = (group.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+			(group.address || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+			(group.city || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+			(group.neighborhood || '').toLowerCase().includes(searchQuery.toLowerCase());
+		const matchesFilter =
+			selectedFilter === 'all' ||
+			(selectedFilter === 'online' && group.online) ||
+			(selectedFilter === 'in-person' && !group.online);
 		return matchesSearch && matchesFilter;
 	});
-
-	const getTypeIcon = (type: string) => {
-		switch (type) {
-			case 'online':
-				return 'monitor';
-			case 'in-person':
-				return 'account-group';
-			case 'hybrid':
-				return 'monitor-account';
-			default:
-				return 'help-circle';
-		}
-	};
-
-	const getTypeColor = (type: string) => {
-		switch (type) {
-			case 'online':
-				return '#007AFF';
-			case 'in-person':
-				return '#34C759';
-			case 'hybrid':
-				return '#FF9500';
-			default:
-				return Colors.icon.gray;
-		}
-	};
-
-	const getTypeText = (type: string) => {
-		switch (type) {
-			case 'online':
-				return 'Online';
-			case 'in-person':
-				return 'Presencial';
-			case 'hybrid':
-				return 'Híbrido';
-			default:
-				return 'Desconhecido';
-		}
-	};
-
-	const isGroupAdded = (serviceId: string) => {
-		return userGroups.some(group => group.groupId === serviceId);
-	};
-
-	const handleAddToGroup = async (service: AAService) => {
-		try {
-			const token = await storageService.getAuthToken();
-			if (!token) {
-				console.error('No auth token available');
-				return;
-			}
-
-			const groupData = {
-				groupId: service.id,
-				notificationsEnabled: true,
-			};
-
-			const result = await apiService.addAAGroup(token, groupData);
-			console.log('Group added successfully:', result);
-
-			setUserGroups(prev => [...prev, { groupId: service.id }]);
-
-			Alert.alert(
-				'Grupo Adicionado!',
-				`"${service.name}" foi adicionado aos seus grupos com sucesso.`,
-				[
-					{
-						text: 'Ver Meus Grupos',
-						onPress: () => router.push('/grupos'),
-						style: 'default',
-					},
-					{
-						text: 'Continuar',
-						style: 'cancel',
-					},
-				]
-			);
-		} catch (error) {
-			console.error('Error adding group:', error);
-			Alert.alert(
-				'Erro',
-				'Não foi possível adicionar o grupo. Tente novamente.',
-				[{ text: 'OK' }]
-			);
-		}
-	};
-
-	const parseScheduleToMeetingSchedules = (schedule: string): Array<{ day: string; time: string; enabled: boolean }> => {
-		const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-		const schedules: Array<{ day: string; time: string; enabled: boolean }> = [];
-
-		if (schedule.toLowerCase().includes('segunda') || schedule.toLowerCase().includes('monday')) {
-			schedules.push({ day: 'monday', time: '19:00', enabled: true });
-		}
-		if (schedule.toLowerCase().includes('terça') || schedule.toLowerCase().includes('tuesday')) {
-			schedules.push({ day: 'tuesday', time: '19:00', enabled: true });
-		}
-		if (schedule.toLowerCase().includes('quarta') || schedule.toLowerCase().includes('wednesday')) {
-			schedules.push({ day: 'wednesday', time: '19:00', enabled: true });
-		}
-		if (schedule.toLowerCase().includes('quinta') || schedule.toLowerCase().includes('thursday')) {
-			schedules.push({ day: 'thursday', time: '19:00', enabled: true });
-		}
-		if (schedule.toLowerCase().includes('sexta') || schedule.toLowerCase().includes('friday')) {
-			schedules.push({ day: 'friday', time: '19:00', enabled: true });
-		}
-		if (schedule.toLowerCase().includes('sábado') || schedule.toLowerCase().includes('saturday')) {
-			schedules.push({ day: 'saturday', time: '19:00', enabled: true });
-		}
-		if (schedule.toLowerCase().includes('domingo') || schedule.toLowerCase().includes('sunday')) {
-			schedules.push({ day: 'sunday', time: '19:00', enabled: true });
-		}
-
-		if (schedules.length === 0) {
-			schedules.push({ day: 'monday', time: '19:00', enabled: true });
-		}
-
-		return schedules;
-	};
 
 	return (
 		<SafeAreaView style={[styles.container, { paddingTop: insets.top }]}>
 			<View style={styles.header}>
 				<View style={styles.headerRow}>
 					<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-					<ChevronLeft size={24} color={Colors.icon.gray} />
-				</TouchableOpacity>
+						<ChevronLeft size={24} color={Colors.icon.gray} />
+					</TouchableOpacity>
 					<View style={styles.titleContainer}>
 						<Image
 							source={require('@/mobile/assets/images/aa.png')}
@@ -241,7 +110,6 @@ export default function AAServicesScreen() {
 						{ key: 'all', label: 'Todos' },
 						{ key: 'in-person', label: 'Presencial' },
 						{ key: 'online', label: 'Online' },
-						{ key: 'hybrid', label: 'Híbrido' },
 					].map((filter) => (
 						<TouchableOpacity
 							key={filter.key}
@@ -265,65 +133,50 @@ export default function AAServicesScreen() {
 			</View>
 
 			<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-				{filteredServices.map((service) => (
-					<TouchableOpacity key={service.id} style={styles.serviceCard}>
+				{loadingAAGroups ? (
+					<Text style={{ textAlign: 'center', marginTop: 32 }}>Carregando grupos...</Text>
+				) : filteredGroups.map((group) => (
+					<View key={group.id} style={styles.serviceCard}>
 						<View style={styles.serviceHeader}>
-							<Text style={styles.serviceName}>{service.name}</Text>
+							<Text style={styles.serviceName}>{group.name}</Text>
 							<View style={styles.headerActions}>
-								<View style={[styles.typeBadge, { backgroundColor: getTypeColor(service.type) }]}>
+								<View style={[styles.typeBadge, { backgroundColor: group.online ? '#007AFF' : '#34C759' }]}>
 									<MaterialCommunityIcons
-										name={getTypeIcon(service.type) as any}
+										name={group.online ? 'monitor' : 'account-group'}
 										size={12}
 										color="#FFFFFF"
 									/>
-									<Text style={styles.typeText}>{getTypeText(service.type)}</Text>
+									<Text style={styles.typeText}>{group.online ? 'Online' : 'Presencial'}</Text>
 								</View>
-								{isGroupAdded(service.id) ? (
-									<View style={styles.addedIcon}>
-										<MaterialCommunityIcons name="check-circle" size={24} color={Colors.containers.blue} />
-									</View>
-								) : (
-									<TouchableOpacity
-										style={styles.addIcon}
-										onPress={() => handleAddToGroup(service)}
-										disabled={loadingGroups}
-									>
-										<MaterialCommunityIcons 
-											name="plus-circle" 
-											size={24} 
-											color={loadingGroups ? Colors.icon.gray : Colors.containers.blue} 
-										/>
-									</TouchableOpacity>
-								)}
 							</View>
 						</View>
-
 						<View>
 							<View style={styles.infoRow}>
 								<MaterialCommunityIcons name="map-marker" size={16} color={Colors.icon.gray} />
-								<Text style={styles.infoText}>{service.address}</Text>
+								<Text style={styles.infoText}>{group.address.split('#')[0]}</Text>
 							</View>
-
 							<View style={styles.infoRow}>
-								<MaterialCommunityIcons name="phone" size={16} color={Colors.icon.gray} />
-								<Text style={styles.infoText}>{service.phone}</Text>
+								<MaterialCommunityIcons name="city" size={16} color={Colors.icon.gray} />
+								<Text style={styles.infoText}>{group.city} - {group.neighborhood}</Text>
 							</View>
-
-							<View style={styles.infoRow}>
-								<MaterialCommunityIcons name="clock" size={16} color={Colors.icon.gray} />
-								<Text style={styles.infoText}>{service.schedule}</Text>
-							</View>
-
-							{service.distance && (
+							{group.phone && group.phone.trim() !== '' && (
 								<View style={styles.infoRow}>
-									<MaterialCommunityIcons name="map-marker-distance" size={16} color={Colors.icon.gray} />
-									<Text style={styles.infoText}>{service.distance}</Text>
+									<MaterialCommunityIcons name="phone" size={16} color={Colors.icon.gray} />
+									<Text style={styles.infoText}>{group.phone}</Text>
 								</View>
 							)}
+							{weekDays.map(day => {
+								const meeting = group[day.key as keyof AAGroup] as null | { start: string; end: string };
+								if (!meeting) return null;
+								return (
+									<View key={day.key} style={styles.infoRow}>
+										<MaterialCommunityIcons name="calendar" size={16} color={Colors.icon.gray} />
+										<Text style={styles.infoText}>{day.label}: {meeting.start} às {meeting.end}</Text>
+									</View>
+								);
+							})}
 						</View>
-
-
-					</TouchableOpacity>
+					</View>
 				))}
 			</ScrollView>
 		</SafeAreaView>
@@ -433,12 +286,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		gap: 8,
 	},
-	addIcon: {
-		padding: 4,
-	},
-	addedIcon: {
-		padding: 4,
-	},
 	serviceName: {
 		fontSize: 18,
 		fontWeight: 'bold',
@@ -468,5 +315,4 @@ const styles = StyleSheet.create({
 		color: Colors.light.text,
 		marginLeft: 8,
 	},
-
 });

@@ -28,9 +28,10 @@ export interface OnboardingData {
 	notificationFrequency?: 'daily' | 'weekly' | 'monthly' | 'never';
 	crisisSupport?: boolean;
 	shareProgress?: boolean;
-	emergencyContactName?: string;
-	emergencyContactPhone?: string;
 	rehabilitationGoals?: string[];
+	address?: string;
+	city?: string;
+	neighborhood?: string;
 }
 
 interface OnboardingContextType {

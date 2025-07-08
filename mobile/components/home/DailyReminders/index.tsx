@@ -3,37 +3,18 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Colors } from '@/mobile/constants/Colors';
 import { styles } from './styles';
 import { useOnboarding } from '@/mobile/contexts/OnboardingContext';
+import { useUserGroups } from '@/mobile/hooks/useUserGroups';
+import { useRouter } from 'expo-router';
 
-type Reminder = {
-    id: string;
-    title: string;
-    time: string;
-    type: 'meeting' | 'check-in';
-    isOnline?: boolean;
-    meetingLink?: string;
-    onPress: () => void;
-};
-
-// TODO: Replace with actual data from user's calendar/meetings and daily check status
-const todayReminders: Reminder[] = [
-    {
-        id: 'aa-meeting',
-        title: 'Reunião AA - Grupo Esperança',
-        time: '19:00',
-        type: 'meeting',
-        isOnline: true,
-        meetingLink: 'https://meet.google.com/xxx-yyyy-zzz',
-        onPress: () => {
-            // TODO: Open meeting link or navigate to meeting details
-        },
-    },
-];
-
-// TODO: Replace with actual check from user's data
-const isDailyCheckCompleted = false;
+function getTodayWeekdayKey(): string {
+    const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    return days[new Date().getDay()];
+}
 
 export function DailyReminders() {
     const { onboardingData } = useOnboarding();
+    const { groups, loading } = useUserGroups();
+    const router = useRouter();
     
     // TODO: Replace with actual check from user's daily check-in data
     const isDailyCheckCompleted = false;
@@ -41,7 +22,19 @@ export function DailyReminders() {
     // Check if user has enabled daily reminders
     const hasDailyReminders = onboardingData?.dailyReminders ?? false;
 
-    const hasMeetings = todayReminders.some(reminder => reminder.type === 'meeting');
+    // Find today's meetings from all groups
+    const todayKey = getTodayWeekdayKey();
+    const todayMeetings = groups.flatMap(group =>
+        (group.meetingSchedules || [])
+            .filter(sch => sch.day === todayKey && sch.enabled)
+            .map(sch => ({
+                groupId: group.groupId,
+                groupName: group.groupName,
+                time: sch.time,
+                type: group.type,
+                isOnline: group.type === 'online',
+            }))
+    );
 
     return (
         <View style={styles.container}>
@@ -53,31 +46,29 @@ export function DailyReminders() {
             <View style={styles.remindersContainer}>
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Reuniões</Text>
-                    {hasMeetings ? (
-                        todayReminders
-                            .filter(reminder => reminder.type === 'meeting')
-                            .map((reminder) => (
-                                <Pressable
-                                    key={reminder.id}
-                                    style={styles.reminderButton}
-                                    onPress={reminder.onPress}
-                                >
-                                    <View style={styles.iconContainer}>
-                                        <FontAwesome6
-                                            name={reminder.isOnline ? 'video' : 'users'} 
-                                            size={24}
-                                            color={Colors.containers.blue}
-                                        />
-                                    </View>
-                                    <View style={styles.textContainer}>
-                                        <Text style={styles.reminderTitle}>{reminder.title}</Text>
-                                        <Text style={styles.reminderTime}>{reminder.time}</Text>
-                                        {reminder.isOnline && (
-                                            <Text style={styles.onlineTag}>Online</Text>
-                                        )}
-                                    </View>
-                                </Pressable>
-                            ))
+                    {loading ? null : todayMeetings.length > 0 ? (
+                        todayMeetings.map((meeting, idx) => (
+                            <Pressable
+                                key={meeting.groupId + meeting.time + idx}
+                                style={styles.reminderButton}
+                                onPress={() => router.push(`/group-detail/${meeting.groupId}`)}
+                            >
+                                <View style={styles.iconContainer}>
+                                    <FontAwesome6
+                                        name={meeting.type === 'online' ? 'video' : meeting.type === 'in-person' ? 'users' : 'monitor'}
+                                        size={24}
+                                        color={Colors.containers.blue}
+                                    />
+                                </View>
+                                <View style={styles.textContainer}>
+                                    <Text style={styles.reminderTitle}>{meeting.groupName}</Text>
+                                    <Text style={styles.reminderTime}>{meeting.time}</Text>
+                                    {meeting.isOnline && (
+                                        <Text style={styles.onlineTag}>Online</Text>
+                                    )}
+                                </View>
+                            </Pressable>
+                        ))
                     ) : (
                         <View style={styles.emptyStateContainer}>
                             <FontAwesome6

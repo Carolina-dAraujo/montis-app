@@ -213,7 +213,7 @@ export default function PreferencesScreen() {
 				</View>
 
 				<View style={styles.section}>
-					<Text style={styles.sectionTitle}>Privacidade</Text>
+					<Text style={styles.sectionTitle}>Privacity</Text>
 
 					<View style={styles.preferenceItem}>
 						<View style={styles.preferenceInfo}>

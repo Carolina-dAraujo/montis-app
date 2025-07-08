@@ -111,6 +111,17 @@ export class UsersService {
         onboardingCompletedAt: new Date().toISOString(),
       };
 
+      // Add address fields if provided
+      if (onboardingData.address) {
+        onboardingPreferences.address = onboardingData.address;
+      }
+      if (onboardingData.city) {
+        onboardingPreferences.city = onboardingData.city;
+      }
+      if (onboardingData.neighborhood) {
+        onboardingPreferences.neighborhood = onboardingData.neighborhood;
+      }
+
       // Add phone number to preferences (stored in database, not Firebase Auth)
       if (onboardingData.phone) {
         onboardingPreferences.phone = onboardingData.phone;

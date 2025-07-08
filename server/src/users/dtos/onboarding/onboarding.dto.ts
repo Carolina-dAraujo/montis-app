@@ -67,4 +67,19 @@ export class OnboardingDto {
 	@ValidateIf((o) => o.emergencyContactPhone !== undefined && o.emergencyContactPhone !== null)
 	@IsString()
 	emergencyContactPhone?: string;
-} 
+
+	@ApiProperty({ description: 'User address', example: 'Rua Exemplo, 123' })
+	@ValidateIf((o) => o.address !== undefined && o.address !== null)
+	@IsString()
+	address?: string;
+
+	@ApiProperty({ description: 'User city', example: 'São Paulo' })
+	@ValidateIf((o) => o.city !== undefined && o.city !== null)
+	@IsString()
+	city?: string;
+
+	@ApiProperty({ description: 'User neighborhood', example: 'Centro' })
+	@ValidateIf((o) => o.neighborhood !== undefined && o.neighborhood !== null)
+	@IsString()
+	neighborhood?: string;
+}

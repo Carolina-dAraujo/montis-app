@@ -15,6 +15,7 @@ import { apiService } from '@/mobile/services/api';
 import { storageService } from '@/mobile/services/storage';
 import { useAuth } from '@/mobile/contexts/AuthContext';
 import { useRouter } from 'expo-router';
+import { useUserGroups } from '@/mobile/hooks/useUserGroups';
 
 interface MeetingSchedule {
 	day: string;
@@ -49,18 +50,19 @@ export default function GruposScreen() {
 	const auth = useAuth();
 	const user = auth?.user;
 	const router = useRouter();
-	const [groups, setGroups] = useState<UserGroup[]>([]);
-	const [loading, setLoading] = useState(true);
+	const {
+		groups,
+		loading,
+		error,
+		reloadGroups,
+		handleNotificationToggle,
+	} = useUserGroups();
 
 	const fadeAnim = useRef(new Animated.Value(0)).current;
 	const scaleAnim = useRef(new Animated.Value(0.8)).current;
 	const dot1Anim = useRef(new Animated.Value(0.3)).current;
 	const dot2Anim = useRef(new Animated.Value(0.6)).current;
 	const dot3Anim = useRef(new Animated.Value(1)).current;
-
-	useEffect(() => {
-		loadUserGroups();
-	}, []);
 
 	useEffect(() => {
 		if (loading) {
@@ -137,137 +139,6 @@ export default function GruposScreen() {
 		}
 	}, [loading]);
 
-	// Mocked groups data
-	const mockedGroups: UserGroup[] = [
-		{
-			groupId: 'aa-group-1',
-			groupName: 'Grupo AA Esperança',
-			type: 'in-person',
-			address: 'Rua das Flores, 123 - Centro, São Paulo',
-			phone: '(11) 99999-9999',
-			schedule: 'Segunda, Quarta e Sexta às 19h',
-			distance: '2.3 km',
-			meetingSchedules: [
-				{ day: 'monday', time: '19:00', enabled: true },
-				{ day: 'wednesday', time: '19:00', enabled: true },
-				{ day: 'friday', time: '19:00', enabled: true },
-			],
-			notificationsEnabled: true,
-			addedAt: new Date().toISOString(),
-		},
-		{
-			groupId: 'aa-group-2',
-			groupName: 'Grupo AA Nova Vida',
-			type: 'online',
-			address: 'Reunião Online - Zoom',
-			phone: '(11) 88888-8888',
-			schedule: 'Terça e Quinta às 20h',
-			distance: 'Online',
-			meetingSchedules: [
-				{ day: 'tuesday', time: '20:00', enabled: true },
-				{ day: 'thursday', time: '20:00', enabled: false },
-			],
-			notificationsEnabled: false,
-			addedAt: new Date().toISOString(),
-		},
-		{
-			groupId: 'aa-group-3',
-			groupName: 'Grupo AA Liberdade',
-			type: 'hybrid',
-			address: 'Av. Paulista, 1000 - Bela Vista, São Paulo',
-			phone: '(11) 77777-7777',
-			schedule: 'Domingo às 10h',
-			distance: '5.1 km',
-			meetingSchedules: [
-				{ day: 'sunday', time: '10:00', enabled: true },
-			],
-			notificationsEnabled: true,
-			addedAt: new Date().toISOString(),
-		},
-	];
-
-	const loadUserGroups = async () => {
-		try {
-			setLoading(true);
-			const token = await storageService.getAuthToken();
-			if (!token) {
-				console.error('No auth token available');
-				setGroups(mockedGroups);
-				return;
-			}
-
-			const userGroups = await apiService.getUserGroups(token);
-			console.log('API returned groups:', userGroups);
-
-			setGroups(mockedGroups);
-
-			// if (!userGroups || userGroups.length === 0) {
-			// 	console.log('No groups from API, using mocked data');
-			// 	setGroups(mockedGroups);
-			// } else {
-			// 	console.log('Using groups from API');
-			// 	setGroups(userGroups);
-			// }
-		} catch (error) {
-			console.error('Error loading user groups:', error);
-			// On error, use mocked data
-			console.log('Error occurred, using mocked data');
-			setGroups(mockedGroups);
-		} finally {
-			setLoading(false);
-		}
-	};
-
-
-
-	// Early return if auth is still loading
-	if (auth.isLoading) {
-		return (
-			<SafeAreaView style={[styles.container, { paddingTop: 50 }]}>
-				<View style={styles.header}>
-					<Text style={styles.title}>Meus grupos</Text>
-					<Text style={styles.subtitle}>
-						Gerencie seus grupos e preferências de notificações
-					</Text>
-				</View>
-				<View style={styles.emptyState}>
-					<MaterialCommunityIcons
-						name="account-group-outline"
-						size={48}
-						color={Colors.icon.gray}
-					/>
-					<Text style={styles.emptyTitle}>Carregando...</Text>
-					<Text style={styles.emptySubtitle}>
-						Aguarde um momento
-					</Text>
-				</View>
-			</SafeAreaView>
-		);
-	}
-
-	const handleNotificationToggle = async (groupId: string, enabled: boolean) => {
-		try {
-			const token = await storageService.getAuthToken();
-			if (!token) {
-				console.error('No auth token available');
-				return;
-			}
-
-			await apiService.updateGroupNotifications(token, groupId, enabled);
-
-			setGroups(prevGroups =>
-				prevGroups.map(group =>
-					group.groupId === groupId
-						? { ...group, notificationsEnabled: enabled }
-						: group
-				)
-			);
-		} catch (error) {
-			console.error('Error updating notifications:', error);
-			Alert.alert('Erro', 'Não foi possível atualizar as notificações');
-		}
-	};
-
 	const handleScheduleToggle = async (groupId: string, day: string, enabled: boolean) => {
 		try {
 			const token = await storageService.getAuthToken();
@@ -285,13 +156,13 @@ export default function GruposScreen() {
 
 			await apiService.updateMeetingSchedules(token, groupId, updatedSchedules);
 
-			setGroups(prevGroups =>
-				prevGroups.map(g =>
-					g.groupId === groupId
-						? { ...g, meetingSchedules: updatedSchedules }
-						: g
-				)
-			);
+			// Update local state (optional, not in hook)
+			// setGroups(prevGroups =>
+			// 	prevGroups.map(g =>
+			// 		g.groupId === groupId
+			// 			? { ...g, meetingSchedules: updatedSchedules }
+			// 			: g
+			// ));
 		} catch (error) {
 			console.error('Error updating schedules:', error);
 			Alert.alert('Erro', 'Não foi possível atualizar os horários');
@@ -328,56 +199,27 @@ export default function GruposScreen() {
 		}
 	};
 
-	if (loading) {
+	// Early return if auth is still loading
+	if (auth.isLoading) {
 		return (
 			<SafeAreaView style={[styles.container, { paddingTop: 50 }]}>
-				<Animated.View
-					style={[
-						styles.loadingContainer,
-						{
-							opacity: fadeAnim,
-							transform: [{ scale: scaleAnim }],
-						}
-					]}
-				>
-					<View style={styles.loadingAnimation}>
-						<MaterialCommunityIcons
-							name="account-group"
-							size={40}
-							color={Colors.containers.blue}
-						/>
-						<View style={styles.loadingDots}>
-							<Animated.View
-								style={[
-									styles.dot,
-									{
-										opacity: dot1Anim,
-										transform: [{ scale: dot1Anim }],
-									}
-								]}
-							/>
-							<Animated.View
-								style={[
-									styles.dot,
-									{
-										opacity: dot2Anim,
-										transform: [{ scale: dot2Anim }],
-									}
-								]}
-							/>
-							<Animated.View
-								style={[
-									styles.dot,
-									{
-										opacity: dot3Anim,
-										transform: [{ scale: dot3Anim }],
-									}
-								]}
-							/>
-						</View>
-					</View>
-					<Text style={styles.loadingText}>Carregando seus grupos...</Text>
-				</Animated.View>
+				<View style={styles.header}>
+					<Text style={styles.title}>Meus grupos</Text>
+					<Text style={styles.subtitle}>
+						Gerencie seus grupos e preferências de notificações
+					</Text>
+				</View>
+				<View style={styles.emptyState}>
+					<MaterialCommunityIcons
+						name="account-group-outline"
+						size={48}
+						color={Colors.icon.gray}
+					/>
+					<Text style={styles.emptyTitle}>Carregando...</Text>
+					<Text style={styles.emptySubtitle}>
+						Aguarde um momento
+					</Text>
+				</View>
 			</SafeAreaView>
 		);
 	}

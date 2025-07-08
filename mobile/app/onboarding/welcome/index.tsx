@@ -116,7 +116,7 @@ export default function WelcomeScreen() {
 						<Text style={styles.buttonText}>Começar minha jornada</Text>
 					</Pressable>
 					<Text style={styles.privacyText}>
-						Ao continuar, você concorda com nossos <Text style={styles.link}>Termos de Uso</Text> e <Text style={styles.link}>Política de Privacidade</Text>
+						Ao continuar, você concorda com nossos <Text style={styles.link}>Termos de Uso</Text> e <Text style={styles.link}>Política de Privacity</Text>
 					</Text>
 				</View>
 			</Animated.View>

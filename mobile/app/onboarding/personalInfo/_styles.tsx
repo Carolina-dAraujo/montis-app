@@ -54,4 +54,13 @@ export const styles = StyleSheet.create({
     inputContainer: {
         gap: 8,
     },
+    input: {
+        borderWidth: 1,
+        borderColor: Colors.input,
+        borderRadius: 8,
+        padding: 12,
+        fontSize: 16,
+        backgroundColor: Colors.light.background,
+        color: Colors.light.text,
+    },
 });

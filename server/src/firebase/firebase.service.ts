@@ -11,7 +11,7 @@ export class FirebaseService implements OnModuleInit {
 	private firebaseApp: firebaseAdmin.app.App;
 	private database: firebaseAdmin.database.Database;
 
-	constructor(private configService: ConfigService) {}
+	constructor(private configService: ConfigService) { }
 
 	onModuleInit() {
 		if (!firebaseAdmin.apps.length) {
@@ -22,8 +22,7 @@ export class FirebaseService implements OnModuleInit {
 		} else {
 			this.firebaseApp = firebaseAdmin.app();
 		}
-		
-		// Initialize Realtime Database
+
 		this.database = this.firebaseApp.database();
 	}
 
@@ -101,7 +100,7 @@ export class FirebaseService implements OnModuleInit {
 		try {
 			console.log('FirebaseService - Updating user:', uid);
 			console.log('FirebaseService - Properties:', properties);
-			
+
 			const result = await this.firebaseApp.auth().updateUser(uid, properties);
 			console.log('FirebaseService - Update successful:', result.uid);
 			return result;
@@ -255,5 +254,16 @@ export class FirebaseService implements OnModuleInit {
 
 	async getPreferences(uid: string): Promise<any> {
 		return await this.getUserData(uid, 'preferences');
+	}
+
+	async getData(path: string): Promise<any> {
+		try {
+			const ref = this.database.ref(path);
+			const snapshot = await ref.once('value');
+			return snapshot.val();
+		} catch (error) {
+			console.error('FirebaseService - Get data error:', error);
+			throw error;
+		}
 	}
 }

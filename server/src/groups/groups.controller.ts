@@ -6,12 +6,12 @@ import { CurrentUser } from "../auth/current-user.decorator";
 
 @ApiTags("Groups")
 @Controller("groups")
-@UseGuards(AuthGuard)
-@ApiBearerAuth()
 export class GroupsController {
 	constructor(private readonly groupsService: GroupsService) {}
 
 	@Post("add-aa-group")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
 	@ApiOperation({ summary: "Add AA group to user's personal groups" })
 	@ApiResponse({
 		status: 200,
@@ -55,6 +55,8 @@ export class GroupsController {
 	}
 
 	@Get("user-groups")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
 	@ApiOperation({ summary: "Get user's personal groups" })
 	@ApiResponse({
 		status: 200,
@@ -103,6 +105,8 @@ export class GroupsController {
 	}
 
 	@Put("group/:groupId/notifications")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
 	@ApiOperation({ summary: "Update group notification preferences" })
 	@ApiResponse({
 		status: 200,
@@ -132,33 +136,38 @@ export class GroupsController {
 		}
 	}
 
-	@Put("group/:groupId/schedules")
-	@ApiOperation({ summary: "Update group meeting schedules" })
+	@Get("all-aa-groups")
+	@ApiOperation({ summary: "Get all available AA groups" })
 	@ApiResponse({
 		status: 200,
-		description: "Meeting schedules updated successfully",
+		description: "All AA groups retrieved successfully",
+		schema: {
+			type: "array",
+			items: {
+				type: "object",
+				properties: {
+					id: { type: "string" },
+					name: { type: "string" },
+					address: { type: "string" },
+					monday: { type: "string" },
+					tuesday: { type: "string" },
+					wednesday: { type: "string" },
+					thursday: { type: "string" },
+					friday: { type: "string" },
+					saturday: { type: "string" },
+					sunday: { type: "string" },
+					online: { type: "boolean" },
+				}
+			}
+		}
 	})
-	@ApiResponse({
-		status: 400,
-		description: "Validation error",
-	})
-	@ApiResponse({
-		status: 401,
-		description: "Unauthorized",
-	})
-	async updateMeetingSchedules(
-		@CurrentUser() user: any,
-		@Param('groupId') groupId: string,
-		@Body() body: { meetingSchedules: Array<{ day: string; time: string; enabled: boolean }> }
-	) {
+	async getAllAAGroups() {
 		try {
-			await this.groupsService.updateMeetingSchedules(user.uid, groupId, body.meetingSchedules);
-			return {
-				message: "Horários de reunião atualizados com sucesso",
-			};
+			const groups = await this.groupsService.getAllAAGroups();
+			return groups;
 		} catch (error) {
-			console.error("Update meeting schedules error:", error);
-			throw new Error("Não foi possível atualizar os horários de reunião");
+			console.error("Get all AA groups error:", error);
+			throw new Error("Não foi possível carregar os grupos AA");
 		}
 	}
 }
