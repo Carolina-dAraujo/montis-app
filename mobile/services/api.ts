@@ -314,14 +314,7 @@ class ApiService {
     }
 
     async getUserGroups(token: string): Promise<Array<{
-        groupId: string;
-        groupName: string;
-        type: string;
-        address: string;
-        phone: string;
-        schedule: string;
-        distance: string;
-        meetingSchedules: Array<{ day: string; time: string; enabled: boolean }>;
+        id: string;
         notificationsEnabled: boolean;
         addedAt: string;
     }>> {
@@ -329,6 +322,7 @@ class ApiService {
             const result = await this.makeAuthenticatedRequest<any>('/groups/user-groups', token, {
                 method: 'GET',
             });
+
             return result;
         } catch (error) {
             console.error('API Service - getUserGroups error:', error);
@@ -348,20 +342,6 @@ class ApiService {
             throw error;
         }
     }
-
-    async updateMeetingSchedules(token: string, groupId: string, meetingSchedules: Array<{ day: string; time: string; enabled: boolean }>): Promise<{ message: string }> {
-        try {
-            const result = await this.makeAuthenticatedRequest<{ message: string }>(`/groups/group/${groupId}/schedules`, token, {
-                method: 'PUT',
-                body: JSON.stringify({ meetingSchedules }),
-            });
-            return result;
-        } catch (error) {
-            console.error('API Service - updateMeetingSchedules error:', error);
-            throw error;
-        }
-    }
-
     async getAllAAGroups(): Promise<any[]> {
         try {
             const result = await this.makeRequest<any[]>('/groups/all-aa-groups');

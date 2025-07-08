@@ -15,26 +15,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { apiService } from '@/mobile/services/api';
 import { storageService } from '@/mobile/services/storage';
 import { ChevronLeft } from 'lucide-react-native';
-
-interface MeetingSchedule {
-	day: string;
-	time: string;
-	enabled: boolean;
-}
-
-interface UserGroup {
-	groupId: string;
-	groupName: string;
-	meetingHolder?: string;
-	type: string;
-	address: string;
-	phone: string;
-	schedule: string;
-	distance: string;
-	meetingSchedules: MeetingSchedule[];
-	notificationsEnabled: boolean;
-	addedAt: string;
-}
+import { AAGroup, UserGroup } from '@/mobile/hooks/useUserGroups';
 
 const weekDays = [
 	{ key: 'monday', label: 'Segunda' },
@@ -49,57 +30,9 @@ const weekDays = [
 export default function GroupDetailScreen() {
 	const { id } = useLocalSearchParams();
 	const router = useRouter();
-	const [group, setGroup] = useState<UserGroup | null>(null);
+	const [group, setGroup] = useState<AAGroup | null>(null);
 	const [loading, setLoading] = useState(true);
-
-	// Mocked groups data (same as in grupos.tsx)
-	const mockedGroups: UserGroup[] = [
-		{
-			groupId: 'aa-group-1',
-			groupName: 'Grupo AA Esperança',
-			type: 'in-person',
-			address: 'Rua das Flores, 123 - Centro, São Paulo',
-			phone: '(11) 99999-9999',
-			schedule: 'Segunda, Quarta e Sexta às 19h',
-			distance: '2.3 km',
-			meetingSchedules: [
-				{ day: 'monday', time: '19:00', enabled: true },
-				{ day: 'wednesday', time: '19:00', enabled: true },
-				{ day: 'friday', time: '19:00', enabled: true },
-			],
-			notificationsEnabled: true,
-			addedAt: new Date().toISOString(),
-		},
-		{
-			groupId: 'aa-group-2',
-			groupName: 'Grupo AA Nova Vida',
-			type: 'online',
-			address: 'Reunião Online - Zoom',
-			phone: '(11) 88888-8888',
-			schedule: 'Terça e Quinta às 20h',
-			distance: 'Online',
-			meetingSchedules: [
-				{ day: 'tuesday', time: '20:00', enabled: true },
-				{ day: 'thursday', time: '20:00', enabled: false },
-			],
-			notificationsEnabled: false,
-			addedAt: new Date().toISOString(),
-		},
-		{
-			groupId: 'aa-group-3',
-			groupName: 'Grupo AA Liberdade',
-			type: 'hybrid',
-			address: 'Av. Paulista, 1000 - Bela Vista, São Paulo',
-			phone: '(11) 77777-7777',
-			schedule: 'Domingo às 10h',
-			distance: '5.1 km',
-			meetingSchedules: [
-				{ day: 'sunday', time: '10:00', enabled: true },
-			],
-			notificationsEnabled: true,
-			addedAt: new Date().toISOString(),
-		},
-	];
+	const { groups } = require('@/mobile/data/groups.json');
 
 	useEffect(() => {
 		loadGroupDetails();
@@ -109,31 +42,17 @@ export default function GroupDetailScreen() {
 		try {
 			setLoading(true);
 
-			// For now, use mocked data for testing
-			const foundGroup = mockedGroups.find(g => g.groupId === id);
+			const foundGroup = groups.find((g: AAGroup) => g.id === id);
 
 			if (foundGroup) {
 				setGroup(foundGroup);
 			} else {
-				const token = await storageService.getAuthToken();
-				if (token) {
-					const userGroups = await apiService.getUserGroups(token);
-					const apiFoundGroup = userGroups.find(g => g.groupId === id);
-
-					if (apiFoundGroup) {
-						setGroup(apiFoundGroup);
-					} else {
-						Alert.alert('Erro', 'Grupo não encontrado');
-						router.back();
-					}
-				} else {
-					Alert.alert('Erro', 'Grupo não encontrado');
-					router.back();
-				}
+				Alert.alert('Erro', 'Grupo não encontrado');
+				router.back();
 			}
 		} catch (error) {
-			console.error('Error loading group details:', error);
 			Alert.alert('Erro', 'Não foi possível carregar os detalhes do grupo');
+			router.back();
 		} finally {
 			setLoading(false);
 		}
@@ -149,7 +68,7 @@ export default function GroupDetailScreen() {
 				return;
 			}
 
-			await apiService.updateGroupNotifications(token, group.groupId, enabled);
+			await apiService.updateGroupNotifications(token, group.id, enabled);
 			setGroup(prev => prev ? { ...prev, notificationsEnabled: enabled } : null);
 		} catch (error) {
 			console.error('Error updating notification preferences:', error);
@@ -167,12 +86,7 @@ export default function GroupDetailScreen() {
 				return;
 			}
 
-			const updatedSchedules = group.meetingSchedules.map(schedule =>
-				schedule.day === day ? { ...schedule, enabled } : schedule
-			);
-
-			await apiService.updateMeetingSchedules(token, group.groupId, updatedSchedules);
-			setGroup(prev => prev ? { ...prev, meetingSchedules: updatedSchedules } : null);
+			// setGroup(prev => prev ? { ...prev, schedule: { ...prev.schedule, [day]: enabled ? ...prev.schedule[day] : [] } } : null);
 		} catch (error) {
 			console.error('Error updating meeting schedules:', error);
 			Alert.alert('Erro', 'Não foi possível atualizar os horários de reunião');
@@ -180,14 +94,14 @@ export default function GroupDetailScreen() {
 	};
 
 	const handleCall = () => {
-		if (group?.phone) {
-			Linking.openURL(`tel:${group.phone}`);
+		if (group?.link) {
+			Linking.openURL(group.link);
 		}
 	};
 
 	const handleShare = () => {
 		if (group) {
-			const shareText = `${group.groupName}\n\nEndereço: ${group.address}\nTelefone: ${group.phone}\nHorário: ${group.schedule}`;
+			const shareText = `${group.name}\n\nEndereço: ${group.address.street}, ${group.address.number || 'S/N'}\nTelefone: ${group.link}\nHorário: ${group.schedule}`;
 			// You can implement sharing functionality here
 			Alert.alert('Compartilhar', shareText);
 		}
@@ -195,12 +109,10 @@ export default function GroupDetailScreen() {
 
 	const getTypeIcon = (type: string) => {
 		switch (type) {
-			case 'online':
+			case 'virtual':
 				return 'monitor';
 			case 'in-person':
 				return 'account-group';
-			case 'hybrid':
-				return 'monitor-account';
 			default:
 				return 'help-circle';
 		}
@@ -208,12 +120,10 @@ export default function GroupDetailScreen() {
 
 	const getTypeColor = (type: string) => {
 		switch (type) {
-			case 'online':
+			case 'virtual':
 				return Colors.light.tint;
 			case 'in-person':
 				return Colors.containers.blueLight;
-			case 'hybrid':
-				return Colors.light.tint;
 			default:
 				return Colors.icon.gray;
 		}
@@ -255,7 +165,7 @@ export default function GroupDetailScreen() {
 				<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
 					<ChevronLeft size={24} color={Colors.icon.gray} />
 				</TouchableOpacity>
-				<Text style={styles.headerTitle}>{group.groupName}</Text>
+				<Text style={styles.headerTitle}>{group.name}</Text>
 				<View style={styles.headerSpacer} />
 				<TouchableOpacity
 					style={styles.notificationButton}
@@ -278,39 +188,32 @@ export default function GroupDetailScreen() {
 							<MaterialCommunityIcons name="map-marker" size={18} color={Colors.containers.blue} />
 							<Text style={styles.infoTitle}>Localização</Text>
 						</View>
-						<Text style={styles.infoContent}>{group.address}</Text>
+						<Text style={styles.infoContent}>{group.address.street}, {group.address.number || 'S/N'}</Text>
 						<View style={styles.infoMeta}>
 							<MaterialCommunityIcons name="map-marker-distance" size={14} color={Colors.icon.gray} />
-							<Text style={styles.infoMetaText}>{group.distance}</Text>
+							<Text style={styles.infoMetaText}>{group.address.neighborhood}</Text>
 						</View>
 					</View>
 
+					{group.link && (
 					<TouchableOpacity style={[styles.infoCard, styles.phoneCard]} onPress={handleCall}>
 						<View style={styles.infoCardContent}>
 							<View style={styles.infoHeader}>
-								<MaterialCommunityIcons name="phone" size={18} color={Colors.containers.blue} />
-								<Text style={styles.infoTitle}>Contato</Text>
+								<MaterialCommunityIcons name="link" size={18} color={Colors.containers.blue} />
+								<Text style={styles.infoTitle}>Link de reunião</Text>
 							</View>
-							<Text style={styles.infoContent}>{group.phone}</Text>
+							<Text style={styles.infoContent}>{group.link}</Text>
 						</View>
-						<MaterialCommunityIcons name="phone" size={20} color={Colors.containers.blue} />
-					</TouchableOpacity>
-
-					<View style={styles.infoCard}>
-						<View style={styles.infoHeader}>
-							<MaterialCommunityIcons name="clock" size={18} color={Colors.containers.blue} />
-							<Text style={styles.infoTitle}>Horário Geral</Text>
-						</View>
-						<Text style={styles.infoContent}>{group.schedule}</Text>
-					</View>
+						</TouchableOpacity>
+					)}
 				</View>
 
 				<View style={styles.schedulesSection}>
 					<Text style={styles.sectionTitle}>Horários Semanais</Text>
 					<View style={styles.schedulesList}>
 						{weekDays.map((day) => {
-							const schedule = group.meetingSchedules.find(s => s.day === day.key);
-							const isEnabled = schedule?.enabled || false;
+							const schedule = group.schedule[day.key];
+							const isEnabled = schedule?.length > 0;
 
 							return (
 								<View key={day.key} style={styles.scheduleItem}>
@@ -326,7 +229,7 @@ export default function GroupDetailScreen() {
 										<Text style={[styles.scheduleTime, {
 											color: isEnabled ? Colors.light.text : Colors.icon.gray
 										}]}>
-											{schedule?.time || 'Não agendado'}
+											{schedule?.map(s => `${s.start} - ${s.end}`).join(', ') || 'Não agendado'}
 										</Text>
 									</View>
 									<TouchableOpacity

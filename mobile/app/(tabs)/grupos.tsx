@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import {
 	View,
 	Text,
@@ -11,64 +11,29 @@ import {
 } from 'react-native';
 import { Colors } from '@/mobile/constants/Colors';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { apiService } from '@/mobile/services/api';
-import { storageService } from '@/mobile/services/storage';
+// import { apiService } from '@/mobile/services/api';
+// import { storageService } from '@/mobile/services/storage';
 import { useAuth } from '@/mobile/contexts/AuthContext';
-import { useFocusEffect, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useUserGroups } from '@/mobile/hooks/useUserGroups';
-
-interface MeetingSchedule {
-	day: string;
-	time: string;
-	enabled: boolean;
-}
-
-interface UserGroup {
-	groupId: string;
-	groupName: string;
-	type: string;
-	address: string;
-	phone: string;
-	schedule: string;
-	distance: string;
-	meetingSchedules: MeetingSchedule[];
-	notificationsEnabled: boolean;
-	addedAt: string;
-}
-
-const weekDays = [
-	{ key: 'monday', label: 'Segunda' },
-	{ key: 'tuesday', label: 'Terça' },
-	{ key: 'wednesday', label: 'Quarta' },
-	{ key: 'thursday', label: 'Quinta' },
-	{ key: 'friday', label: 'Sexta' },
-	{ key: 'saturday', label: 'Sábado' },
-	{ key: 'sunday', label: 'Domingo' },
-];
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function GruposScreen() {
 	const auth = useAuth();
-	const user = auth?.user;
 	const router = useRouter();
 	const {
 		groups,
 		loading,
-		error,
-		reloadGroups,
 		handleNotificationToggle,
 	} = useUserGroups();
-
-	useFocusEffect(
-		useCallback(() => {
-			reloadGroups();
-		}, [reloadGroups])
-	);
 
 	const fadeAnim = useRef(new Animated.Value(0)).current;
 	const scaleAnim = useRef(new Animated.Value(0.8)).current;
 	const dot1Anim = useRef(new Animated.Value(0.3)).current;
 	const dot2Anim = useRef(new Animated.Value(0.6)).current;
 	const dot3Anim = useRef(new Animated.Value(1)).current;
+	const insets = useSafeAreaInsets();
+
 	useEffect(() => {
 		if (loading) {
 			Animated.parallel([
@@ -144,48 +109,16 @@ export default function GruposScreen() {
 		}
 	}, [loading]);
 
-	const handleScheduleToggle = async (groupId: string, day: string, enabled: boolean) => {
-		try {
-			const token = await storageService.getAuthToken();
-			if (!token) {
-				console.error('No auth token available');
-				return;
-			}
-
-			const group = groups.find(g => g.groupId === groupId);
-			if (!group) return;
-
-			const updatedSchedules = group.meetingSchedules.map(schedule =>
-				schedule.day === day ? { ...schedule, enabled } : schedule
-			);
-
-			await apiService.updateMeetingSchedules(token, groupId, updatedSchedules);
-
-			// Update local state (optional, not in hook)
-			// setGroups(prevGroups =>
-			// 	prevGroups.map(g =>
-			// 		g.groupId === groupId
-			// 			? { ...g, meetingSchedules: updatedSchedules }
-			// 			: g
-			// ));
-		} catch (error) {
-			console.error('Error updating schedules:', error);
-			Alert.alert('Erro', 'Não foi possível atualizar os horários');
-		}
-	};
-
 	const handleAddGroup = () => {
 		router.push('/services');
 	};
 
 	const getTypeIcon = (type: string) => {
 		switch (type) {
-			case 'online':
+			case 'virtual':
 				return 'monitor';
 			case 'in-person':
 				return 'account-group';
-			case 'hybrid':
-				return 'monitor-account';
 			default:
 				return 'help-circle';
 		}
@@ -193,18 +126,15 @@ export default function GruposScreen() {
 
 	const getTypeColor = (type: string) => {
 		switch (type) {
-			case 'online':
+			case 'virtual':
 				return Colors.light.tint;
 			case 'in-person':
 				return Colors.containers.blueLight;
-			case 'hybrid':
-				return Colors.light.tint;
 			default:
 				return Colors.icon.gray;
 		}
 	};
 
-	// Early return if auth is still loading
 	if (auth.isLoading) {
 		return (
 			<SafeAreaView style={[styles.container, { paddingTop: 50 }]}>
@@ -247,32 +177,46 @@ export default function GruposScreen() {
 					/>
 					<Text style={styles.emptyTitle}>Nenhum grupo adicionado</Text>
 					<Text style={styles.emptySubtitle}>
-						Adicione grupos para começar
+						Adicione grupos para começar a receber notificações
 					</Text>
-					<TouchableOpacity style={styles.addButton} onPress={handleAddGroup}>
+					<TouchableOpacity style={styles.addButton} onPress={() => router.push('/services')}>
 						<MaterialCommunityIcons name="plus" size={18} color="#FFFFFF" />
 						<Text style={styles.addButtonText}>Adicionar grupo</Text>
 					</TouchableOpacity>
 				</View>
 			) : (
-				<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+				<ScrollView
+					style={[styles.content, { paddingBottom: 20 + insets.bottom }]}
+					showsVerticalScrollIndicator={false}
+				>
 					{groups.map((group) => (
 						<TouchableOpacity
-							key={group.groupId}
+							key={group.id}
 							style={styles.groupCard}
-							onPress={() => router.push(`/group-detail/${group.groupId}` as any)}
+							onPress={() => router.push({
+								pathname: '/group-detail/[id]',
+								params: { id: group.id }
+							})}
 							activeOpacity={0.8}
 						>
 							<View style={styles.cardContent}>
 								<View style={styles.mainInfo}>
 									<View style={styles.groupHeader}>
-										<Text style={styles.groupName}>{group.groupName || (group as any)['name']}</Text>
-										<View style={styles.distanceInfo}>
+										<Text style={styles.groupName}>{group.name}</Text>
+										{/* <View style={styles.distanceInfo}>
 											<MaterialCommunityIcons name="map-marker-distance" size={12} color={Colors.icon.gray} />
 											<Text style={styles.distanceText}>{group.distance}</Text>
-										</View>
+										</View> */}
 									</View>
-									<Text style={styles.groupAddress}>{group.address || (group as any)['local']}</Text>
+									{group.address.street && (
+										<Text style={styles.groupAddress}>{group.address.street}, {group.address.number || 'S/N'}</Text>
+									)}
+									{group.address.city && (
+										<Text style={styles.groupAddress}>{group.address.city}</Text>
+									)}
+									{group.address.neighborhood && (
+										<Text style={styles.groupAddress}>{group.address.neighborhood}</Text>
+									)}
 								</View>
 
 								<View style={styles.cardActions}>
@@ -283,10 +227,7 @@ export default function GruposScreen() {
 											color="#FFFFFF"
 										/>
 										<Text style={styles.typeText}>
-											{group.type === 'online' ? 'Online' :
-												group.type === 'in-person' ? 'Presencial' :
-												group.type === 'hybrid' ? 'Híbrido' :
-												(group.type || 'Híbrido')}
+											{group.type === 'virtual' ? 'Online' : 'Presencial'}
 										</Text>
 									</View>
 
@@ -294,7 +235,7 @@ export default function GruposScreen() {
 										style={styles.notificationButton}
 										onPress={(e) => {
 											e.stopPropagation();
-											handleNotificationToggle(group.groupId, !group.notificationsEnabled);
+											handleNotificationToggle(group.id, !group.notificationsEnabled);
 										}}
 									>
 										<MaterialCommunityIcons
