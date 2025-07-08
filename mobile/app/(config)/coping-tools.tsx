@@ -4,6 +4,7 @@ import { Colors } from '@/mobile/constants/Colors';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useState, useRef } from 'react';
+import { ChevronLeft } from 'lucide-react-native';
 
 const CopingToolsScreen = () => {
 	const [activeExercise, setActiveExercise] = useState<string | null>(null);
@@ -52,7 +53,7 @@ const CopingToolsScreen = () => {
 
 	const renderBreathingExercise = () => (
 		<View style={styles.exerciseContainer}>
-			<Text style={styles.exerciseTitle}>Exercício de Respiração 4-7-8</Text>
+			<Text style={styles.exerciseTitle}>Exercício de respiração 4-7-8</Text>
 			<Text style={styles.exerciseSubtitle}>
 				Inspire por 4 segundos, segure por 7, expire por 8
 			</Text>
@@ -127,11 +128,14 @@ const CopingToolsScreen = () => {
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
-				<TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-					<Ionicons name="arrow-back" size={24} color={Colors.light.text} />
-				</TouchableOpacity>
-				<Text style={styles.headerTitle}>Ferramentas de Coping</Text>
-				<View style={styles.headerSpacer} />
+				<View style={styles.headerRow}>
+					<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+						<ChevronLeft size={24} color={Colors.icon.gray} />
+					</TouchableOpacity>
+					<View style={styles.titleContainer}>
+						<Text style={styles.title}>Ferramentas de coping</Text>
+					</View>
+				</View>
 			</View>
 
 			{activeExercise ? (
@@ -142,7 +146,7 @@ const CopingToolsScreen = () => {
 			) : (
 				<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
 					<View style={styles.section}>
-						<Text style={styles.sectionTitle}>Ferramentas Disponíveis</Text>
+						<Text style={styles.sectionTitle}>Ferramentas disponíveis</Text>
 						<Text style={styles.sectionSubtitle}>
 							Escolha uma ferramenta para ajudar você a lidar com momentos difíceis
 						</Text>
@@ -157,7 +161,7 @@ const CopingToolsScreen = () => {
 								<Ionicons name="leaf" size={24} color="#4CAF50" />
 							</View>
 							<View style={styles.toolInfo}>
-								<Text style={styles.toolTitle}>Exercício de Respiração 4-7-8</Text>
+								<Text style={styles.toolTitle}>Exercício de respiração 4-7-8</Text>
 								<Text style={styles.toolDescription}>
 									Técnica de respiração para acalmar a mente e reduzir a ansiedade
 								</Text>
@@ -185,7 +189,7 @@ const CopingToolsScreen = () => {
 					</TouchableOpacity>
 
 					<View style={styles.infoSection}>
-						<Text style={styles.infoTitle}>Dicas Importantes</Text>
+						<Text style={styles.infoTitle}>Dicas importantes</Text>
 						<View style={styles.infoCard}>
 							<Ionicons name="information-circle" size={20} color={Colors.light.tint} />
 							<Text style={styles.infoText}>
@@ -213,11 +217,11 @@ const styles = StyleSheet.create({
 	header: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		padding: 20,
-		paddingBottom: 10,
+		paddingTop: 16,
+		paddingHorizontal: 20,
 	},
 	backButton: {
-		padding: 4,
+		paddingRight: 8
 	},
 	headerTitle: {
 		fontSize: 20,
@@ -264,6 +268,7 @@ const styles = StyleSheet.create({
 	toolCardContent: {
 		flexDirection: 'row',
 		alignItems: 'center',
+		gap: 16,
 	},
 	toolIconContainer: {
 		width: 48,
@@ -272,7 +277,6 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.lightGray,
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginRight: 16,
 	},
 	toolInfo: {
 		flex: 1,
@@ -400,6 +404,19 @@ const styles = StyleSheet.create({
 		marginLeft: 12,
 		flex: 1,
 		lineHeight: 20,
+	},
+	headerRow: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	titleContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	title: {
+		fontSize: 20,
+		fontWeight: 'bold',
+		color: Colors.light.text,
 	},
 });
 

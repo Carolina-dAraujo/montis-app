@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput, Alert, FlatList } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput, Alert, FlatList, Image } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '@/mobile/constants/Colors';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { ChevronLeft } from 'lucide-react-native';
 import { useState } from 'react';
 
 interface EmergencyContact {
@@ -14,6 +15,7 @@ interface EmergencyContact {
 }
 
 const EmergencyContactsScreen = () => {
+    const insets = useSafeAreaInsets();
     const [contacts, setContacts] = useState<EmergencyContact[]>([
         {
             id: '1',
@@ -115,11 +117,15 @@ const EmergencyContactsScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-                    <Ionicons name="arrow-back" size={24} color={Colors.light.text} />
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>Contatos de Emergência</Text>
-                <View style={styles.headerSpacer} />
+                <View style={styles.headerRow}>
+                    <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+                        <ChevronLeft size={24} color={Colors.icon.gray} />
+                    </TouchableOpacity>
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.title}>Contatos de Emergência</Text>
+                    </View>
+                    <View style={{ width: 24 }} />
+                </View>
             </View>
 
             <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -231,24 +237,30 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.light.background,
     },
     header: {
+        paddingBottom: 16,
+        paddingHorizontal: 20,
+    },
+    headerRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 20,
-        paddingBottom: 10,
     },
     backButton: {
-        padding: 4,
+        paddingRight: 8,
+        paddingVertical: 8,
     },
-    headerTitle: {
+    title: {
         fontSize: 20,
         fontWeight: 'bold',
         color: Colors.light.text,
-        flex: 1,
-        textAlign: 'center',
-        marginHorizontal: 16,
     },
-    headerSpacer: {
-        width: 32,
+    titleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    serviceIcon: {
+        width: 24,
+        height: 24,
+        marginRight: 8,
     },
     content: {
         flex: 1,
@@ -400,7 +412,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     addButton: {
-        backgroundColor: Colors.light.tint,
+        backgroundColor: Colors.containers.blue,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',

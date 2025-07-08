@@ -4,6 +4,7 @@ import { Colors } from '@/mobile/constants/Colors';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
+import { ChevronLeft } from 'lucide-react-native';
 
 interface CrisisEntry {
     id: string;
@@ -160,11 +161,14 @@ const CrisisLogScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-                    <Ionicons name="arrow-back" size={24} color={Colors.light.text} />
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>Registro de Crise</Text>
-                <View style={styles.headerSpacer} />
+                <View style={styles.headerRow}>
+                    <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+                        <ChevronLeft size={24} color={Colors.icon.gray} />
+                    </TouchableOpacity>
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.title}>Registro de crise</Text>
+                    </View>
+                </View>
             </View>
 
             <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -317,11 +321,12 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 20,
-        paddingBottom: 10,
+        paddingHorizontal: 20,
+        paddingTop: 16,
     },
     backButton: {
-        padding: 4,
+        paddingRight: 8,
+        paddingVertical: 8,
     },
     headerTitle: {
         fontSize: 20,
@@ -567,6 +572,20 @@ const styles = StyleSheet.create({
         marginLeft: 12,
         flex: 1,
         lineHeight: 20,
+    },
+    headerRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8
+    },
+    titleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: Colors.light.text,
     },
 });
 
