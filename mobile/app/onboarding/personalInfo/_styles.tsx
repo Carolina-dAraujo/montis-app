@@ -19,6 +19,9 @@ export const styles = StyleSheet.create({
 	backIconContainer: {
 		paddingTop: 8,
 	},
+	backButton: {
+		padding: 8,
+	},
 	titleContainer: {
 		flex: 1,
 		alignItems: 'center',
@@ -50,5 +53,14 @@ export const styles = StyleSheet.create({
 	},
     inputContainer: {
         gap: 8,
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: Colors.input,
+        borderRadius: 8,
+        padding: 12,
+        fontSize: 16,
+        backgroundColor: Colors.light.background,
+        color: Colors.light.text,
     },
 });

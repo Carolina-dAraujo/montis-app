@@ -11,7 +11,7 @@ export class FirebaseService implements OnModuleInit {
 	private firebaseApp: firebaseAdmin.app.App;
 	private database: firebaseAdmin.database.Database;
 
-	constructor(private configService: ConfigService) {}
+	constructor(private configService: ConfigService) { }
 
 	onModuleInit() {
 		if (!firebaseAdmin.apps.length) {
@@ -22,8 +22,7 @@ export class FirebaseService implements OnModuleInit {
 		} else {
 			this.firebaseApp = firebaseAdmin.app();
 		}
-		
-		// Initialize Realtime Database
+
 		this.database = this.firebaseApp.database();
 	}
 
@@ -99,11 +98,8 @@ export class FirebaseService implements OnModuleInit {
 
 	async updateUser(uid: string, properties: UpdateRequest): Promise<UserRecord> {
 		try {
-			console.log('FirebaseService - Updating user:', uid);
-			console.log('FirebaseService - Properties:', properties);
-			
 			const result = await this.firebaseApp.auth().updateUser(uid, properties);
-			console.log('FirebaseService - Update successful:', result.uid);
+
 			return result;
 		} catch (error) {
 			console.error('FirebaseService - Update user error:', {
@@ -182,14 +178,11 @@ export class FirebaseService implements OnModuleInit {
 		}
 	}
 
-	// Realtime Database Methods
 	async saveUserData(uid: string, data: any, path: string = ''): Promise<void> {
 		try {
 			const ref = this.database.ref(`users/${uid}${path ? '/' + path : ''}`);
 			await ref.set(data);
-			console.log(`FirebaseService - Saved user data for ${uid} at path: ${path}`);
 		} catch (error) {
-			console.error('FirebaseService - Save user data error:', error);
 			throw error;
 		}
 	}
@@ -199,10 +192,9 @@ export class FirebaseService implements OnModuleInit {
 			const ref = this.database.ref(`users/${uid}${path ? '/' + path : ''}`);
 			const snapshot = await ref.once('value');
 			const data = snapshot.val();
-			console.log(`FirebaseService - Retrieved user data for ${uid} at path: ${path}`);
+
 			return data;
 		} catch (error) {
-			console.error('FirebaseService - Get user data error:', error);
 			throw error;
 		}
 	}
@@ -211,9 +203,7 @@ export class FirebaseService implements OnModuleInit {
 		try {
 			const ref = this.database.ref(`users/${uid}${path ? '/' + path : ''}`);
 			await ref.update(data);
-			console.log(`FirebaseService - Updated user data for ${uid} at path: ${path}`);
 		} catch (error) {
-			console.error('FirebaseService - Update user data error:', error);
 			throw error;
 		}
 	}
@@ -222,9 +212,7 @@ export class FirebaseService implements OnModuleInit {
 		try {
 			const ref = this.database.ref(`users/${uid}${path ? '/' + path : ''}`);
 			await ref.remove();
-			console.log(`FirebaseService - Deleted user data for ${uid} at path: ${path}`);
 		} catch (error) {
-			console.error('FirebaseService - Delete user data error:', error);
 			throw error;
 		}
 	}
@@ -255,5 +243,16 @@ export class FirebaseService implements OnModuleInit {
 
 	async getPreferences(uid: string): Promise<any> {
 		return await this.getUserData(uid, 'preferences');
+	}
+
+	async getData(path: string): Promise<any> {
+		try {
+			const ref = this.database.ref(path);
+			const snapshot = await ref.once('value');
+
+			return snapshot.val();
+		} catch (error) {
+			throw error;
+		}
 	}
 }

@@ -57,6 +57,9 @@ export default function CompletionScreen() {
 				notificationFrequency: onboardingData.notificationFrequency!,
 				crisisSupport: onboardingData.crisisSupport!,
 				shareProgress: onboardingData.shareProgress!,
+				address: onboardingData.address,
+				city: onboardingData.city,
+				neighborhood: onboardingData.neighborhood,
 			};
 
 			if (onboardingData.sobrietyStartDate) {
@@ -147,6 +150,18 @@ export default function CompletionScreen() {
 					<View style={styles.infoRow}>
 						<Text style={styles.infoLabel}>Data de nascimento:</Text>
 						<Text style={styles.infoValue}>{formatDate(onboardingData.birthDate)}</Text>
+					</View>
+					<View style={styles.infoRow}>
+						<Text style={styles.infoLabel}>Endereço:</Text>
+						<Text style={styles.infoValue}>{onboardingData.address || 'Não informado'}</Text>
+					</View>
+					<View style={styles.infoRow}>
+						<Text style={styles.infoLabel}>Cidade:</Text>
+						<Text style={styles.infoValue}>{onboardingData.city || 'Não informado'}</Text>
+					</View>
+					<View style={styles.infoRow}>
+						<Text style={styles.infoLabel}>Bairro:</Text>
+						<Text style={styles.infoValue}>{onboardingData.neighborhood || 'Não informado'}</Text>
 					</View>
 				</View>
 

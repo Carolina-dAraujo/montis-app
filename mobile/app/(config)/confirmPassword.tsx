@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
 import { Colors } from '@/mobile/constants/Colors';
-import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
+import { ChevronLeft } from 'lucide-react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { PasswordInput } from '@/mobile/components/inputs/PasswordInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -35,7 +35,9 @@ export default function ConfirmPasswordScreen() {
 			<View style={styles.header}>
 				<View style={styles.headerRow}>
 					<View style={styles.backIconContainer}>
-						<ChevronLeft onPress={() => router.back()} />
+						<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+					<ChevronLeft size={24} color={Colors.icon.gray} />
+				</TouchableOpacity>
 					</View>
 					<View style={styles.titleContainer}>
 						<Text style={styles.title}>Confirme sua senha</Text>
@@ -80,6 +82,9 @@ const styles = StyleSheet.create({
 	},
 	backIconContainer: {
 		paddingTop: 8,
+	},
+	backButton: {
+		padding: 8,
 	},
 	titleContainer: {
 		flex: 1,

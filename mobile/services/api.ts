@@ -52,6 +52,9 @@ export interface OnboardingRequest {
     notificationFrequency: 'daily' | 'weekly' | 'monthly' | 'never';
     crisisSupport: boolean;
     shareProgress: boolean;
+    address?: string;
+    city?: string;
+    neighborhood?: string;
 }
 
 export interface PreferencesRequest {
@@ -83,11 +86,17 @@ export interface ApiError {
 }
 
 class ApiService {
+    baseUrl: string;
+
+    constructor() {
+        this.baseUrl = API_BASE_URL;
+    }
+
     private async makeRequest<T>(
         endpoint: string,
         options: RequestInit = {}
     ): Promise<T> {
-        const url = `${API_BASE_URL}${endpoint}`;
+        const url = `${this.baseUrl}${endpoint}`;
 
         const defaultOptions: RequestInit = {
             headers: {
@@ -105,16 +114,16 @@ class ApiService {
                 },
             });
 
+
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({ message: 'Network error' }));
-                console.error('API Error response:', errorData);
                 throw new Error(errorData.message || `HTTP ${response.status}`);
             }
 
             const data = await response.json();
             return data;
         } catch (error) {
-            console.error('API Request failed:', error);
+            console.error('[API DEBUG] Request failed:', error);
             if (error instanceof TypeError && error.message.includes('Network request failed')) {
                 throw new Error('Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.');
             }
@@ -195,17 +204,13 @@ class ApiService {
 
     async checkOnboardingStatus(token: string): Promise<{ onboardingCompleted: boolean }> {
         try {
-            // Call a new endpoint to check onboarding status
             const response = await this.makeAuthenticatedRequest<{ onboardingCompleted: boolean }>('/auth/onboarding/status', token, {
                 method: 'GET',
             });
             return response;
         } catch (error) {
-            // If endpoint doesn't exist yet, fall back to profile check
             try {
                 const profile = await this.getProfile(token);
-                // For now, assume if we can get a profile, onboarding is complete
-                // In the future, the profile will include an onboardingCompleted field
                 return { onboardingCompleted: true };
             } catch (profileError) {
                 return { onboardingCompleted: false };
@@ -287,6 +292,91 @@ class ApiService {
             throw error;
         }
     }
+
+    async addAAGroup(token: string, groupData: {
+        groupId: string;
+        notificationsEnabled: boolean;
+    }): Promise<{
+        message: string;
+        groupId: string;
+        addedAt: string;
+    }> {
+        try {
+            const result = await this.makeAuthenticatedRequest<any>('/groups/add-aa-group', token, {
+                method: 'POST',
+                body: JSON.stringify(groupData),
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - addAAGroup error:', error);
+            throw error;
+        }
+    }
+
+    async getUserGroups(token: string): Promise<Array<{
+        groupId: string;
+        groupName: string;
+        type: string;
+        address: string;
+        phone: string;
+        schedule: string;
+        distance: string;
+        meetingSchedules: Array<{ day: string; time: string; enabled: boolean }>;
+        notificationsEnabled: boolean;
+        addedAt: string;
+    }>> {
+        try {
+            const result = await this.makeAuthenticatedRequest<any>('/groups/user-groups', token, {
+                method: 'GET',
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - getUserGroups error:', error);
+            throw error;
+        }
+    }
+
+    async updateGroupNotifications(token: string, groupId: string, notificationsEnabled: boolean): Promise<{ message: string }> {
+        try {
+            const result = await this.makeAuthenticatedRequest<{ message: string }>(`/groups/group/${groupId}/notifications`, token, {
+                method: 'PUT',
+                body: JSON.stringify({ notificationsEnabled }),
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - updateGroupNotifications error:', error);
+            throw error;
+        }
+    }
+
+    async updateMeetingSchedules(token: string, groupId: string, meetingSchedules: Array<{ day: string; time: string; enabled: boolean }>): Promise<{ message: string }> {
+        try {
+            const result = await this.makeAuthenticatedRequest<{ message: string }>(`/groups/group/${groupId}/schedules`, token, {
+                method: 'PUT',
+                body: JSON.stringify({ meetingSchedules }),
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - updateMeetingSchedules error:', error);
+            throw error;
+        }
+    }
+
+    async getAllAAGroups(): Promise<any[]> {
+        try {
+            const result = await this.makeRequest<any[]>('/groups/all-aa-groups');
+            return result;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async addUserGroup(token: string, groupId: string, notificationsEnabled = false): Promise<any> {
+        return this.makeAuthenticatedRequest('/groups/add-aa-group', token, {
+            method: 'POST',
+            body: JSON.stringify({ groupId, notificationsEnabled }),
+        });
+    }
 }
 
-export const apiService = new ApiService(); 
+export const apiService = new ApiService();

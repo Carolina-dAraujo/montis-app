@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { ConfigCard } from '@/mobile/components/config/ConfigCard';
 import { Colors } from '@/mobile/constants/Colors';
-import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
+import { ChevronLeft } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -13,7 +13,9 @@ export default function ConfigScreen() {
 			<View style={styles.header}>
 				<View style={styles.headerRow}>
 					<View style={styles.backIconContainer}>
-						<ChevronLeft onPress={() => router.back()} />
+						<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+					<ChevronLeft size={24} color={Colors.icon.gray} />
+				</TouchableOpacity>
 					</View>
 					<View style={styles.titleContainer}>
 						<Text style={styles.title}>Configurações</Text>
@@ -54,14 +56,19 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		paddingBottom: 28,
+		paddingHorizontal: 20,
 	},
 	headerRow: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		gap: 12,
+		gap: 8,
 	},
 	backIconContainer: {
 		paddingTop: 8,
+	},
+	backButton: {
+		paddingRight: 8,
+		paddingVertical: 8
 	},
 	titleContainer: {
 		paddingTop: 8,

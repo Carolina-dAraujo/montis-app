@@ -19,4 +19,8 @@ export const WELCOME_TEXT = {
     message: 'Seu companheiro de confiança na jornada de sobriedade',
 }
 
-export const INTRO_TEXT = 'Sabemos que cada jornada é única. O Montis está aqui para apoiar você em cada passo, oferecendo ferramentas personalizadas e suporte quando você mais precisar.' 
+export const INTRO_TEXT = 'Sabemos que cada jornada é única. O Montis está aqui para apoiar você em cada passo, oferecendo ferramentas personalizadas e suporte quando você mais precisar.'
+
+export const USE_TERM = 'Ao usar nossos serviços, você concorda com os seguintes termos: você não deve utilizar o app para fins ilegais, ou comerciais; nos reservamos o direito de modificar ou encerrar o serviço a qualquer momento; não garantimos que o app será livre de erros ou interrupções.'
+
+export const PRIVACY_POLICIES = 'Respeitamos sua privacidade. Coletamos apenas as informações necessárias para melhorar sua experiência. Seus dados não serão compartilhados com terceiros sem consentimento. Você pode solicitar a exclusão dos seus dados a qualquer momento.'

@@ -17,6 +17,9 @@ export const styles = StyleSheet.create({
 	backIconContainer: {
 		paddingTop: 8,
 	},
+	backButton: {
+		padding: 8,
+	},
 	titleContainer: {
 		flex: 1,
 		alignItems: 'center',

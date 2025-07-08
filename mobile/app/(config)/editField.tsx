@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Pressable, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, Pressable, TextInput, Alert, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Colors } from '@/mobile/constants/Colors';
-import { ChevronLeft } from '@/mobile/components/icons/ChevronLeft';
+import { ChevronLeft } from 'lucide-react-native';
 import { NameInput, validateName } from '@/mobile/components/inputs/NameInput';
 import { PhoneInput, validatePhone } from '@/mobile/components/inputs/PhoneInput';
 import { EmailInput, validateEmail } from '@/mobile/components/inputs/EmailInput';
@@ -162,7 +162,9 @@ export default function EditFieldScreen() {
 			<View style={styles.header}>
 				<View style={styles.headerRow}>
 					<View style={styles.backIconContainer}>
-						<ChevronLeft onPress={() => router.back()} />
+						<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+					<ChevronLeft size={24} color={Colors.icon.gray} />
+				</TouchableOpacity>
 					</View>
 					<View style={styles.titleContainer}>
 						<Text style={styles.title}>{title}</Text>
@@ -202,6 +204,9 @@ const styles = StyleSheet.create({
 	},
 	backIconContainer: {
 		paddingTop: 8,
+	},
+	backButton: {
+		padding: 8,
 	},
 	titleContainer: {
 		flex: 1,

@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, Text, Pressable, Animated } from 'react-native';
+import { View, Text, Pressable, Animated, Modal } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './_styles';
-import { FEATURES, WELCOME_TEXT, INTRO_TEXT } from './_constants';
+import { FEATURES, WELCOME_TEXT, INTRO_TEXT} from './_constants';
 
 export default function WelcomeScreen() {
 	const router = useRouter();
@@ -116,10 +116,13 @@ export default function WelcomeScreen() {
 						<Text style={styles.buttonText}>Começar minha jornada</Text>
 					</Pressable>
 					<Text style={styles.privacyText}>
-						Ao continuar, você concorda com nossos <Text style={styles.link}>Termos de Uso</Text> e <Text style={styles.link}>Política de Privacidade</Text>
+						Ao continuar, você concorda com nossos{' '}
+						<Text style={styles.link} onPress={() => router.push('/legal/terms')}>Termos de Uso</Text> e{' '}
+						<Text style={styles.link} onPress={() => router.push('/legal/privacy')}>Política de Privacidade</Text>.
 					</Text>
 				</View>
 			</Animated.View>
+
 		</SafeAreaView>
 	);
 }

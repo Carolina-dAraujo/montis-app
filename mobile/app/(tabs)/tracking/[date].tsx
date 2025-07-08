@@ -1,10 +1,11 @@
 import TrackingSection from '@/mobile/components/daily-tracking/tracking-section';
-import { ChevronLeft } from "@/mobile/components/icons/ChevronLeft";
+import { ChevronLeft } from "lucide-react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { Dumbbell, Frown, Heart, Laptop, Meh, Smile, Wine, WineOff } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from '@/mobile/constants/Colors';
 
 const WEEKDAYS = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 
@@ -114,7 +115,9 @@ export default function TrackingScreen() {
                         onPress={() => router.push('/agenda')}
                         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                     >
-                        <ChevronLeft />
+                        				<TouchableOpacity style={styles.backButton}>
+					<ChevronLeft size={24} color={Colors.icon.gray} />
+				</TouchableOpacity>
                     </TouchableOpacity>
                     <Text style={styles.dateText} numberOfLines={2}>
                         {selectedDate.toDateString() === new Date().toDateString()
@@ -199,13 +202,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         minHeight: 48,
     },
-    backIconWrapper: {
-        width: 40,
-        height: 40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1,
-    },
+    	backIconWrapper: {
+		width: 40,
+		height: 40,
+		alignItems: 'center',
+		justifyContent: 'center',
+		zIndex: 1,
+	},
+	backButton: {
+		padding: 8,
+	},
     dateText: {
         flex: 1,
         textAlign: 'center',
