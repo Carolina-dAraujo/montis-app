@@ -276,10 +276,10 @@ const styles = StyleSheet.create({
         color: '#9CA3AF',
     },
     trackedDay: {
-        backgroundColor: '#60A5FA', // medium blue
+        backgroundColor: '#9CA3AF', // cinza médio
     },
     trackedDayText: {
-        color: '#fff',
+        color: '#FFFFFF',
         fontFamily: 'Inter-SemiBold',
     },
 });
