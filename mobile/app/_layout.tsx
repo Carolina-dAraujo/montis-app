@@ -22,6 +22,7 @@ const StackLayout = () => {
                     <Stack.Screen name="onboarding/completion" />
                     <Stack.Screen name="services/aa" />
                     <Stack.Screen name="services/caps" />
+                    <Stack.Screen name="(config)/add-emergency-contact" />
                 </Stack>
             </OnboardingProvider>
         </AuthProvider>

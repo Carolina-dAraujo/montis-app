@@ -134,11 +134,11 @@ const CrisisScreen = () => {
 						<Ionicons name="chevron-forward" size={16} color={Colors.light.icon} />
 					</TouchableOpacity>
 
-					<TouchableOpacity style={styles.actionCard} onPress={handleCrisisLog}>
+					{/* <TouchableOpacity style={styles.actionCard} onPress={handleCrisisLog}>
 						<Ionicons name="document-text" size={20} color={Colors.light.text} />
 						<Text style={styles.actionText}>Registro de crise</Text>
 						<Ionicons name="chevron-forward" size={16} color={Colors.light.icon} />
-					</TouchableOpacity>
+					</TouchableOpacity> */}
 				</View>
 
 
