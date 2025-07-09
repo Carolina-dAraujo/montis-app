@@ -7,25 +7,26 @@ import Entypo from '@expo/vector-icons/Entypo';
 import Foundation from '@expo/vector-icons/Foundation';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import type { IconProps } from '@expo/vector-icons/build/createIconSet';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const TabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation }) => {
     const { light } = Colors;
+    const insets = useSafeAreaInsets();
 
     const icons: Record<string, (props: Partial<IconProps<any>>) => JSX.Element> = {
         home: (props) => <Entypo name="home" size={26} {...props} />,
         grupos: (props) => <FontAwesome6 name="users" size={26} {...props} />,
         crise: (props) => <Foundation name="alert" size={30} {...props} />,
         agenda: (props) => <FontAwesome6 name="calendar-days" size={26} {...props} />,
-        ajuda: (props) => <FontAwesome6 name="hand-holding-medical" size={26} {...props} />,
+        services: (props) => <FontAwesome6 name="hand-holding-medical" size={26} {...props} />,
     };
 
-    // Only show the 5 main tabs
-    const visibleRoutes = state.routes.filter(route => 
-        ['home', 'grupos', 'crise', 'agenda', 'ajuda'].includes(route.name)
+    const visibleRoutes = state.routes.filter(route =>
+        ['home', 'grupos', 'crise', 'agenda', 'services'].includes(route.name)
     );
 
     return (
-        <View style={styles.tabbar}>
+        <View style={[styles.tabbar, { paddingBottom: insets.bottom + 15 }]}>
             {visibleRoutes.map((route, idx) => {
                 const { options } = descriptors[route.key];
                 const isFocused = state.index === idx;
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: Colors.light.background,
         marginHorizontal: 2,
-        paddingVertical: 15,
+        paddingTop: 15,
         borderCurve: 'continuous',
         borderTopWidth: 1,
         borderTopColor: Colors.light.shadow,

@@ -47,6 +47,8 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 }) => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+	const [isFocused, setIsFocused] = useState(false);
+	const [isConfirmFocused, setIsConfirmFocused] = useState(false);
 
 	return (
 		<View>
@@ -55,7 +57,11 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 			)}
 			<View style={styles.inputContainer}>
 				<TextInput
-					style={[styles.input, error && styles.inputError]}
+					style={[
+						styles.input,
+						error && styles.inputError,
+						isFocused && !error && styles.inputFocused
+					]}
 					value={value}
 					onChangeText={onChangeText}
 					placeholder={onConfirmChange ? 'Digite sua nova senha' : placeholder}
@@ -65,6 +71,8 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 					autoCapitalize="none"
 					autoCorrect={false}
 					autoFocus
+					onFocus={() => setIsFocused(true)}
+					onBlur={() => setIsFocused(false)}
 				/>
 				<Pressable onPress={() => setShowPassword(!showPassword)} style={styles.eyeButton}>
 					<MaterialCommunityIcons
@@ -79,7 +87,11 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 					<Text style={styles.description}>Confirme sua senha</Text>
 					<View style={styles.inputContainer}>
 						<TextInput
-							style={[styles.input, error && styles.inputError]}
+							style={[
+								styles.input,
+								error && styles.inputError,
+								isConfirmFocused && !error && styles.inputFocused
+							]}
 							value={confirmValue}
 							onChangeText={onConfirmChange}
 							placeholder="Digite sua senha novamente"
@@ -88,6 +100,8 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 							secureTextEntry={!showConfirmPassword}
 							autoCapitalize="none"
 							autoCorrect={false}
+							onFocus={() => setIsConfirmFocused(true)}
+							onBlur={() => setIsConfirmFocused(false)}
 						/>
 						<Pressable onPress={() => setShowConfirmPassword(!showConfirmPassword)} style={styles.eyeButton}>
 							<MaterialCommunityIcons
@@ -99,7 +113,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 					</View>
 				</View>
 			)}
-			{ onConfirmChange && (
+			{onConfirmChange && (
 				<View style={styles.passwordRules}>
 					<Text style={styles.rulesTitle}>Sua senha deve conter:</Text>
 					<View style={styles.ruleItem}>
@@ -133,11 +147,15 @@ const styles = StyleSheet.create({
 		flex: 1,
 		height: 48,
 		borderWidth: 1,
-		borderColor: Colors.containers.blue,
+		borderColor: Colors.light.shadow,
 		borderRadius: 8,
 		paddingHorizontal: 16,
 		fontSize: 16,
 		color: Colors.light.text,
+		backgroundColor: Colors.light.background,
+	},
+	inputFocused: {
+		borderColor: Colors.containers.blue,
 	},
 	inputError: {
 		borderColor: '#FF3B30',

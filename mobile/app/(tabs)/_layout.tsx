@@ -33,9 +33,9 @@ export default function TabLayout() {
                 }}
             />
             <Tabs.Screen
-                name="ajuda"
+                name="services"
                 options={{
-                    title: "Ajuda"
+                    title: "Serviços"
                 }}
             />
         </Tabs>

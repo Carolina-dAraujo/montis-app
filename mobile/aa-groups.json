@@ -1,0 +1,5971 @@
+{
+    "groups": [
+		{
+			"id": "grupo-encruzilhada",
+			"name": "Grupo Encruzilhada",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Encruzilhada",
+				"street": "Avenida João de Barros",
+				"number": "1769",
+				"cep": "52171011",
+				"place": "Escola Técnica Prof. Agamenon Magalhães - ETPAM",
+			},
+			"schedule": {
+				"wednesday": [
+					{
+						"start": "19:00",
+						"end": "21:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-espinheiro",
+			"name": "Grupo Espinheiro",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Aflitos",
+				"street": "Rua Conselheiro Portela",
+				"number": null,
+				"cep": "52021050",
+				"place": "Portão de acesso no lado esquerdo da Igreja - Anexo da Igreja Matriz do Espinheiro",
+			},
+			"schedule": {
+				"tuesday": [
+					{
+						"start": "19:00",
+						"end": "21:00"
+					}
+				],
+				"thursday": [
+					{
+						"start": "19:00",
+						"end": "21:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-quero-viver",
+			"name": "Grupo Quero Viver",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Avenida Governador Agamenon Magalhães",
+				"number": "1286",
+				"cep": "50030230",
+				"place": "Espaço Cultural Santo",
+			},
+			"schedule": {
+				"tuesday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-solidariedade",
+			"name": "Grupo Solidariedade",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Campo Grande",
+				"street": "Estrada de Belém",
+				"number": "848",
+				"cep": "52040000",
+				"place": "Igreja do Bom Parto Caixa Postal 51- Paulista",
+			},
+			"schedule": {
+				"saturday": [
+					{
+						"start": "19:00",
+						"end": "21:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-mangabeira",
+			"name": "Grupo Mangabeira",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Mangabeira",
+				"street": "Rua Nicéas Arco-Verde Gusmão",
+				"number": null,
+				"cep": "52110210",
+				"place": "Escola Municipal de Integral da Mangabeira",
+			},
+			"schedule": {
+				"sunday": [
+					{
+						"start": "10:00",
+						"end": "12:00"
+					}
+				],
+				"monday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				],
+				"thursday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-sio",
+			"name": "Grupo Sio",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Mangabeira",
+				"street": "Rua Maria Gonçalves",
+				"number": "56",
+				"cep": "52111230",
+				"place": "Circulo Operário da Mangabeira",
+			},
+			"schedule": {
+				"tuesday": [
+					{
+						"start": "20:00",
+						"end": "22:00"
+					}
+				],
+				"friday": [
+					{
+						"start": "20:00",
+						"end": "22:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-tradicional",
+			"name": "Grupo Tradicional",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Bomba do Hemetério",
+				"street": "Rua Chã de Alegria",
+				"number": "117",
+				"cep": "52211130",
+				"place": "Escola Prof. Mardonio de Andrade Lima Coelho",
+			},
+			"schedule": {
+				"saturday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-triunfo",
+			"name": "Grupo Triunfo",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Água Fria",
+				"street": "Avenida Beberibe",
+				"number": "2131",
+				"cep": "52130000",
+				"place": "ASSOCIAÇÃO DOS MORADORES DE FUNDÃO",
+			},
+			"schedule": {
+				"saturday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-ultima-gota",
+			"name": "Grupo Última Gota",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Bomba do Hemetério",
+				"street": "Rua Córrego João Francisco",
+				"number": "283",
+				"cep": "52171011",
+				"place": "Igreja São Francisco de Assis"
+			},
+			"schedule": {
+				"wednesday": [
+					{
+						"start": "19:00",
+						"end": "21:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-lutadores-do-bem",
+			"name": "Grupo Lutadores do Bem",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Rua Severina Santana Pedrosa",
+				"number": "249",
+				"cep": "50110191",
+				"place": "Rua da Bola"
+			},
+			"schedule": {
+				"sunday": [
+					{
+						"start": "10:00",
+						"end": "12:00"
+					}
+				],
+				"thursday": [
+					{
+						"start": "20:00",
+						"end": "22:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-frei-cassimiro",
+			"name": "Grupo Frei Cassimiro",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Rua Severina Santana Pedrosa",
+				"number": "249",
+				"cep": "50110191",
+				"place": "Rua da Bola"
+			},
+			"schedule": {
+				"sunday": [
+					{
+						"start": "16:00",
+						"end": "18:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-simplicidade",
+			"name": "Grupo Simplicidade",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Rua Severina Santana Pedrosa",
+				"number": "249",
+				"cep": "50110191",
+				"place": "Rua da Bola"
+			},
+			"schedule": {
+				"sunday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-santo-amaro",
+			"name": "Grupo Santo Amaro",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Rua Severina Santana Pedrosa",
+				"number": "249",
+				"cep": "50110191",
+				"place": "Rua da Bola"
+			},
+			"schedule": {
+				"wednesday": [
+					{
+						"start": "20:00",
+						"end": "22:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-tiradente",
+			"name": "Grupo Tiradente",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Rua Severina Santana Pedrosa",
+				"number": "249",
+				"cep": "50110191",
+				"place": "Rua da Bola"
+			},
+			"schedule": {
+				"monday": [
+					{
+						"start": "20:00",
+						"end": "22:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-sempre-alerta",
+			"name": "Grupo Sempre Alerta",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Alto José do Pinho",
+				"street": "Rua Acaiaca",
+				"number": "70",
+				"cep": "52210240",
+				"place": "Escola Municipal de Integral da Mangabeira"
+			},
+			"schedule": {
+				"sunday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				],
+				"wednesday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				],
+				"saturday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		}
+    ]
+}
+
+[
+  {
+    "city": "Abaré",
+    "name": "GRUPO RENASCER DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Rua Nicolau Tolentino, sn #7682 - Área 06 - PE - DISTRITO 18 SERTÃO II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "online": false,
+    "id": "1"
+  },
+  {
+    "city": "Abreu E Lima",
+    "name": "GRUPO CAETES VELHO DE A. A.",
+    "neighborhood": "Planalto",
+    "address": "Rua Caruaru, 749 Centro Cultural Maria de Jesus #4735 - Área 06 - PE - DISTRITO 23 ABREU E LIMA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "2"
+  },
+  {
+    "city": "Abreu E Lima",
+    "name": "GRUPO PLANALTO DE A. A.",
+    "neighborhood": "Planalto",
+    "address": "Rua Caruaru, 749 Centro Cultural Maria de Jesus #4737 - Área 06 - PE - DISTRITO 23 ABREU E LIMA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "3"
+  },
+  {
+    "city": "Abreu E Lima",
+    "name": "GRUPO VOU FICAR DE A. A.",
+    "neighborhood": "Caetés I",
+    "address": "Avenida D, 353 Escola Municipal Eberson Santos de Meirelles #6518 - Área 06 - PE - DISTRITO 23 ABREU E LIMA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "4"
+  },
+  {
+    "city": "Abreu e Lima",
+    "name": "GRUPO ABREU E LIMA DE A. A.",
+    "neighborhood": "Jardim Caetés",
+    "address": "Rua Torres Galvão, 277 #4736 - Área 06 - PE - DISTRITO 23 ABREU E LIMA",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "5"
+  },
+  {
+    "city": "Abreu e Lima",
+    "name": "GRUPO CAETÉS II DE A. A.",
+    "neighborhood": "Jardim Caetés",
+    "address": "Rua Torres Galvão,277 #4841 - Área 06 - PE - DISTRITO 23 ABREU E LIMA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "6"
+  },
+  {
+    "city": "Abreu e Lima",
+    "name": "GRUPO MATINHA DE A. A.",
+    "neighborhood": "Desterro",
+    "address": "Rua Sao Bento, 22 Primeira Portaria do Conjunto Residencial Josefa do Carmo Muliterno #4839 - Área 06 - PE - DISTRITO 23 ABREU E LIMA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "7"
+  },
+  {
+    "city": "Afogados da Ingazeira",
+    "name": "GRUPO FONTE DE LUZ DE A. A.",
+    "neighborhood": "São Francisco",
+    "address": "Rua Sete de Setembro, 277 #5224 - Área 06 - PE - DISTRITO 29 MEDIO ALTO PAJEÚ",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "8"
+  },
+  {
+    "city": "Araripina",
+    "name": "GRUPO RENASCER DE A. A.",
+    "neighborhood": "Distrito de Nascente",
+    "address": "Rua Santa Rita, 108 name Escolar Virgílio Coelho-Nascente #6690 - Área 06 - PE - DISTRITO 21 SERTÃO IV",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "9"
+  },
+  {
+    "city": "Araçoiaba",
+    "name": "GRUPO ARAÇOIABA DE A A",
+    "neighborhood": "centro",
+    "address": "Rua Armando Rabêlo Filho, 100 #5827 - Área 06 - PE - DISTRITO 33 CENTRAL IGARASSU",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "online": false,
+    "id": "10"
+  },
+  {
+    "city": "Arcoverde",
+    "name": "GRUPO ESPERANÇA DE A. A.",
+    "neighborhood": "Sao Cristovao",
+    "address": "R. José Estrela de Souza, 2 #5199 - Área 06 - PE - DISTRITO 27 - PORTAL DO SERTÃO",
+    "monday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "11"
+  },
+  {
+    "city": "Arcoverde",
+    "name": "GRUPO RIACHO DO MEIO DE A. A.",
+    "neighborhood": "Zona Rural",
+    "address": "Estrada Povoado Riacho do Meio, 200 Igreja Católica dos Vicentinos #6687 - Área 06 - PE - DISTRITO 27 - PORTAL DO SERTÃO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "12"
+  },
+  {
+    "city": "Arcoverde",
+    "name": "GRUPO SÃO CRISTOVÃO DE A. A.",
+    "neighborhood": "São Cristovão",
+    "address": "Av. Dr. Leonardo Arcoverde, 742 #5202 - Área 06 - PE - DISTRITO 27 - PORTAL DO SERTÃO",
+    "monday": null,
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "13"
+  },
+  {
+    "city": "Belém de São Francisco",
+    "name": "GRUPO NOVA VIDA DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Rua João XXIII, 1 Creche Tia Zita #6857 - Área 06 - PE - DISTRITO 19 SERTÃO III",
+    "monday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "14"
+  },
+  {
+    "city": "Bodocó",
+    "name": "GRUPO CLARANÃ DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Rua Pe. Félix Barreto, s/n Salão dos Vicetinos #6693 - Área 06 - PE - DISTRITO 21 SERTÃO IV",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "15"
+  },
+  {
+    "city": "Bom Conselho",
+    "name": "GRUPO PAPA CAÇA DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Travessa São Sebastião, 45 #5200 - Área 06 - PE - DISTRITO 17 AGRESTE MERIDIONAL GARANHUNS",
+    "monday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "16"
+  },
+  {
+    "city": "Brejinho",
+    "name": "AMOR A VIDA",
+    "neighborhood": "Centro",
+    "address": "Rua José Gomes, 64 #7801 - Área 06 - PE - DISTRITO 39 SÃO JOSÉ DO EGITO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "17"
+  },
+  {
+    "city": "Brejo da Madre de Deus",
+    "name": "GRUPO VALE DA SERRA DE A.A.",
+    "neighborhood": "Sítio Estrago",
+    "address": "PE-145, 14 Associação Viver a Vida na Comunidade da Balança #8155 - Área 06 - PE - DISTRITO 31 SANTA CRUZ DO CAPIBARIBE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "18"
+  },
+  {
+    "city": "Cabo de Santo Agostinho",
+    "name": "GRUPO 08 DE MARÇO DE A. A.",
+    "neighborhood": "Nazare",
+    "address": "Rua Sitio Areal, 1498 SUBIDA DE SUAPE 1ª GUARITA A DIREITA #2338 - Área 06 - PE - DISTRITO 34 SUL IV CABO",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "19"
+  },
+  {
+    "city": "Cabo de Santo Agostinho",
+    "name": "GRUPO ABRAHAM LINCOLN DE A. A.",
+    "neighborhood": "Centro",
+    "address": "R. Dr. Antônio de Souza Leão, 115 Igeja do Livramento #2321 - Área 06 - PE - DISTRITO 34 SUL IV CABO",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "20"
+  },
+  {
+    "city": "Cabo de Santo Agostinho",
+    "name": "GRUPO BOM CONSELHO DE A. A.",
+    "neighborhood": "Pontes do Carvalhos",
+    "address": "Travessa da Esperança, 54 #2339 - Área 06 - PE - DISTRITO 34 SUL IV CABO",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "21"
+  },
+  {
+    "city": "Cabrobo",
+    "name": "GRUPO PAZ E UNIÃO DE A.A.",
+    "neighborhood": "Alto da Temperatura",
+    "address": "Rua 9, 25 #7716 - Área 06 - PE - DISTRITO 18 SERTÃO II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "22"
+  },
+  {
+    "city": "Cachoeirinha",
+    "name": "GRUPO VIDA NOVA DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Rua José Ângelo dos Santos, 89 #8147 - Área 06 - PE - DISTRITO 17 AGRESTE MERIDIONAL GARANHUNS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "23"
+  },
+  {
+    "city": "Camaragibe",
+    "name": "GRUPO BAIRRO NOVO DE A. A.",
+    "neighborhood": "Timbí",
+    "address": "Rua dos Jasmins, 20 Escola Ministro Jarbas Passarinho #5997 - Área 06 - PE - DISTRITO 01 ZONA LESTE",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "24"
+  },
+  {
+    "city": "Camaragibe",
+    "name": "GRUPO BOA ESPERANÇA DE A.A.",
+    "neighborhood": "Areeiro",
+    "address": "Rua Boa Esperança, 245 Escola São Vicente de Paula #8148 - Área 06 - PE - DISTRITO 01 ZONA LESTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "25"
+  },
+  {
+    "city": "Camaragibe",
+    "name": "GRUPO BOA VISTA DE A. A.",
+    "neighborhood": "Alto da Boa Vista",
+    "address": "Rua Sifefredo Alves de Brito, 328 #5999 - Área 06 - PE - DISTRITO 01 ZONA LESTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "26"
+  },
+  {
+    "city": "Camaragibe",
+    "name": "GRUPO SOU FELIZ",
+    "neighborhood": "neighborhood Novo",
+    "address": "Rua São Pio X, s/n Salão Paroquial da Igreja Catolica São Pio X #6002 - Área 06 - PE - DISTRITO 01 ZONA LESTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "27"
+  },
+  {
+    "city": "Camaragibe",
+    "name": "GRUPO TIMBI DE A. A.",
+    "neighborhood": "Timbí",
+    "address": "R. Quitéria Alves, 97 Radio Guarany #6023 - Área 06 - PE - DISTRITO 01 ZONA LESTE",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": {
+      "start": "21:00",
+      "end": "23:00"
+    },
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": {
+      "start": "21:00",
+      "end": "23:00"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "28"
+  },
+  {
+    "city": "Camaragibe",
+    "name": "GRUPO VIDA NOVA II DE A. A.",
+    "neighborhood": "Vila da Fábrica",
+    "address": "R. Luís Jorge dos Santos, s/n Centro Comunitário Dom Helder Câmara #6026 - Área 06 - PE - DISTRITO 01 ZONA LESTE",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": {
+      "start": "21:00",
+      "end": "23:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "29"
+  },
+  {
+    "city": "Carpina",
+    "name": "GRUPO PLANALTO DE A.A.",
+    "neighborhood": "Senzala",
+    "address": "Avenida José Otávio, 320 Centro Cultural Maria de Jesus #8034 - Área 06 - PE - DISTRITO 08 MATA NORTE I",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "30"
+  },
+  {
+    "city": "Chá Grande",
+    "name": "GRUPO LIBERDADE DE A.A.",
+    "neighborhood": "Loteamento São José",
+    "address": "Rua Joaquim José Miranda, 363 Por trás da Rodoviária -Capela dos Vicentinos de Paula #8420 - Área 06 - PE - DISTRITO 09 MATA CENTRO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "31"
+  },
+  {
+    "city": "Condado",
+    "name": "GRUPO SÃO SEBASTIÃO DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Rua Joaquim de Pontes, sn Escola CECOOL #6066 - Área 06 - PE - DISTRITO 22 MATA NORTE II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "14:00",
+      "end": "16:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "32"
+  },
+  {
+    "city": "Cortês",
+    "name": "SÃO FRANCISCO DE ASSIS DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Rua Frederik Van Shoste, 57 #7938 - Área 06 - PE - DISTRITO 24 MATA SUL",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "33"
+  },
+  {
+    "city": "Custódia",
+    "name": "GRUPO UNIÃO DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Rua Joao Verissimo, 368 #8027 - Área 06 - PE - DISTRITO 27 - PORTAL DO SERTÃO",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "34"
+  },
+  {
+    "city": "Escada",
+    "name": "GRUPO CAMINHO CERTO DE A. A.",
+    "neighborhood": "Atalaia",
+    "address": "R. da Mangueira, 19 Ao lado da Delegacia #2323 - Área 06 - PE - DISTRITO 34 SUL IV CABO",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "35"
+  },
+  {
+    "city": "Escada",
+    "name": "GRUPO MEDITAÇÃO DE A. A.",
+    "neighborhood": "Atalaia",
+    "address": "Rua da Mangueira, 19 Ao Lado da Delegacia #6552 - Área 06 - PE - DISTRITO 34 SUL IV CABO",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "36"
+  },
+  {
+    "city": "Exu",
+    "name": "GRUPO ASA BRANCA DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Rua Bárbara Alencar, 246 Creche Municipal #6691 - Área 06 - PE - DISTRITO 21 SERTÃO IV",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "37"
+  },
+  {
+    "city": "Exu",
+    "name": "GRUPO CANTARINO DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Rua Bárbara Alençar, 246 Creche Municipal #7380 - Área 06 - PE - DISTRITO 21 SERTÃO IV",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "38"
+  },
+  {
+    "city": "Ferreiros",
+    "name": "GRUPO RENOVAÇÃO DE A. A.",
+    "neighborhood": "centro",
+    "address": "Rua José Delmiro Alves, 51 Ao lado do Restaurante Cris #5586 - Área 06 - PE - DISTRITO 22 MATA NORTE II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "39"
+  },
+  {
+    "city": "Floresta",
+    "name": "GRUPO FLORESTA DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Rua Manoel Serafim Ferraz, 176 Salão Paroquial da Igreja Santana #6858 - Área 06 - PE - DISTRITO 19 SERTÃO III",
+    "monday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "40"
+  },
+  {
+    "city": "Gameleira",
+    "name": "GRUPO RENOVAÇÃO DE A.A.",
+    "neighborhood": "Nova Gameleira",
+    "address": "Rua Do Triangulo, 36 Ao lado da Academia da citys -Salão Paroquial da Igreja Católica #8620 - Área 06 - PE - DISTRITO 24 MATA SUL",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "41"
+  },
+  {
+    "city": "Garanhuns",
+    "name": "GRUPO BARAÚNAS DE A.A.",
+    "neighborhood": "Distrito Miracica",
+    "address": "Estrada do Mundaú, sn Escola Abílio Ramos de Araújo #7990 - Área 06 - PE - DISTRITO 17 AGRESTE MERIDIONAL GARANHUNS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "42"
+  },
+  {
+    "city": "Garanhuns",
+    "name": "GRUPO BOA VONTADE DE A. A.",
+    "neighborhood": "Cohab I",
+    "address": "Rua L, s/n #5564 - Área 06 - PE - DISTRITO 17 AGRESTE MERIDIONAL GARANHUNS",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "43"
+  },
+  {
+    "city": "Garanhuns",
+    "name": "GRUPO CORAGEM",
+    "neighborhood": "Heliópolis",
+    "address": "Praça Taváres Corrêa, 48 Centro Pastoral São Geraldo #5196 - Área 06 - PE - DISTRITO 17 AGRESTE MERIDIONAL GARANHUNS",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "44"
+  },
+  {
+    "city": "Garanhuns",
+    "name": "GRUPO NOVA VIDA",
+    "neighborhood": "Heliópolis",
+    "address": "Avenida Simoa Gomes, 746 #6654 - Área 06 - PE - DISTRITO 17 AGRESTE MERIDIONAL GARANHUNS",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "45"
+  },
+  {
+    "city": "Glória do Goitá",
+    "name": "GRUPO GLÓRIA DO GOITÁ DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Rua Davi Pereira do Rosário, sn #8419 - Área 06 - PE - DISTRITO 09 MATA CENTRO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "46"
+  },
+  {
+    "city": "Gravatá",
+    "name": "GRUPO 10 DE JUNHO",
+    "neighborhood": "Centro",
+    "address": "Rua Santo Amaro, 89 Edificio Santa Matilde #4941 - Área 06 - PE - DISTRITO 09 MATA CENTRO",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "47"
+  },
+  {
+    "city": "Gravatá",
+    "name": "GRUPO RENOVAÇÃO DE GRAVATÁ DE A. A.",
+    "neighborhood": "Quinze de Novembro",
+    "address": "Travessa Governador Agamenon Magalhães, 162 #4940 - Área 06 - PE - DISTRITO 09 MATA CENTRO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "48"
+  },
+  {
+    "city": "IGARASSU",
+    "name": "name Igarassu",
+    "neighborhood": "Centro",
+    "address": "R. Santina Gomes de Andrade, 148 #5826 : Área 06 - PE : DISTRITO 33 CENTRAL IGARASSU",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "49"
+  },
+  {
+    "city": "Ibimirim",
+    "name": "GRUPO ESPERANÇA DA VIDA DE A. A.",
+    "neighborhood": "centro",
+    "address": "Avenida Manoel Vicente, s/n Igreja Catolica de São Francisco #5201 - Área 06 - PE - DISTRITO 27 - PORTAL DO SERTÃO",
+    "monday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "tuesday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "wednesday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "50"
+  },
+  {
+    "city": "Igarassu",
+    "name": "GRUPO IGARASSU DE A A",
+    "neighborhood": "Centro",
+    "address": "R. Santina Gomes de Andrade, 148 #5826 - Área 06 - PE - DISTRITO 33 CENTRAL IGARASSU",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "51"
+  },
+  {
+    "city": "Igarassu",
+    "name": "GRUPO SALVADOR",
+    "neighborhood": "Cruz de Rebouças",
+    "address": "Rua Nossa Sra. do Rosário, 62 Paróquia Nossa Senhora do Rosário #5476 - Área 06 - PE - DISTRITO 23 ABREU E LIMA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "52"
+  },
+  {
+    "city": "Igarassu",
+    "name": "GRUPO SALVAÇÃO DE A A",
+    "neighborhood": "Cruz de Rebouças",
+    "address": "Vila Nossa Senhora de Fatima, S/N Casa de Farinha -Escola Municipal Nelson de Oliveira Galvão #5835 - Área 06 - PE - DISTRITO 33 CENTRAL IGARASSU",
+    "monday": null,
+    "tuesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "53"
+  },
+  {
+    "city": "Igarassu",
+    "name": "GRUPO SARAMANDAIA DE A A",
+    "neighborhood": "Saramandaia",
+    "address": "Vila Saramandaia, S/N Associação dos Moradores #5830 - Área 06 - PE - DISTRITO 33 CENTRAL IGARASSU",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "54"
+  },
+  {
+    "city": "Igarassu",
+    "name": "GRUPO SEJA BEM VINDO DE A A",
+    "neighborhood": "Centro",
+    "address": "R. Henrique Dias, 226 Loteamento Agamenon - Igreja Sagrada Familia #5834 - Área 06 - PE - DISTRITO 33 CENTRAL IGARASSU",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "55"
+  },
+  {
+    "city": "Igarassu",
+    "name": "GRUPO SENHOR DO BOM FIM DE A. A.",
+    "neighborhood": "Saramandaia",
+    "address": "Praca Igarassu Vila da Cohab, SN Associação dos Moradores #5479 - Área 06 - PE - DISTRITO 33 CENTRAL IGARASSU",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "56"
+  },
+  {
+    "city": "Igarassu",
+    "name": "GRUPO VERDE TETO DE A A",
+    "neighborhood": "Verde Teto",
+    "address": "1A Travessa Verde Teto, S/N Associação dos Moradores #5829 - Área 06 - PE - DISTRITO 33 CENTRAL IGARASSU",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "57"
+  },
+  {
+    "city": "Iguaracy",
+    "name": "GRUPO PORTO SEGURO DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Travessa do Posto, sn Próximo ao Posto Vale do Pajeú #7830 - Área 06 - PE - DISTRITO 29 MEDIO ALTO PAJEÚ",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "58"
+  },
+  {
+    "city": "Ilha de Itamaracá",
+    "name": "GRUPO ITAMARACÁ DE A. A.",
+    "neighborhood": "Pilar",
+    "address": "Praça Papa João XXIII, 33 Igreja do Pilar #5477 - Área 06 - PE - DISTRITO 33 CENTRAL IGARASSU",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "59"
+  },
+  {
+    "city": "Ilha de Itamaracá",
+    "name": "GRUPO JAGUARIBE DE A. A.",
+    "neighborhood": "Jaguaribe",
+    "address": "R. Ernesto J Albuquerque, 87 Escola Reunidas #5475 - Área 06 - PE - DISTRITO 33 CENTRAL IGARASSU",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "60"
+  },
+  {
+    "city": "Ingazeira",
+    "name": "GRUPO DIVINA LUZ",
+    "neighborhood": "Ingazeira",
+    "address": "Rua José Bento da Silva, s/n #6688 - Área 06 - PE - DISTRITO 29 MEDIO ALTO PAJEÚ",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "61"
+  },
+  {
+    "city": "Itabaiana",
+    "name": "GRUPO ITABAIANA DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Praça Manoel Joaquim de Araújo, 83 #8018 - Área 06 - PE - DISTRITO 22 MATA NORTE II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "62"
+  },
+  {
+    "city": "Itambé",
+    "name": "GRUPO ITAMBE DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Avenida Tenente Fontoura, 45 #5588 - Área 06 - PE - DISTRITO 22 MATA NORTE II",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "63"
+  },
+  {
+    "city": "Itapetim",
+    "name": "GRUPO ITAPETIM DE A.A.",
+    "neighborhood": "centro",
+    "address": "Travessa Amancio Pereira, 45 #7935 - Área 06 - PE - DISTRITO 39 SÃO JOSÉ DO EGITO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "64"
+  },
+  {
+    "city": "Itapissuma",
+    "name": "GRUPO SÃO GONÇALO DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Av. David Guerra de Araújo, 230 Paroquia da Conceição #5828 - Área 06 - PE - DISTRITO 33 CENTRAL IGARASSU",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "wednesday": null,
+    "thursday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "65"
+  },
+  {
+    "city": "JABOATÃO DOS GUARARAPES",
+    "name": "GRUPO 13 DE MAIO DE A. A.",
+    "neighborhood": "Curado II",
+    "address": "Avenida Leonardo da Vinci, S/N Escola Municipal Simon Boliva #7486 - Área 06 - PE - DISTRITO 10 JABOATÃO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "66"
+  },
+  {
+    "city": "JABOATÃO DOS GUARARAPES",
+    "name": "GRUPO NOVO LAR DE A. A.",
+    "neighborhood": "Curado IV",
+    "address": "Rua 07, S/N Escola Municipal Senador Aderbal Jurema #7487 - Área 06 - PE - DISTRITO 36 CAVALEIRO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "67"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO A. A. GUARARAPES DE SOCORRO",
+    "neighborhood": "Socorro",
+    "address": "R. Vinte e Um de Abril, 45 14º Batalhão de Infantaria Motorizada #2348 - Área 06 - PE - DISTRITO 10 JABOATÃO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "68"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO A. A. MALVINAS",
+    "neighborhood": "Vista Alegre",
+    "address": "Rua Rio Formoso, 359 Escola Municipal Neuza Perreira #2359 - Área 06 - PE - DISTRITO 10 JABOATÃO",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "69"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO A. A. PADRE CROMÁCIO LEÃO",
+    "neighborhood": "Padre Roma",
+    "address": "Avenida Barão de Lucena, 645 Praça do Nossa Senhora do Rosário Gremio Feminino #2346 - Área 06 - PE - DISTRITO 10 JABOATÃO",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "70"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO A. A. QUITANDINHA",
+    "neighborhood": "Socorro",
+    "address": "R. Nazareno, s/n Mercado do He Men - Escola Pedro Alvares Cabral #2350 - Área 06 - PE - DISTRITO 10 JABOATÃO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "71"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO A. A. VILA RICA",
+    "neighborhood": "Centro",
+    "address": "Rua Madre de Deus, 635 #2347 - Área 06 - PE - DISTRITO 10 JABOATÃO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "72"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO BARRA DE JANGADA",
+    "neighborhood": "Barra de Jangada",
+    "address": "Rua Rio Pardo, 148 Capela de Santo Antônio #7840 - Área 06 - PE - DISTRITO 06 SUL III",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "73"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO BOA ESPERANÇA DE A. A.",
+    "neighborhood": "Cajueiro Seco",
+    "address": "R. Frei Clemente, 150 #5783 - Área 06 - PE - DISTRITO 06 SUL III",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "74"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO BOA VIAGEM DE A. A.",
+    "neighborhood": "Jordão Baixo",
+    "address": "Rua Professor José Constantino da Silva, 20 #2324 - Área 06 - PE - DISTRITO 14 SUL II",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "75"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO BOA VONTADE DE PRAZERES",
+    "neighborhood": "Guararapes",
+    "address": "R. Dr. Luís Regueira, s/n Escola Arthur da Costa e Silva #5789 - Área 06 - PE - DISTRITO 06 SUL III",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "76"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO CAVALEIRO FELIZ DE A.A",
+    "neighborhood": "Cavaleiro",
+    "address": "Rua Joaquim Tenório, sn Escola Professor Moacir de Albuquerque #8624 - Área 06 - PE - DISTRITO 36 CAVALEIRO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "77"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO DA FELICIDADE DE A.A.",
+    "neighborhood": "Cohab",
+    "address": "Rua Felipe dos Santos, 82 UR 05 Escola Municipal Cicero Franklin Cordeiro #7784 - Área 06 - PE - DISTRITO 35 IBURA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "78"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO GUARARAPES DE PRAZERES DE A. A.",
+    "neighborhood": "Guararapes",
+    "address": "Av. Barreto de Menezes, 473 Onde funcionava a Escola João XXIII #5786 - Área 06 - PE - DISTRITO 06 SUL III",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:30",
+      "end": "17:30"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "79"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO JANGADEIRO DA PAZ A. A.",
+    "neighborhood": "Dois Carneiros",
+    "address": "Rua Cristal, 227 #6125 - Área 06 - PE - DISTRITO 36 CAVALEIRO",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "80"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO JARDIM MURIBECA DE A. A.",
+    "neighborhood": "Jardim Muribeca",
+    "address": "Rodovia Empresário João Santos Filho, 3215 Próximo a Pizzaria Pontual #5782 - Área 06 - PE - DISTRITO 06 SUL III",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "81"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO MASSARANDUBA DE A. A.",
+    "neighborhood": "Piedade",
+    "address": "Av. Quatro de Outubro, 04 Escola Henrique Dias #5222 - Área 06 - PE - DISTRITO 06 SUL III",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "82"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO NASCENTE DE A.A.",
+    "neighborhood": "Dois Carneiros",
+    "address": "Rua Cristal, 277 #8133 - Área 06 - PE - DISTRITO 36 CAVALEIRO",
+    "monday": null,
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "83"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO NOVO JORDÃO DE A. A.",
+    "neighborhood": "Jordão Baixo",
+    "address": "Rua Peofessor José Constantino da Silva, 20 #2328 - Área 06 - PE - DISTRITO 14 SUL II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "84"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO NOVO JORDÃO DE A. A.",
+    "neighborhood": "Jordão Baixo",
+    "address": "Rua Professor José Constantino da Silva, 20 #2328 - Área 06 - PE - DISTRITO 14 SUL II",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "85"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO PIEDADE DE A. A.",
+    "neighborhood": "Piedade",
+    "address": "Rua Miguel Arcânjo, 22 SUPERMERCADO BOMPREÇO GALERIA TRAD CENTER #5784 - Área 06 - PE - DISTRITO 06 SUL III",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "86"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO TRES DE DEZEMBRO DE A. A.",
+    "neighborhood": "Marcos Freire",
+    "address": "Av. Barreto de Menezes, s/n Escola - EREM Adelaide Pessoa Camera S/N #5787 - Área 06 - PE - DISTRITO 06 SUL III",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:30",
+      "end": "17:30"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "87"
+  },
+  {
+    "city": "Jaboatão dos Guararapes",
+    "name": "GRUPO UNIÃO SUL DE A. A.",
+    "neighborhood": "Piedade",
+    "address": "Avenida Nossa Senhora do Loreto, 546 Igreja Católica Nossa Senhora do Loreto #5781 - Área 06 - PE - DISTRITO 06 SUL III",
+    "monday": null,
+    "tuesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "88"
+  },
+  {
+    "city": "Jataúba",
+    "name": "GRUPO LIBERDADE DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Augusto de Melo, sn #8151 - Área 06 - PE - DISTRITO 31 SANTA CRUZ DO CAPIBARIBE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "89"
+  },
+  {
+    "city": "Jatobá",
+    "name": "GRUPO SÃO FRANCISCO DE A.A.",
+    "neighborhood": "Itaparica",
+    "address": "Rua Ilha Solteira, 258 Anexo Amita #8524 - Área 06 - PE - DISTRITO 19 SERTÃO III",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "90"
+  },
+  {
+    "city": "Joaquim Nabuco",
+    "name": "GRUPO UNIÃO NABUQUENSE DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Rua São José, sn Cassa Paroquial #8045 - Área 06 - PE - DISTRITO 24 MATA SUL",
+    "monday": null,
+    "tuesday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "91"
+  },
+  {
+    "city": "João Alfredo",
+    "name": "GRUPO SALVAÇÃO DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Rua Treze de Maio, 211 #8037 - Área 06 - PE - DISTRITO 08 MATA NORTE I",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "92"
+  },
+  {
+    "city": "Juripiranga",
+    "name": "GRUPO JURUPIRANGA DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Travessa Avenida Brasil, 586 #5587 - Área 06 - PE - DISTRITO 22 MATA NORTE II",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "wednesday": null,
+    "thursday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "93"
+  },
+  {
+    "city": "Lagoa Grande",
+    "name": "GRUPO NOVO HORIZONTE DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Rua dos Estudantes, 12 Extensão da Escola Maria Auxiliadora #6683 - Área 06 - PE - DISTRITO 18 SERTÃO II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "94"
+  },
+  {
+    "city": "Lagoa Grande",
+    "name": "GRUPO RENASCER DE A.A.",
+    "neighborhood": "Distrito Vermelho",
+    "address": "Creche Zilda Arns R. Do Progresso, 40 #8448 - Área 06 - PE - DISTRITO 18 SERTÃO II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "95"
+  },
+  {
+    "city": "Lajedo",
+    "name": "GRUPO NOVO MUNDO DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Rua Um, s/n Rotary Club Lajedo #5198 - Área 06 - PE - DISTRITO 17 AGRESTE MERIDIONAL GARANHUNS",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "96"
+  },
+  {
+    "city": "Limoeiro",
+    "name": "GRUPO LIMOEIRO DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Rua Santa Cruz, sn Centro Comunitário Manoel Pinto #8031 - Área 06 - PE - DISTRITO 08 MATA NORTE I",
+    "monday": null,
+    "tuesday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "97"
+  },
+  {
+    "city": "Limoeiro",
+    "name": "GRUPO SÃO SEBASTIÃO DE A.A.",
+    "neighborhood": "João Ernesto",
+    "address": "Rua Vigário Joaquim Pinto, 404 #8039 - Área 06 - PE - DISTRITO 08 MATA NORTE I",
+    "monday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "98"
+  },
+  {
+    "city": "Moreno",
+    "name": "GRUPO A. A. BONANÇA",
+    "neighborhood": "Bonança",
+    "address": "Rua Agamenon Magalhães, 193 Escola Maria do Céu Bandeira #2351 - Área 06 - PE - DISTRITO 10 JABOATÃO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "99"
+  },
+  {
+    "city": "Moreno",
+    "name": "GRUPO A. A. EUCALIPTOLÂNDI A",
+    "neighborhood": "Bela Vista",
+    "address": "R. Estér Oliveira da Silva, 01 #2349 - Área 06 - PE - DISTRITO 10 JABOATÃO",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "100"
+  },
+  {
+    "city": "Moreno",
+    "name": "GRUPO EUCALIPTOLÂNDI A DE A. A.",
+    "neighborhood": "Loteamento Bela Vista",
+    "address": "Rua Ester de Oliveira, 01 #7485 - Área 06 - PE - DISTRITO 10 JABOATÃO",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "101"
+  },
+  {
+    "city": "Nazaré da Mata",
+    "name": "GRUPO RENASCER DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Praça Herculano Bandeira, 35 Ao lado da Igreja Católica no Centro Centro Catequético João Paulo II #8019 - Área 06 - PE - DISTRITO 22 MATA NORTE II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "102"
+  },
+  {
+    "city": "OLINDA",
+    "name": "GRUPO DUARTE COELHO DE A.A.",
+    "neighborhood": "Guada Lupe",
+    "address": "Rua Ns. do Guadalupe, 750 B Ao Lado da Igreja Catolica do Guadalupe - Escola Maria da Gloria Advincula #7808 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "103"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO ALTO DA BONDADE DE A.A.",
+    "neighborhood": "Alto da Bondade",
+    "address": "Rua da Linha, 467 #7872 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "104"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO AMARO BRANCO DE A.A.",
+    "neighborhood": "Amaro Branco",
+    "address": "Rua Frei Afonso Maria, 199 Anexo da Igreja de Fátima #7870 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "105"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO BONSUCESSO DE A A",
+    "neighborhood": "Varadouro",
+    "address": "Rua Jerônimo de Albuquerque, 182 Associação Encontro dos Quatros #5885 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "106"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO BRAÇOS ABERTO DE A. A.",
+    "neighborhood": "Peixinhos",
+    "address": "Rua Primeiro de Janeiro, 94 #4218 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "107"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO BULTRINS DE A.A.",
+    "neighborhood": "Ouro Preto",
+    "address": "Rua Angicos, 41 #7878 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "108"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO CAXIAS DE A. A.",
+    "neighborhood": "Peixinhos",
+    "address": "Rua Primeiro de Janeiro, 94 #4186 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "109"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO CHÃ DA MANGABEIRA",
+    "neighborhood": "Chã da Mangabeira",
+    "address": "Rua Boa Vista, 1 Lar de Maria #8616 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "110"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO CIDADE LENDÁRIA DE A. A.",
+    "neighborhood": "Rio Doce",
+    "address": "R. do Pêssego, s/n III Etapa Rio Doce Escola - Dom Pedro Bandeira de Melo #2416 - Área 06 - PE - DISTRITO 32 RIO DOCE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "111"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO CIDADE NOVA DE A.A.",
+    "neighborhood": "Rio Doce",
+    "address": "Avenida Acácias, 156 Escola Polivalente Compositor Antônio Maria #8120 - Área 06 - PE - DISTRITO 28 LITORAL NORTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "112"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO DEUS CONOSCO DE A A",
+    "neighborhood": "Carmo",
+    "address": "Praça Dantas Barreto, 15 Paroquia Anglicana Emanuel #5856 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "113"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO DOZE DE DEZEMBRO DE AA",
+    "neighborhood": "Águas Compridas",
+    "address": "Rua Doze de Dezembro, 80 #7977 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "114"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO GERIQUITI DE A. A.",
+    "neighborhood": "Peixinhos",
+    "address": "R. Giriquiti, s/n Conselho dos Moradores #4220 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "115"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO GUADALUPE DE A A",
+    "neighborhood": "Varadouro",
+    "address": "Rua Jerônimo de Albuquerque, 182 Associação Encontro dos Quatros #5933 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "116"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO JATOBÁ DE A A",
+    "neighborhood": "Ouro Preto",
+    "address": "Rua Angicos, 41 #5936 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "117"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO JOAQUIM NABUCO DE A.A.",
+    "neighborhood": "Varadouro",
+    "address": "Rua Jerônimo de Albuquerque, 182 #7880 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "118"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO MARIM DOS CAETÉS DE A. A.",
+    "neighborhood": "Rio Doce",
+    "address": "Rua Jules Rimet, S/N Perto do Campo de Bial - Escola Monte Castelo #2422 - Área 06 - PE - DISTRITO 32 RIO DOCE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "119"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO NOVA VIDA DE A. A.",
+    "neighborhood": "Caixa d'Água",
+    "address": "R. Francisco Gomes, 86 name Nova Vida #5103 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "120"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO NOVO IDEAL DE AA",
+    "neighborhood": "Alto Jardim Conquista",
+    "address": "Rua Asteca, 383 Capela São Judas Tadeu #7979 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "121"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO OLINDA DE A.A.",
+    "neighborhood": "Varadouro",
+    "address": "Rua Jerônimo de Albuquerque, 182 Associação Encontro dos Quatros #7891 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "122"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO OURO PRETO DE A.A.",
+    "neighborhood": "Ouro Preto",
+    "address": "Rua Angicos, 41 #7892 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "123"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO PEIXINHOS DE A. A.",
+    "neighborhood": "Peixinhos",
+    "address": "Rua Primeiro de Janeiro, 94 Feira de Peixinhos #4185 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "124"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO QUATRO DE OUTUBRO",
+    "neighborhood": "Ouro Preto",
+    "address": "Rua Angicos, 41 #7894 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "125"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO RENASCER DE A.A.",
+    "neighborhood": "Ouro Preto",
+    "address": "Rua Angico, 41 #7895 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "126"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO RENOVAÇÃO DE A. A.",
+    "neighborhood": "Peixinhos",
+    "address": "Rua Primeiro de Janeiro, 94 #4196 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:30",
+      "end": "18:30"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "127"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO RESSURREIÇÃO DE OLINDA DE A A",
+    "neighborhood": "Sétimo Ro",
+    "address": "R. Manuel Clementino Marques, s/n Centro de Convivência de Idosos Anos Dourados #5855 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "128"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO REUNIDOS DE A. A.",
+    "neighborhood": "Peixinhos",
+    "address": "Rua Primeiro de Janeiro, 94 #4217 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "129"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO SANTA TEREZA DE A.A.",
+    "neighborhood": "Varadouro",
+    "address": "Rua Jerônimo de Albuquerque, 182 Associação Encontro dos Quatros #7896 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "130"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO SANTANA DE A. A.",
+    "neighborhood": "Rio Doce",
+    "address": "Avenida Coronel Frederico Lundgren, 660 #5636 - Área 06 - PE - DISTRITO 32 RIO DOCE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "131"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO SOBRIEDADE DE A. A.",
+    "neighborhood": "Peixinhos",
+    "address": "Rua Primeiro de Janeiro, 94 #4197 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "132"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO SÃO SEBASTIÃO DE A.A.",
+    "neighborhood": "Varadouro",
+    "address": "Rua Jerônimo de Albuquerque, 182 Associação Encontro dos Quatros #7898 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "133"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO TABAJARA DE A.A.",
+    "neighborhood": "Tabajara",
+    "address": "Avenida Potiguar, 70 Escola 12 de Março #7899 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "134"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO TRANQUILIDADE DE A. A.",
+    "neighborhood": "Peixinhos",
+    "address": "R. Débora Régis de Carvalho, s/n #4213 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "135"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO UNIDOS DE FATIMA",
+    "neighborhood": "neighborhood Novo",
+    "address": "Rua Cleto Campêlo, 10 #7900 - Área 06 - PE - DISTRITO 05 OLINDA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "136"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO UNIDOS DE SANTANA DE A. A.",
+    "neighborhood": "Rio Doce",
+    "address": "Rua Jules Rimet, sn Perto do Campo de Bial - Escola Monte Castelo #2426 - Área 06 - PE - DISTRITO 28 LITORAL NORTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "137"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO UNIVERSAL DE A.A.",
+    "neighborhood": "Peixinhos",
+    "address": "Rua Primeiro de Janeiro, 94 #7901 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "138"
+  },
+  {
+    "city": "Olinda",
+    "name": "GRUPO ÁGUAS COMPRIDAS DE A. A.",
+    "neighborhood": "Águas Compridas",
+    "address": "R. Rosa Amélia, 87 #5008 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "139"
+  },
+  {
+    "city": "Olinda",
+    "name": "UNIDOS DE PEIXINHOS DE AA",
+    "neighborhood": "Peixinhos",
+    "address": "Rua Primeiro de Janeiro, 94 #7986 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "140"
+  },
+  {
+    "city": "Orobó",
+    "name": "GRUPO ESPERANÇA DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Rua Manoel Silvestre M. Ribeiro, sn #8029 - Área 06 - PE - DISTRITO 08 MATA NORTE I",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "141"
+  },
+  {
+    "city": "Ouricuri",
+    "name": "GRUPO TAMBORIL DE A.A.",
+    "neighborhood": "Aeroporto",
+    "address": "Avenida Manoel Irineu de Araújo, sn #7951 - Área 06 - PE - DISTRITO 21 SERTÃO IV",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "142"
+  },
+  {
+    "city": "Palmares",
+    "name": "GRUPO NOVA PALMARES DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Avenida Gesualdo Marques de Melo, sn Após a Bomba Enjetora - Escola do CAIC #8042 - Área 06 - PE - DISTRITO 24 MATA SUL",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "143"
+  },
+  {
+    "city": "Palmares",
+    "name": "GRUPO NOVO ENCONTRO DE A.A.",
+    "neighborhood": "Santo Antônio",
+    "address": "Rua Tenente Everaldo, 470 name Escolar Lauro Chaves #8159 - Área 06 - PE - DISTRITO 24 MATA SUL",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "144"
+  },
+  {
+    "city": "Palmares",
+    "name": "GRUPO PEROLA DO UNA DE A.A.",
+    "neighborhood": "São Sebastião",
+    "address": "Rua Visconde do Rio Branco, 1335 Igreja São Sebastião #8043 - Área 06 - PE - DISTRITO 24 MATA SUL",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "145"
+  },
+  {
+    "city": "Palmares",
+    "name": "GRUPO UNIDOS DOS PALMARES DE A.A.",
+    "neighborhood": "Santa Luzia",
+    "address": "Avenida Gérson Batista, sn Próximo Barreto Hall Escola Municipal Assis Ribeiro #8048 - Área 06 - PE - DISTRITO 24 MATA SUL",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "146"
+  },
+  {
+    "city": "Palmares",
+    "name": "GRUPO UNIÃO PALMARENSE DE A.A.",
+    "neighborhood": "São Sebastião",
+    "address": "Rua Coronel Austriclínio, 820 #8047 - Área 06 - PE - DISTRITO 24 MATA SUL",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "147"
+  },
+  {
+    "city": "Paranatama",
+    "name": "GRUPO ALTO DA SERRA DE A.A.",
+    "neighborhood": "Alto da Serra",
+    "address": "Povoado Campo Sujo, sn Salão da Igreja Cristo Rei do Universo #7989 - Área 06 - PE - DISTRITO 17 AGRESTE MERIDIONAL GARANHUNS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "148"
+  },
+  {
+    "city": "Passira",
+    "name": "GRUPO PASSIRA DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Rua Doutor Barbosa Lima, 195 Escola Edson Regis de Carvalho #8032 - Área 06 - PE - DISTRITO 08 MATA NORTE I",
+    "monday": null,
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "149"
+  },
+  {
+    "city": "Paudalho",
+    "name": "GRUPO CHÃ DE CRUZ DE A.A.",
+    "neighborhood": "Chã Cruz",
+    "address": "Estrada de Aldeia, s/n Escola Maria de Fátima #8149 - Área 06 - PE - DISTRITO 01 ZONA LESTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "150"
+  },
+  {
+    "city": "Paulista",
+    "name": "GRUPO 02 DE JANEIRO DE A. A.",
+    "neighborhood": "Arthur Lundgren I",
+    "address": "R. Sairé, 263 Clube de Radio Amadorismo #2396 - Área 06 - PE - DISTRITO 02 PAULISTA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "151"
+  },
+  {
+    "city": "Paulista",
+    "name": "GRUPO 12 PASSOS DE A. A.",
+    "neighborhood": "Jardim Maranguape",
+    "address": "Avenida Brasil, 509 Escola Historiador Perreira da Costa #2420 - Área 06 - PE - DISTRITO 28 LITORAL NORTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "152"
+  },
+  {
+    "city": "Paulista",
+    "name": "GRUPO CHEGA MAIS DE A.A.",
+    "neighborhood": "Pau Amarela",
+    "address": "Rua Grã-Bretanha, 566 #8012 - Área 06 - PE - DISTRITO 28 LITORAL NORTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "153"
+  },
+  {
+    "city": "Paulista",
+    "name": "GRUPO JARDIM PAULISTA DE A. A.",
+    "neighborhood": "Jardim Paulista Baixo",
+    "address": "Rua Quarenta e Sete, 15 Associação de Moradores de Paulista Baixo #2927 - Área 06 - PE - DISTRITO 02 PAULISTA",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "154"
+  },
+  {
+    "city": "Paulista",
+    "name": "GRUPO MARIA FARINHA DE A.A.",
+    "neighborhood": "Nossa Sra. do Ó",
+    "address": "Avenida Antônio Cabral de Souza, 130 Igreja Católica São Paulo Apóstolo #8013 - Área 06 - PE - DISTRITO 28 LITORAL NORTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "155"
+  },
+  {
+    "city": "Paulista",
+    "name": "GRUPO MIRUEIRA DE A. A.",
+    "neighborhood": "Mirueira",
+    "address": "Av. João Paulo II, 212 Colégio Frei Guido #2921 - Área 06 - PE - DISTRITO 02 PAULISTA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "156"
+  },
+  {
+    "city": "Paulista",
+    "name": "GRUPO NOVO HORIZONTE DE A. A.",
+    "neighborhood": "Jardim Paulista Baixo",
+    "address": "Rua Quarenta e sete, 15 Associação de Moradores de Paulista Baixo #2916 - Área 06 - PE - DISTRITO 02 PAULISTA",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "157"
+  },
+  {
+    "city": "Paulista",
+    "name": "GRUPO PARATIBE DE A. A.",
+    "neighborhood": "Artur Lundgren L",
+    "address": "Avenida Lindolfo Collor, 2342 Paroquia Nossa Senhora de Fátima #2397 - Área 06 - PE - DISTRITO 02 PAULISTA",
+    "monday": null,
+    "tuesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "158"
+  },
+  {
+    "city": "Paulista",
+    "name": "GRUPO PAU AMARELO DE A. A.",
+    "neighborhood": "Nossa Senhora do Ó",
+    "address": "Avenida Doutor Cláudio José Gueiros Leite, 7113 Igreja Nossa Senhora do Ó #6086 - Área 06 - PE - DISTRITO 28 LITORAL NORTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "159"
+  },
+  {
+    "city": "Paulista",
+    "name": "GRUPO PAULISTA DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Travessa Siqueira Campos, 46 Salão Paroquial da Igreja Santa Elizabeth #2920 - Área 06 - PE - DISTRITO 02 PAULISTA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "160"
+  },
+  {
+    "city": "Paulista",
+    "name": "GRUPO TORRES GALVÃO DE A A",
+    "neighborhood": "Vila Torres Galvão",
+    "address": "Rua Pedro Américo, 56 Igreja Católica do Torres Galvão #2917 - Área 06 - PE - DISTRITO 02 PAULISTA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "161"
+  },
+  {
+    "city": "Paulista",
+    "name": "GRUPO TURURU DE A.A.",
+    "neighborhood": "Janga",
+    "address": "Avenida Procurador Pedro Jorge, 151 Associação dos Moradores Tururu #8009 - Área 06 - PE - DISTRITO 28 LITORAL NORTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "162"
+  },
+  {
+    "city": "Paulista",
+    "name": "GRUPO VIVER SÓBRIO DE A.A.",
+    "neighborhood": "Maranguape I",
+    "address": "Avenida Manoel Quirino Tavares, 280 Centro Católico de Maranguape I #8008 - Área 06 - PE - DISTRITO 28 LITORAL NORTE",
+    "monday": null,
+    "tuesday": {
+      "start": "18:30",
+      "end": "20:30"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "163"
+  },
+  {
+    "city": "Petrolina",
+    "name": "GRUPO MASSANGANO DE A. A.",
+    "neighborhood": "Cohab de Massangano",
+    "address": "Rua Cid Bezerra Bandeira, sn CAIC #5363 - Área 06 - PE - DISTRITO 18 SERTÃO II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "164"
+  },
+  {
+    "city": "Petrolina",
+    "name": "GRUPO NOVA VIDA DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Rua Aristarco Lopes, 240 Prédio da Reitoria do IF #5364 - Área 06 - PE - DISTRITO 18 SERTÃO II",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "165"
+  },
+  {
+    "city": "Petrolina",
+    "name": "GRUPO NOVO AMANHÃ",
+    "neighborhood": "Centro",
+    "address": "Rua São José, 121 #6684 - Área 06 - PE - DISTRITO 18 SERTÃO II",
+    "monday": null,
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "166"
+  },
+  {
+    "city": "Petrolina",
+    "name": "GRUPO PETROLINA DE A.A.",
+    "neighborhood": "Idalino Bezerra",
+    "address": "Rua Sold. Eupídio B Neto, 10 Sede da Associação de Moradores #8324 - Área 06 - PE - DISTRITO 18 SERTÃO II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "167"
+  },
+  {
+    "city": "Petrolina",
+    "name": "GRUPO PORTAS ABERTAS DE A A",
+    "neighborhood": "Dom Avelar",
+    "address": "Rua do Brilhante, 10 #5384 - Área 06 - PE - DISTRITO 18 SERTÃO II",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "168"
+  },
+  {
+    "city": "Petrolina",
+    "name": "GRUPO UNIÃO DE A. A.",
+    "neighborhood": "São Gonçalo",
+    "address": "Avenida Tapuio, sn Capela Sagrada Família #5370 - Área 06 - PE - DISTRITO 18 SERTÃO II",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "169"
+  },
+  {
+    "city": "Petrolina",
+    "name": "GRUPO VIDA NOVA DE A. A.",
+    "neighborhood": "Areia Branca",
+    "address": "Rua Bélgica, 34 #5371 - Área 06 - PE - DISTRITO 18 SERTÃO II",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "170"
+  },
+  {
+    "city": "Petrolina",
+    "name": "GRUPO VIVÊNCIA DE A. A.",
+    "neighborhood": "João de Deus",
+    "address": "Rua Jucival Silva dos Santos, 87 Centro Comunitário Pastoral #5372 - Área 06 - PE - DISTRITO 18 SERTÃO II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "171"
+  },
+  {
+    "city": "Petrolândia",
+    "name": "GRUPO PETROLÂNDIA DE A. A.",
+    "neighborhood": "Quadra 08",
+    "address": "Avenida Sabino Costa, 394 #6861 - Área 06 - PE - DISTRITO 19 SERTÃO III",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "172"
+  },
+  {
+    "city": "Pombos",
+    "name": "GRUPO UNIDOS DE POMBOS DE A. A.",
+    "neighborhood": "Vila São José",
+    "address": "Rua Paulo Bezerra, 40 #4942 - Área 06 - PE - DISTRITO 09 MATA CENTRO",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "173"
+  },
+  {
+    "city": "Quixabá",
+    "name": "GRUPO RENASCER DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Rua do Santuario, s/n #6231 - Área 06 - PE - DISTRITO 29 MEDIO ALTO PAJEÚ",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "174"
+  },
+  {
+    "city": "RECIFE",
+    "name": "name 27 de Novembro",
+    "neighborhood": "COHAB",
+    "address": "R. Santa Maria Madalena, S/N UR 01 - Escola Municipal Carlúcio de Souza Castanha Júnior #7785 : Área 06 - PE : DISTRITO 14 SUL II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "175"
+  },
+  {
+    "city": "RECIFE",
+    "name": "name Caminho Certo",
+    "neighborhood": "Afogados",
+    "address": "R. São Miguel, 87 Escola Estadual Amaury de Medeiros #5952 : Área 06 - PE : DISTRITO 03 SUL I",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "176"
+  },
+  {
+    "city": "Recife",
+    "name": "BARTOLOMEU",
+    "neighborhood": "Ibura de Baixo",
+    "address": "Avenida Dois Rios, S/N Escola Municipal Simões Barbosa #7793 - Área 06 - PE - DISTRITO 14 SUL II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "177"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO 03 DE AGOSTO DE A. A.",
+    "neighborhood": "Bongi",
+    "address": "Estrada do Bongi, 91 Ao Lado da Igreja Batista #5949 - Área 06 - PE - DISTRITO 03 SUL I",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "178"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO 07 DE SETEMBRO DE A. A.",
+    "neighborhood": "Brasília Teimosa",
+    "address": "R. Carapeba, s/n Escola Professor Josue de Castro #2334 - Área 06 - PE - DISTRITO 14 SUL II",
+    "monday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "179"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO 12 DE OUTUBRO DE A.A.",
+    "neighborhood": "Areias",
+    "address": "Avenida Recife, 3785 EMLUB #7919 - Área 06 - PE - DISTRITO 03 SUL I",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "180"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO 14 DE JULHO DE A. A.",
+    "neighborhood": "Linha do Tiro",
+    "address": "Rua Guapiaçú, s/n Campo do café Escola Paulo VI #2368 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "181"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO 21 DE ABRIL DE A. A.",
+    "neighborhood": "San Martin",
+    "address": "Rua Vinte e Um de Abril, s/n Creche Municipal do Recife ( Margarida) #5951 - Área 06 - PE - DISTRITO 03 SUL I",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "182"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO ABOLIÇÃO DE A. A.",
+    "neighborhood": "São José",
+    "address": "R. Imperial, 1012 Escola Joaquim Nabuco #5226 - Área 06 - PE - DISTRITO 03 SUL I",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "183"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO ARCA DE NOÉ DE A. A.",
+    "neighborhood": "Brejo da Guabiraba",
+    "address": "Av. Vereador Otacílio Azevedo, 3021 Após a Fabrica da Kenitos - Comunidade Católica de São Pedro #6063 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "184"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO CAJUEIRO DE A. A.",
+    "neighborhood": "Cajueiro",
+    "address": "Av. Sebastião Salazar, s/n Igreja São Judas Tadeu #2367 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "185"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO CAMINHO CERTO DE A. A.",
+    "neighborhood": "Afogados",
+    "address": "Rua São Miguel, 87 #5952 - Área 06 - PE - DISTRITO 03 SUL I",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "186"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO CAMPINA DO BARRETO DE A. A.",
+    "neighborhood": "Água fria",
+    "address": "Rua Doutor Elias Gomes, 85 ASSOCIAÇÃO DOS MORADORES DA CAMPINA DO BARRETO #6061 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "187"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO CAMPINA DOS COELHOS DE A.A.",
+    "neighborhood": "Coelhos",
+    "address": "Rua dos Coelhos, 317 Centro de Trabalho e Cultura #7958 - Área 06 - PE - DISTRITO 13 METROPOLITANO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "188"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO CANTINHO FELIZ DE A. A.",
+    "neighborhood": "Água Fria",
+    "address": "Rua Alto do Deodato, 506 Paroquia São Sebastião #6058 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "189"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO CASA AMARELA DE A. A.",
+    "neighborhood": "Nova Descoberta",
+    "address": "R. Córrego da Areia, 151 Escola Municipal Moacir de Albuquerque #2315 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "190"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO CAXANGÁ DE A. A.",
+    "neighborhood": "Cordeiro",
+    "address": "Avenida General San Martin, 1208 Compaz Ariano Suassuna #6128 - Área 06 - PE - DISTRITO 25 CORREDOR CAXANGA",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "191"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO CENTRAL DE A.A.",
+    "neighborhood": "Santo Antonio",
+    "address": "Rua Siqueira Campos, 279 Edficio Brasilia #7839 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "tuesday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "wednesday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "thursday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "friday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "192"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO COLÔNIA Z 1 DE A. A.",
+    "neighborhood": "Pina",
+    "address": "Avenida Herculano Bandeira, 513 Salão Paroquial da Igreja do Pina #2329 - Área 06 - PE - DISTRITO 14 SUL II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "193"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO CORDEIRO DA PAZ",
+    "neighborhood": "Madalena",
+    "address": "Estr. dos Remédios, 2416 Próximo ao Bombreço da Madalena Policlínica Lessa de And #6011 - Área 06 - PE - DISTRITO 25 CORREDOR CAXANGA",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "194"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO DE BEBERIBE DE A.A.",
+    "neighborhood": "Linha do Tiro",
+    "address": "Rua Guaíra, 160 #7942 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "195"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO DIVINO ESPIRITO SANTO DE A.A.",
+    "neighborhood": "Santo Antonio",
+    "address": "Rua Siqueira Campos, 279 #7715 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": null,
+    "tuesday": {
+      "start": "14:00",
+      "end": "16:00"
+    },
+    "wednesday": {
+      "start": "14:00",
+      "end": "16:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "196"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO DOIS UNIDOS",
+    "neighborhood": "Dois Unidos",
+    "address": "Avenida Hildebrando de Vasconcelos, 1769 Antigo Mourão Filho - Escola Francisco Pessoa de Queiroz #2365 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "197"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO ENCRUZILHADA DE A.A.",
+    "neighborhood": "Encruzilhada",
+    "address": "Avenida João de Barros, 1769 Escola Técnica Prof. Agamenon Magalhães - ETPAM #7948 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "198"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO ESPINHEIRO DE A. A.",
+    "neighborhood": "Aflitos",
+    "address": "Rua Conselheiro Portela, s/n Portão de acesso no lado esquerdo da Igreja - Anexo da Igreja Matriz do Espinheiro #2664 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "199"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO FINAL FELIZ DE A. A.",
+    "neighborhood": "Alto do Mandú",
+    "address": "Rua Cametá, 71 Casa de Apoio Santo Antonio de Padua -Associação dos Capuchinhos #6232 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "200"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO FREI CASSIMIRO DE A.A.",
+    "neighborhood": "Santo Amaro",
+    "address": "Rua Severina Santana Pedrosa, 249 Rua da Bola #7907 - Área 06 - PE - DISTRITO 13 METROPOLITANO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "201"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO HARMONIA DE A. A.",
+    "neighborhood": "Alto José do Pinho",
+    "address": "Avenida Norte Miguel Arraes de Alencar, 5154 Associação Beneficente Mista de Casa Amarela #4758 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "202"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO HEI DE VENCER DE A. A.",
+    "neighborhood": "Jordão",
+    "address": "Av. Governador Roberto Silveira, s/n Escola Municipal Jordão Baixo #2327 - Área 06 - PE - DISTRITO 14 SUL II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "203"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO ILHA DE DEUS DE A. A.",
+    "neighborhood": "Afogados",
+    "address": "R. São Miguel, 87 #6040 - Área 06 - PE - DISTRITO 03 SUL I",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "204"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO IMBIRIBEIRA DE A. A.",
+    "neighborhood": "Imbiribeira",
+    "address": "Av. Mal. Mascarenhas de Morais, 2560 Lojão Ferreira Costa Salão Paroquial da Igreja Nossa Senhora de Fatima #2325 - Área 06 - PE - DISTRITO 14 SUL II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "205"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO INDEPENDENTE DE A. A.",
+    "neighborhood": "Nova Descoberta",
+    "address": "Avenida Vereador Otacílio Azevedo, 4538 Escola Estadual Àlvaro Lins #6514 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "206"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO IPIRANGA DE A. A.",
+    "neighborhood": "Tigipió",
+    "address": "R. Queira Deus, 47 #4748 - Área 06 - PE - DISTRITO 30 SUDOESTE",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "207"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO IPSEP DE A. A.",
+    "neighborhood": "Ipsep",
+    "address": "R. Rio Tocantins, 180 Capela são Vicente de Paula #2331 - Área 06 - PE - DISTRITO 14 SUL II",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "208"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO JARDIM DO GARI DE A. A.",
+    "neighborhood": "Areias",
+    "address": "Av. Recife, 3785 EMLURB #5603 - Área 06 - PE - DISTRITO 03 SUL I",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "209"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO JOÃO PAULO II DE A. A.",
+    "neighborhood": "Porto da Madeira",
+    "address": "Av. Beberibe, 3530 Casarão Conjunto Residencial João Paulo II #2665 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "210"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO LUTADORES DO BEM DE A.A.",
+    "neighborhood": "Santo Amaro",
+    "address": "Rua Severina Santana Pedrosa, 249 Rua da Bola #7954 - Área 06 - PE - DISTRITO 13 METROPOLITANO",
+    "monday": null,
+    "tuesday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "211"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO MANGABEIRA DE AA",
+    "neighborhood": "Mangabeira",
+    "address": "Rua Nicéas Arco-Verde Gusmão, sn Escola Municipal de Integral da Mangabeira #8579 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "212"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO MANGUEIRA DE A. A.",
+    "neighborhood": "Afogados",
+    "address": "Rua Jovelino Selva, 71 #5227 - Área 06 - PE - DISTRITO 03 SUL I",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "213"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO MONSENHOR FABRÍCIO DE A. A.",
+    "neighborhood": "Iputinga",
+    "address": "Avenida Maurício de Nassau, 428a Centro de Saúde José Duston Soares #7539 - Área 06 - PE - DISTRITO 25 CORREDOR CAXANGA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "214"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO MORRO DA CONCEIÇÃO DE A. A.",
+    "neighborhood": "Morro da Conceição",
+    "address": "R. da Conceição, 462 Igreja do Morro da Conceição Conselho dos Moradores do Morro da Conceição #4718 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "215"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO MUSTARDINHA DE A. A.",
+    "neighborhood": "Mustardinha",
+    "address": "Rua Manoel Azevedo de Andrade, 220 Associação dos Moradores #4842 - Área 06 - PE - DISTRITO 03 SUL I",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "216"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO NOSSO POVO DE A. A.",
+    "neighborhood": "Alto José do Pinho",
+    "address": "Rua Padre Oliveira, 62 Centro Social Comunitário #2307 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "217"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO NOVOS RUMOS DE A.A.",
+    "neighborhood": "Santo Antonio",
+    "address": "Rua Siqueira Campos, 279 Edificio Brasilia #7714 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": {
+      "start": "14:00",
+      "end": "16:00"
+    },
+    "tuesday": {
+      "start": "14:00",
+      "end": "16:00"
+    },
+    "wednesday": {
+      "start": "14:00",
+      "end": "16:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "218"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO PARNAMIRIM",
+    "neighborhood": "Casa Forte",
+    "address": "Praça Casa Forte, 412 Praça de Casa Forte Salão Paroquial da Igreja de Casa Forte #2317 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:30",
+      "end": "11:30"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "219"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO PORTO SEGURO DE A.A.",
+    "neighborhood": "Alto Santa Terezinha",
+    "address": "Rua Florestopolis, s/n Igreja São Sebastião #7946 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "220"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO PRAÇA DE BOA VIAGEM DE A. A.",
+    "neighborhood": "Boa Viagem",
+    "address": "Rua Setúbal, 70 #6027 - Área 06 - PE - DISTRITO 14 SUL II",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "sunday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "online": false,
+    "id": "221"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO QUERO VIVER DE A.A.",
+    "neighborhood": "Santo Amaro",
+    "address": "Avenida Governador Agamenon Magalhães, 1286 Espaço Cultural Santo #7953 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "222"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO RAINHA DO MAR DE A. A.",
+    "neighborhood": "Pina",
+    "address": "R. Eurico Vitruvio, sn Escola Municipal Novo Pina #2333 - Área 06 - PE - DISTRITO 14 SUL II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "223"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO RECIFE DE A. A.",
+    "neighborhood": "Boa Vista",
+    "address": "Praça Machado de Assis, 63 Cinema São Luiz Edificio Tereza Cristina #6283 - Área 06 - PE - DISTRITO 14 SUL II",
+    "monday": {
+      "start": "18:00",
+      "end": "20:00"
+    },
+    "tuesday": {
+      "start": "18:00",
+      "end": "20:00"
+    },
+    "wednesday": {
+      "start": "18:00",
+      "end": "20:00"
+    },
+    "thursday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "224"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO REGENERAÇÃO DE A. A.",
+    "neighborhood": "Água Fria",
+    "address": "Rua Coronel Urbano Ribeiro de Sena, 144 #6153 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "225"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO RENASCER DE A. A.",
+    "neighborhood": "Campo Grande",
+    "address": "Rua Farias Neves, 886 Associação Encontro dos Sete #4195 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "226"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO RESSURREIÇÃO DE A. A.",
+    "neighborhood": "Areias",
+    "address": "Rua Barros Sobrinho, 474 #4751 - Área 06 - PE - DISTRITO 30 SUDOESTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "227"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO REVIVÊNCIA DE A. A.",
+    "neighborhood": "Alto José do Pinho",
+    "address": "R. Arlindo Cisneiros, 62 Armazem Oliveira - Centro Social Comunitario #2309 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "228"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO RIBEIRO CAMPOS DE A. A.",
+    "neighborhood": "Vasco da Gama",
+    "address": "R. Alto do Eucalipto, 32 #2363 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "229"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO RODA DE FOGO",
+    "neighborhood": "Torrões",
+    "address": "Rua Clárice Lispector, sn Escola Estadual Pintor Lauro Villares #7511 - Área 06 - PE - DISTRITO 25 CORREDOR CAXANGA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "230"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO SALVAÇÃO DE A.A.",
+    "neighborhood": "Dois Irmãos",
+    "address": "Rua Dom Manoel de Medeiros, sn Escola Estadual Lions Parnamirim #7783 - Área 06 - PE - DISTRITO 25 CORREDOR CAXANGA",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": {
+      "start": "17:00",
+      "end": "19:00"
+    },
+    "wednesday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "231"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO SANTA IZABEL DE A. A.",
+    "neighborhood": "Alto José do Pinho",
+    "address": "Avenida Norte Miguel Arraes de Alencar, 5154 Associação Beneficiente Mista de Casa Amarela #6698 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "232"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO SANTA LUZIA DE A. A.",
+    "neighborhood": "Estância",
+    "address": "Avenida Doutor José Rufino, 643 Salão Paroquial da Igreja Santa Luzia #4750 - Área 06 - PE - DISTRITO 30 SUDOESTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "233"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO SANTA TEREZINHA DE A.A.",
+    "neighborhood": "Santo Amaro",
+    "address": "Avenida Governador Agamenon Magalhães, 192 Associação dos Moradores #7957 - Área 06 - PE - DISTRITO 13 METROPOLITANO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "234"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO SANTANA DE A. A.",
+    "neighborhood": "Monteiro",
+    "address": "Estrada do Arraial, 4900 Escola municipal Nilo Pereira #2407 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "235"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO SANTO AMARO DE A.A.",
+    "neighborhood": "Santo Amaro",
+    "address": "Rua Severina Santana Pedrosa, 249 Rua da Bola #7956 - Área 06 - PE - DISTRITO 13 METROPOLITANO",
+    "monday": null,
+    "tuesday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "236"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO SEMPRE ALERTA DE A. A.",
+    "neighborhood": "Alto José do Pinho",
+    "address": "R. Acaiaca, 70 #4361 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "237"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO SIMPLICIDADE DE A.A.",
+    "neighborhood": "Santo Amaro",
+    "address": "Rua Severina Santana Pedrosa, 249 Rua da Bola #7906 - Área 06 - PE - DISTRITO 13 METROPOLITANO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "238"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO SIÃO DE A.A.",
+    "neighborhood": "Mangabeira",
+    "address": "Rua Maria Gonçalves, 56 Circulo Operário da Mangabeira #7781 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "239"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO SOLIDARIEDADE DE A. A.",
+    "neighborhood": "Campo Grande",
+    "address": "Estrada de Belém, 848 Igreja do Bom Parto Caixa Postal 51- Paulista #2632 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "240"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO SÃO JOSE DO COQUE DE A. A.",
+    "neighborhood": "Ilha Joana Bezerra",
+    "address": "Rua Ibiporã, 76 Igreja Católica São Francisco de Assis #6012 - Área 06 - PE - DISTRITO 03 SUL I",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "241"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO SÃO PAULO DE A.A.",
+    "neighborhood": "Campo Grande",
+    "address": "Rua Farias Neves, 886 Sociedade Encontro dos Setes #7963 - Área 06 - PE - DISTRITO 26 PEIXINHOS",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "242"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO SÓ POR HOJE DE A. A.",
+    "neighborhood": "Brejo da Guabiraba",
+    "address": "R. Cassiterita, 91 #4360 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "243"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO TIRADENTE DE A.A.",
+    "neighborhood": "Santo Amaro",
+    "address": "Rua Severina Santana Pedrosa, 249 Rua da Bola #7955 - Área 06 - PE - DISTRITO 13 METROPOLITANO",
+    "monday": null,
+    "tuesday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "244"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO TRADICIONAL DE A.A.",
+    "neighborhood": "Bomba do Hemetério",
+    "address": "Rua Chã de Alegria, 117 Escola Prof. Mardonio de Andrade Lima Coelho #8621 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "245"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO TRIUNFO DE A. A.",
+    "neighborhood": "Água Fria",
+    "address": "Avenida Beberibe, 2131 ASSOCIAÇÃO DOS MORADORES DE FUNDÃO #6062 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "246"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO UNIDADE DE A.A.",
+    "neighborhood": "Areias",
+    "address": "Rua Barros Sobrinho, 474 #7920 - Área 06 - PE - DISTRITO 30 SUDOESTE",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "247"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO UNIDOS VENCEREMOS DE A.A.",
+    "neighborhood": "Alto Deodato",
+    "address": "Avenida Aníbal Benévolo, 1378 Escola Estadual Rosa Magalhães #7701 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "248"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO UNIÃO DE A. A.",
+    "neighborhood": "Areias",
+    "address": "R. Barros Sobrinho, 474 #4749 - Área 06 - PE - DISTRITO 30 SUDOESTE",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "249"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO VARZEA DE A. A.",
+    "neighborhood": "Várzea",
+    "address": "Av. Afonso Olindense, 1946 Escola Lar Fabiano de Cristo #6212 - Área 06 - PE - DISTRITO 25 CORREDOR CAXANGA",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "250"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO VIDA NOVA DE A. A.",
+    "neighborhood": "Alto José do Pinho",
+    "address": "Avenida Norte Miguel Arraes de Alencar, 5154 #2354 - Área 06 - PE - DISTRITO 12 CASA AMARELA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "251"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO VIDA NOVA DE A.A.",
+    "neighborhood": "Ipsep",
+    "address": "Rua Adolfo Faro, 180 Próximo ao terminal do Ipsep -Escola Professor Jose Vicente Barbosa #2608 - Área 06 - PE - DISTRITO 14 SUL II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "252"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO VILA TAMANDARE DE A. A.",
+    "neighborhood": "Areias",
+    "address": "Avenida Tapajós, 293 Colégio Walt Disney #5607 - Área 06 - PE - DISTRITO 03 SUL I",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "253"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO VITORIA DE A. A.",
+    "neighborhood": "Areias",
+    "address": "R. Barros Sobrinho, 474 #4747 - Área 06 - PE - DISTRITO 30 SUDOESTE",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "10:00",
+      "end": "12:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "254"
+  },
+  {
+    "city": "Recife",
+    "name": "GRUPO ÚLTIMA GOTA DE A.A.",
+    "neighborhood": "Bomba do Hemetério",
+    "address": "Rua Córrego João Francisco, 283 Igreja São Francisco de Assis #7921 - Área 06 - PE - DISTRITO 11 ÁGUA FRIA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "255"
+  },
+  {
+    "city": "Recife",
+    "name": "GUARANY",
+    "neighborhood": "COHAB",
+    "address": "Avenida Angra dos Réis, S/N UR 02 Escola Padre Lebrete - Antigo Jordão Emerenciano #7790 - Área 06 - PE - DISTRITO 35 IBURA",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "256"
+  },
+  {
+    "city": "Recife",
+    "name": "PASSO FELIZ",
+    "neighborhood": "COHAB",
+    "address": "Rua Alto do Erval Novo, S/N UR 10 - Escola Maria Adelaide de Barros #7789 - Área 06 - PE - DISTRITO 35 IBURA",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "257"
+  },
+  {
+    "city": "Ribeirão",
+    "name": "RIBEIRÃO E ESPERANÇA DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Rua Henrique de Barros e Silva, 46 #7909 - Área 06 - PE - DISTRITO 24 MATA SUL",
+    "monday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "258"
+  },
+  {
+    "city": "Salgueiro",
+    "name": "GRUPO LIBERDADE E HARMONIA",
+    "neighborhood": "Santo",
+    "address": "Rua José Correia, 134 #5996 - Área 06 - PE - DISTRITO 15 SERTÃO 01",
+    "monday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "tuesday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "wednesday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "259"
+  },
+  {
+    "city": "Santa Cruz do Capibaribe",
+    "name": "GRUPO NOVA VIDA DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Avenida Vinte e Nove de Dezembro, 756 Salão Paroquial da Igreja de São Cristóvão #8152 - Área 06 - PE - DISTRITO 31 SANTA CRUZ DO CAPIBARIBE",
+    "monday": null,
+    "tuesday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "260"
+  },
+  {
+    "city": "Santa Cruz do Capibaribe",
+    "name": "GRUPO POÇO FUNDO DE A.A.",
+    "neighborhood": "Poço Fundo",
+    "address": "R. Severino Souza, 32 Salão Paroquial da Igreja Católica Matriz de Poço Fundo #8154 - Área 06 - PE - DISTRITO 31 SANTA CRUZ DO CAPIBARIBE",
+    "monday": null,
+    "tuesday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "261"
+  },
+  {
+    "city": "Santa Cruz do Capibaribe",
+    "name": "GRUPO ZONA RURAL DE A.A.",
+    "neighborhood": "Nova Santa Cruz",
+    "address": "Estrada do Pará, 614 Associação dos Agricultores na Comunidade de Cacimba de Baixo #8153 - Área 06 - PE - DISTRITO 31 SANTA CRUZ DO CAPIBARIBE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "262"
+  },
+  {
+    "city": "Santa Maria da Boa Vista",
+    "name": "GRUPO BOA VISTA DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Rua Doutor Oscar Sampaio, 376 #4878 - Área 06 - PE - DISTRITO 18 SERTÃO II",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "14:00",
+      "end": "16:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "263"
+  },
+  {
+    "city": "Santa Maria do Cambucá",
+    "name": "GRUPO SANTA MARIA DO CAMBUCÁ DE A.A.",
+    "neighborhood": "Centro",
+    "address": "Rua Tenente Galdino, sn Salão Vicente de Paula #8038 - Área 06 - PE - DISTRITO 08 MATA NORTE I",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "14:00",
+      "end": "16:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "264"
+  },
+  {
+    "city": "Santa Terezinha",
+    "name": "VOLTANDO A VIVER",
+    "neighborhood": "Centro",
+    "address": "Rua Pedro Bernardes Nunes, 203 #7797 - Área 06 - PE - DISTRITO 39 SÃO JOSÉ DO EGITO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "265"
+  },
+  {
+    "city": "Serra Talhada",
+    "name": "GRUPO NOVO CAMINHO DE A.A.",
+    "neighborhood": "Vila Bela",
+    "address": "Avenida Argemiro Pereira de Meneses, 222 Creche Municipal Professora Roseli Xavier Silva #8109 - Área 06 - PE - DISTRITO 15 SERTÃO 01",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "266"
+  },
+  {
+    "city": "Serra Talhada",
+    "name": "GRUPO SERRATALHADEN SE A. A.",
+    "neighborhood": "Nossa Sra. da Conceição",
+    "address": "Rua Isidoro Conrado, 1890 #6644 - Área 06 - PE - DISTRITO 15 SERTÃO 01",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "267"
+  },
+  {
+    "city": "Serra Talhada",
+    "name": "GRUPO VIDA NOVA DE A. A.",
+    "neighborhood": "Bom Jesus",
+    "address": "Rua Livino Gomes, 242 #6645 - Área 06 - PE - DISTRITO 15 SERTÃO 01",
+    "monday": null,
+    "tuesday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "268"
+  },
+  {
+    "city": "Surubim",
+    "name": "GRUPO RESGATE DA VIDA DE A.A.",
+    "neighborhood": "Bela Vista",
+    "address": "Rua José Alberto de Lima, sn #8036 - Área 06 - PE - DISTRITO 08 MATA NORTE I",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "269"
+  },
+  {
+    "city": "Surubim",
+    "name": "GRUPO SURUBIM DE A.A.",
+    "neighborhood": "Cabaceira",
+    "address": "Rua Santos Dumont, sn Loja Maçônica #8040 - Área 06 - PE - DISTRITO 08 MATA NORTE I",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "wednesday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "270"
+  },
+  {
+    "city": "São José do Egito",
+    "name": "GRUPO DE VOLTA À VIDA DE A.A.",
+    "neighborhood": "São João",
+    "address": "Rua Henrique Dias, sn Próximo a Pracinha Salão Paroquial #7934 - Área 06 - PE - DISTRITO 39 SÃO JOSÉ DO EGITO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "271"
+  },
+  {
+    "city": "São José do Egito",
+    "name": "VIVER SÓBRIO",
+    "neighborhood": "Centro",
+    "address": "Rua São José, 184 #7798 - Área 06 - PE - DISTRITO 39 SÃO JOSÉ DO EGITO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "272"
+  },
+  {
+    "city": "São Lourenço da Mata",
+    "name": "GRUPO CAPIBARIBE DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Avenida Doutor Pedro Augusto Correia Araújo, 134 Centro Social Urbano CSU #6001 - Área 06 - PE - DISTRITO 01 ZONA LESTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "16:00",
+      "end": "18:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "273"
+  },
+  {
+    "city": "São Lourenço da Mata",
+    "name": "GRUPO DOIS DE JUNHO",
+    "neighborhood": "Centro",
+    "address": "Avenida Doutor Pedro Augusto Correia Araújo, 134 #6003 - Área 06 - PE - DISTRITO 01 ZONA LESTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "274"
+  },
+  {
+    "city": "São Lourenço da Mata",
+    "name": "GRUPO UNIDOS DO PARQUE",
+    "neighborhood": "Parque Capibaribe",
+    "address": "Rua Trinta e Oito, 19 Escola Dona Leonor Porto #5298 - Área 06 - PE - DISTRITO 01 ZONA LESTE",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "275"
+  },
+  {
+    "city": "Tabira",
+    "name": "TABIRENSE",
+    "neighborhood": "Missões",
+    "address": "Rua José Alves de Siqueira, 120 #7795 - Área 06 - PE - DISTRITO 39 SÃO JOSÉ DO EGITO",
+    "monday": null,
+    "tuesday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "276"
+  },
+  {
+    "city": "Teixeira",
+    "name": "DIVINA PROVIDÊNCIA",
+    "neighborhood": "Santa Maria",
+    "address": "Rua Joaquim Camilo Duarte, 76 #7802 - Área 06 - PE - DISTRITO 39 SÃO JOSÉ DO EGITO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "277"
+  },
+  {
+    "city": "Terra Nova",
+    "name": "GRUPO TERRA NOVA DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Rua Antonio Verissimo, 33 #6641 - Área 06 - PE - DISTRITO 15 SERTÃO 01",
+    "monday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "278"
+  },
+  {
+    "city": "Timbaúba",
+    "name": "GRUPO TIMBAUBA DE A. A.",
+    "neighborhood": "Centro",
+    "address": "Rua Professora Domerina de Menezes, 205 #6067 - Área 06 - PE - DISTRITO 22 MATA NORTE II",
+    "monday": {
+      "start": "20:30",
+      "end": "21:30"
+    },
+    "tuesday": {
+      "start": "20:30",
+      "end": "21:30"
+    },
+    "wednesday": {
+      "start": "20:30",
+      "end": "21:30"
+    },
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "279"
+  },
+  {
+    "city": "Tuparetama",
+    "name": "TUPARETAMA",
+    "neighborhood": "Centro",
+    "address": "Rua Santa Cecilia, 199 #7799 - Área 06 - PE - DISTRITO 39 SÃO JOSÉ DO EGITO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:00",
+      "end": "21:00"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "280"
+  },
+  {
+    "city": "VITÓRIA DE SANTO ANTÃO",
+    "name": "name Esperança",
+    "neighborhood": "Mário Bezerra",
+    "address": "R. Santa Helena, 180 Quadra 48, lote 0 #6553 : Área 06 - PE : DISTRITO 09 MATA CENTRO",
+    "monday": null,
+    "tuesday": {
+      "start": "20:00",
+      "end": "22:00"
+    },
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "281"
+  },
+  {
+    "city": "Vitória de Santo Antão",
+    "name": "GRUPO ESPERANÇA DE A. A.",
+    "neighborhood": "Mário Bezerra",
+    "address": "Rua Nossa Senhora da Conceição, 180 #6553 - Área 06 - PE - DISTRITO 09 MATA CENTRO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "282"
+  },
+  {
+    "city": "Vitória de Santo Antão",
+    "name": "GRUPO LEÃO COROADO",
+    "neighborhood": "Bela Vista",
+    "address": "Rua Nova do Campo, 63 Beco do Borges #4950 - Área 06 - PE - DISTRITO 09 MATA CENTRO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "283"
+  },
+  {
+    "city": "Vitória de Santo Antão",
+    "name": "GRUPO LIRIO DA VITORIA DE A. A.",
+    "neighborhood": "Areal",
+    "address": "Rua Antônio Felipe Camarão, 196 #5203 - Área 06 - PE - DISTRITO 09 MATA CENTRO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "saturday": null,
+    "sunday": null,
+    "online": false,
+    "id": "284"
+  },
+  {
+    "city": "Vitória de Santo Antão",
+    "name": "GRUPO MEU CAMINHO DE A. A.",
+    "neighborhood": "Lídia Queiroz",
+    "address": "Rua B, sn Centro Social Urbano #4948 - Área 06 - PE - DISTRITO 09 MATA CENTRO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "285"
+  },
+  {
+    "city": "Vitória de Santo Antão",
+    "name": "GRUPO PRIMEIRO PASSO DE A. A.",
+    "neighborhood": "Livramento",
+    "address": "Travessa Doutor Agamenon Magalhães, 354 #6555 - Área 06 - PE - DISTRITO 09 MATA CENTRO",
+    "monday": {
+      "start": "19:30",
+      "end": "21:30"
+    },
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "15:00",
+      "end": "17:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "286"
+  },
+  {
+    "city": "Vitória de Santo Antão",
+    "name": "GRUPO TABOCAS DE A. A.",
+    "neighborhood": "Bela Vista",
+    "address": "Rua Nova do Campo, 63 #4949 - Área 06 - PE - DISTRITO 09 MATA CENTRO",
+    "monday": null,
+    "tuesday": null,
+    "wednesday": null,
+    "thursday": null,
+    "friday": null,
+    "saturday": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "sunday": null,
+    "online": false,
+    "id": "287"
+  }
+]

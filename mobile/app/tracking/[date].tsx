@@ -1,10 +1,11 @@
 import TrackingSection from '@/mobile/components/daily-tracking/tracking-section';
-import { ChevronLeft } from "@/mobile/components/icons/ChevronLeft";
+import { ChevronLeft } from "lucide-react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { Dumbbell, Frown, Heart, Laptop, Meh, Smile, Wine, WineOff } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from '@/mobile/constants/Colors';
 
 const WEEKDAYS = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 
@@ -101,7 +102,6 @@ export default function TrackingScreen() {
             ...prev,
             [selectedDate.toDateString()]: tracking,
         }));
-        console.log('Saving tracking data:', tracking);
     };
 
     const weekDays = getCurrentWeekDays(selectedDate);
@@ -111,7 +111,9 @@ export default function TrackingScreen() {
             <View style={styles.header}>
                 <View style={styles.headerRow}>
                     <TouchableOpacity style={styles.backIconWrapper} onPress={() => router.back()}>
-                        <ChevronLeft />
+                        				<TouchableOpacity style={styles.backButton}>
+					<ChevronLeft size={24} color={Colors.icon.gray} />
+				</TouchableOpacity>
                     </TouchableOpacity>
                     <Text style={styles.dateText} numberOfLines={2}>
                         {selectedDate.toDateString() === new Date().toDateString()
@@ -196,11 +198,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         minHeight: 48,
     },
-    backIconWrapper: {
-        width: 32,
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-    },
+    	backIconWrapper: {
+		width: 32,
+		alignItems: 'flex-start',
+		justifyContent: 'center',
+	},
+	backButton: {
+		padding: 8,
+	},
     dateText: {
         flex: 1,
         textAlign: 'center',

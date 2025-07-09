@@ -2,14 +2,18 @@ import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Colors } from '@/mobile/constants/Colors';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type CrisisButtonProps = {
 	onPress: () => void;
 };
 
 export function CrisisButton({ onPress }: CrisisButtonProps) {
+	const insets = useSafeAreaInsets();
+	const tabBarHeight = 60 + insets.bottom;
+
 	return (
-		<View style={styles.container}>
+		<View style={[styles.container, { bottom: tabBarHeight + 20 }]}>
 			<Pressable
 				style={styles.button}
 				onPress={onPress}
@@ -29,7 +33,6 @@ export function CrisisButton({ onPress }: CrisisButtonProps) {
 const styles = StyleSheet.create({
 	container: {
 		position: 'absolute',
-		bottom: 80,
 		right: 24,
 		zIndex: 1000,
 	},
