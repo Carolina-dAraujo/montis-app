@@ -7,6 +7,7 @@ import { UsersModule } from "./users/users.module";
 import { SobrietyModule } from "./sobriety/sobriety.module";
 import { PreferencesModule } from "./preferences/preferences.module";
 import { GroupsModule } from "./groups/groups.module";
+import { EmergencyContactsModule } from "./emergency-contacts/emergency-contacts.module";
 import { ConfigModule } from "@nestjs/config";
 
 @Module({
@@ -20,6 +21,7 @@ import { ConfigModule } from "@nestjs/config";
     SobrietyModule,
     PreferencesModule,
     GroupsModule,
+    EmergencyContactsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

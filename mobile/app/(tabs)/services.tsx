@@ -16,7 +16,7 @@ const careOptions: CareOption[] = [
 	{
 		id: 'aa',
 		title: 'Alcoólicos Anônimos (AA)',
-		description: 'Irmandade de pessoas que compartilham, entre si, suas experiências, forças e esperanças, a fim de resolver seu problema comum e ajudar outros a se recuperarem do alcoolismo.',
+		description: 'Irmandade de pessoas que compartilham entre si suas experiências, forças e esperanças, a fim de resolver seu problema comum e ajudar outros a se recuperarem do alcoolismo.',
 		image: require('@/mobile/assets/images/aa.png'),
 		color: '#007AFF',
 	},
