@@ -1,3 +1,380 @@
+{
+    "groups": [
+		{
+			"id": "grupo-encruzilhada",
+			"name": "Grupo Encruzilhada",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Encruzilhada",
+				"street": "Avenida João de Barros",
+				"number": "1769",
+				"cep": "52171011",
+				"place": "Escola Técnica Prof. Agamenon Magalhães - ETPAM",
+			},
+			"schedule": {
+				"wednesday": [
+					{
+						"start": "19:00",
+						"end": "21:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-espinheiro",
+			"name": "Grupo Espinheiro",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Aflitos",
+				"street": "Rua Conselheiro Portela",
+				"number": null,
+				"cep": "52021050",
+				"place": "Portão de acesso no lado esquerdo da Igreja - Anexo da Igreja Matriz do Espinheiro",
+			},
+			"schedule": {
+				"tuesday": [
+					{
+						"start": "19:00",
+						"end": "21:00"
+					}
+				],
+				"thursday": [
+					{
+						"start": "19:00",
+						"end": "21:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-quero-viver",
+			"name": "Grupo Quero Viver",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Avenida Governador Agamenon Magalhães",
+				"number": "1286",
+				"cep": "50030230",
+				"place": "Espaço Cultural Santo",
+			},
+			"schedule": {
+				"tuesday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-solidariedade",
+			"name": "Grupo Solidariedade",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Campo Grande",
+				"street": "Estrada de Belém",
+				"number": "848",
+				"cep": "52040000",
+				"place": "Igreja do Bom Parto Caixa Postal 51- Paulista",
+			},
+			"schedule": {
+				"saturday": [
+					{
+						"start": "19:00",
+						"end": "21:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-mangabeira",
+			"name": "Grupo Mangabeira",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Mangabeira",
+				"street": "Rua Nicéas Arco-Verde Gusmão",
+				"number": null,
+				"cep": "52110210",
+				"place": "Escola Municipal de Integral da Mangabeira",
+			},
+			"schedule": {
+				"sunday": [
+					{
+						"start": "10:00",
+						"end": "12:00"
+					}
+				],
+				"monday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				],
+				"thursday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-sio",
+			"name": "Grupo Sio",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Mangabeira",
+				"street": "Rua Maria Gonçalves",
+				"number": "56",
+				"cep": "52111230",
+				"place": "Circulo Operário da Mangabeira",
+			},
+			"schedule": {
+				"tuesday": [
+					{
+						"start": "20:00",
+						"end": "22:00"
+					}
+				],
+				"friday": [
+					{
+						"start": "20:00",
+						"end": "22:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-tradicional",
+			"name": "Grupo Tradicional",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Bomba do Hemetério",
+				"street": "Rua Chã de Alegria",
+				"number": "117",
+				"cep": "52211130",
+				"place": "Escola Prof. Mardonio de Andrade Lima Coelho",
+			},
+			"schedule": {
+				"saturday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-triunfo",
+			"name": "Grupo Triunfo",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Água Fria",
+				"street": "Avenida Beberibe",
+				"number": "2131",
+				"cep": "52130000",
+				"place": "ASSOCIAÇÃO DOS MORADORES DE FUNDÃO",
+			},
+			"schedule": {
+				"saturday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-ultima-gota",
+			"name": "Grupo Última Gota",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Bomba do Hemetério",
+				"street": "Rua Córrego João Francisco",
+				"number": "283",
+				"cep": "52171011",
+				"place": "Igreja São Francisco de Assis"
+			},
+			"schedule": {
+				"wednesday": [
+					{
+						"start": "19:00",
+						"end": "21:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-lutadores-do-bem",
+			"name": "Grupo Lutadores do Bem",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Rua Severina Santana Pedrosa",
+				"number": "249",
+				"cep": "50110191",
+				"place": "Rua da Bola"
+			},
+			"schedule": {
+				"sunday": [
+					{
+						"start": "10:00",
+						"end": "12:00"
+					}
+				],
+				"thursday": [
+					{
+						"start": "20:00",
+						"end": "22:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-frei-cassimiro",
+			"name": "Grupo Frei Cassimiro",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Rua Severina Santana Pedrosa",
+				"number": "249",
+				"cep": "50110191",
+				"place": "Rua da Bola"
+			},
+			"schedule": {
+				"sunday": [
+					{
+						"start": "16:00",
+						"end": "18:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-simplicidade",
+			"name": "Grupo Simplicidade",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Rua Severina Santana Pedrosa",
+				"number": "249",
+				"cep": "50110191",
+				"place": "Rua da Bola"
+			},
+			"schedule": {
+				"sunday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-santo-amaro",
+			"name": "Grupo Santo Amaro",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Rua Severina Santana Pedrosa",
+				"number": "249",
+				"cep": "50110191",
+				"place": "Rua da Bola"
+			},
+			"schedule": {
+				"wednesday": [
+					{
+						"start": "20:00",
+						"end": "22:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-tiradente",
+			"name": "Grupo Tiradente",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Rua Severina Santana Pedrosa",
+				"number": "249",
+				"cep": "50110191",
+				"place": "Rua da Bola"
+			},
+			"schedule": {
+				"monday": [
+					{
+						"start": "20:00",
+						"end": "22:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-sempre-alerta",
+			"name": "Grupo Sempre Alerta",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Alto José do Pinho",
+				"street": "Rua Acaiaca",
+				"number": "70",
+				"cep": "52210240",
+				"place": "Escola Municipal de Integral da Mangabeira"
+			},
+			"schedule": {
+				"sunday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				],
+				"wednesday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				],
+				"saturday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		}
+    ]
+}
+
 [
   {
     "city": "Abaré",

@@ -4,79 +4,134 @@ import { apiService } from '../services/api';
 import { storageService } from '../services/storage';
 
 export interface MeetingSchedule {
-  day: string;
-  time: string;
-  enabled: boolean;
+	day: string;
+	time: string;
+	enabled: boolean;
+}
+
+export interface MeetingTime {
+	start: string;
+	end: string;
+	notificationsEnabled?: boolean;
+}
+
+export interface GroupSchedule {
+	[key: string]: MeetingTime[];
+}
+
+export interface AAGroup {
+	id: string;
+	name: string;
+	address: {
+		city: string;
+		state: string;
+		neighborhood?: string;
+		street?: string;
+		number?: string | null;
+		cep?: string;
+		place?: string;
+	};
+	schedule: GroupSchedule;
+	type: 'virtual' | 'in-person';
+	platform?: string;
+	link?: string;
+	isFeminine?: boolean;
+	description?: string;
+	notificationsEnabled?: boolean;
+	addedAt?: string;
 }
 
 export interface UserGroup {
-  groupId: string;
-  groupName: string;
-  type: string;
-  address: string;
-  phone: string;
-  schedule: string;
-  distance: string;
-  meetingSchedules: MeetingSchedule[];
-  notificationsEnabled: boolean;
-  online: boolean;
-  addedAt: string;
+	id: string;
+	notificationsEnabled: boolean;
+	addedAt: string;
 }
 
 export function useUserGroups() {
-  const [groups, setGroups] = useState<UserGroup[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+	const [groups, setGroups] = useState<AAGroup[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
-  const loadGroups = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const token = await storageService.getAuthToken();
-      if (!token) throw new Error('Usuário não autenticado');
-      // Busca todos os grupos disponíveis
-      const allAAGroups = await apiService.getAllAAGroups();
-      // Busca os grupos do usuário
-      const userGroups = await apiService.getUserGroups(token);
-      // Faz merge dos dados completos
-      const mergedGroups = userGroups.map((userGroup: any) => {
-        // Tenta encontrar o grupo completo usando todos os campos possíveis de ID
-        const userGroupId = String(userGroup.groupId ?? userGroup.id ?? userGroup.group_id);
-        const full = allAAGroups.find((g: any) => String(g.id ?? g.groupId ?? g.group_id) === userGroupId);
-        return {
-          ...userGroup,
-          groupName: full?.name || userGroup.groupName || userGroup.name || '',
-          address: full?.address || userGroup.address || '',
-          meetingSchedules: full?.meetingSchedules || userGroup.meetingSchedules || [],
-          city: full?.city || userGroup.city || '',
-          neighborhood: full?.neighborhood || userGroup.neighborhood || '',
-          online: typeof full?.online === 'boolean' ? full.online : (userGroup.online ?? false),
-          // outros campos do full, mas só se full existir
-          ...(full ? full : {}),
-        };
-      });
-      setGroups(mergedGroups);
-    } catch (err) {
-      setError('Erro ao carregar grupos');
-      setGroups([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+	const loadGroups = async () => {
+		setLoading(true);
+		setError(null);
 
-  useEffect(() => {
-    loadGroups();
-  }, []);
+		try {
+			const token = await storageService.getAuthToken();
 
-  const handleNotificationToggle = async (groupId: string, enabled: boolean) => {
-    Alert.alert('Aviso', 'Notificações de grupo devem ser implementadas com Firebase.');
-  };
+			if (!token) throw new Error('Usuário não autenticado');
 
-  return {
-    groups,
-    loading,
-    error,
-    reloadGroups: loadGroups,
-    handleNotificationToggle,
-  };
-} 
+			const allAAGroups = require('@/mobile/data/groups.json');
+			const userGroups = await apiService.getUserGroups(token);
+
+			const mergedGroups = userGroups.map((userGroup: UserGroup) => {
+				const userGroupId = userGroup.id;
+				const full = allAAGroups.groups.find((group: AAGroup) => group.id === userGroupId);
+
+				return {
+					...userGroup,
+					...full,
+				};
+			});
+
+			setGroups(mergedGroups);
+		} catch (err) {
+			setError('Erro ao carregar grupos');
+			setGroups([]);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	useEffect(() => {
+		if (groups.length > 0) return;
+
+		loadGroups();
+	}, []);
+
+	const handleNotificationToggle = async (groupId: string, enabled: boolean) => {
+		Alert.alert('Aviso', 'Notificações de grupo devem ser implementadas com Firebase.');
+	};
+
+	const handleMeetingNotificationToggle = async (
+		groupId: string,
+		day: string,
+		meetingIndex: number,
+		enabled: boolean
+	) => {
+		try {
+			const token = await storageService.getAuthToken();
+			if (!token) throw new Error('Usuário não autenticado');
+
+			await apiService.updateMeetingNotification(token, groupId, day, meetingIndex, enabled);
+
+			setGroups(prevGroups =>
+				prevGroups.map(group => {
+					if (group.id === groupId && group.schedule && group.schedule[day]) {
+						const updatedSchedule = { ...group.schedule };
+						if (updatedSchedule[day] && updatedSchedule[day][meetingIndex]) {
+							updatedSchedule[day][meetingIndex] = {
+								...updatedSchedule[day][meetingIndex],
+								notificationsEnabled: enabled
+							};
+						}
+						return { ...group, schedule: updatedSchedule };
+					}
+					return group;
+				})
+			);
+		} catch (error) {
+			console.error('Error updating meeting notification:', error);
+			Alert.alert('Erro', 'Não foi possível atualizar as notificações da reunião');
+		}
+	};
+
+	return {
+		groups,
+		loading,
+		error,
+		reloadGroups: loadGroups,
+		handleNotificationToggle,
+		handleMeetingNotificationToggle,
+	};
+}
