@@ -31,7 +31,6 @@ export const VirtualMeetings: React.FC = () => {
             setLoading(true);
             const aaGroupsData = await import('@/mobile/data/aa-groups.json');
 
-            // Transform the data to include next meeting time and visitor status
             const transformedMeetings = aaGroupsData.groups.map(group => ({
                 id: group.id,
                 name: group.name,
@@ -54,11 +53,9 @@ export const VirtualMeetings: React.FC = () => {
     };
 
     const getNextMeetingTime = (schedule: string): string => {
-        // Simple logic to determine next meeting
         const now = new Date();
-        const dayOfWeek = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+        const dayOfWeek = now.getDay();
 
-        // For now, just return a placeholder
         return 'Próxima reunião em breve';
     };
 

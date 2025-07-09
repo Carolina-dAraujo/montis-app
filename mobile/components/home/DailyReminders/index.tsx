@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Colors } from '@/mobile/constants/Colors';
@@ -5,6 +6,10 @@ import { styles } from './styles';
 import { useOnboarding } from '@/mobile/contexts/OnboardingContext';
 import { useUserGroups } from '@/mobile/hooks/useUserGroups';
 import { useRouter } from 'expo-router';
+import { getAuth } from 'firebase/auth';
+import { getDatabase, ref, get, child } from 'firebase/database';
+import { useFocusEffect } from '@react-navigation/native';
+import { MeetingSkeleton } from './MeetingSkeleton';
 
 function getTodayWeekdayKey(): string {
     const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -15,9 +20,37 @@ export function DailyReminders() {
     const { onboardingData } = useOnboarding();
     const { groups, loading } = useUserGroups();
     const router = useRouter();
+    const [isDailyCheckCompleted, setIsDailyCheckCompleted] = useState(false);
+    const [checkingCompletion, setCheckingCompletion] = useState(true);
 
-    const isDailyCheckCompleted = false;
     const hasDailyReminders = onboardingData?.dailyReminders ?? false;
+
+    const checkTodayCompletion = async () => {
+        try {
+            const user = getAuth().currentUser;
+            if (!user) return;
+
+            const today = new Date().toISOString().slice(0, 10);
+            const dbRef = ref(getDatabase());
+            const snapshot = await get(child(dbRef, `users/${user.uid}/dailyTracking/${today}`));
+
+            setIsDailyCheckCompleted(snapshot.exists());
+        } catch (error) {
+            console.error('Error checking daily completion:', error);
+        } finally {
+            setCheckingCompletion(false);
+        }
+    };
+
+    useEffect(() => {
+        checkTodayCompletion();
+    }, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            checkTodayCompletion();
+        }, [])
+    );
 
     const todayKey = getTodayWeekdayKey();
     const todayMeetings = groups.flatMap(group => {
@@ -26,14 +59,14 @@ export function DailyReminders() {
         }
 
         return group.schedule[todayKey]
-            .filter(meeting => meeting.notificationsEnabled !== false)
+            .filter(meeting => meeting.notificationsEnabled === true)
             .map(meeting => ({
                 groupId: group.id,
                 groupName: group.name,
                 time: `${meeting.start} - ${meeting.end}`,
                 type: group.type,
                 isOnline: group.type === 'virtual',
-                notificationsEnabled: meeting.notificationsEnabled !== false,
+                notificationsEnabled: meeting.notificationsEnabled === true,
             }));
     });
 
@@ -47,7 +80,9 @@ export function DailyReminders() {
             <View style={styles.remindersContainer}>
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Reuniões</Text>
-                    {loading ? null : todayMeetings.length > 0 ? (
+                    {loading ? (
+                        <MeetingSkeleton count={2} />
+                    ) : todayMeetings.length > 0 ? (
                         todayMeetings.map((meeting, idx) => (
                             <Pressable
                                 key={meeting.groupId + meeting.time + idx}
@@ -79,7 +114,11 @@ export function DailyReminders() {
                             </Pressable>
                         ))
                     ) : (
-                        <View style={styles.emptyStateContainer}>
+                        <Pressable
+                            style={styles.emptyStateContainer}
+                            onPress={() => router.push('/(tabs)/grupos')}
+                            android_ripple={{ color: Colors.containers.blueLight, borderless: false }}
+                        >
                             <FontAwesome6
                                 name="calendar-xmark"
                                 size={24}
@@ -87,7 +126,8 @@ export function DailyReminders() {
                                 style={styles.emptyStateIcon}
                             />
                             <Text style={styles.emptyStateText}>Nenhuma reunião agendada para hoje</Text>
-                        </View>
+                            <Text style={styles.emptyStateAction}>Toque para encontrar reuniões</Text>
+                        </Pressable>
                     )}
                 </View>
 
@@ -105,7 +145,7 @@ export function DailyReminders() {
                                 }
                             ]}
                             onPress={() => {
-                                // TODO: Navigate to daily check-in form or view
+                                router.push({ pathname: '/(tabs)/tracking', params: { date: new Date().toISOString() } });
                             }}
                             android_ripple={{ color: 'rgba(255, 255, 255, 0.2)', borderless: false }}
                         >
@@ -126,7 +166,10 @@ export function DailyReminders() {
                                 ]}>
                                     Registro diário
                                 </Text>
-                                <Text style={styles.reminderTime}>
+                                <Text style={[
+                                    styles.reminderTime,
+                                    isDailyCheckCompleted ? styles.checkInTimeCompleted : styles.checkInTime
+                                ]}>
                                     {isDailyCheckCompleted ? 'Completo' : 'Pendente'}
                                 </Text>
                             </View>

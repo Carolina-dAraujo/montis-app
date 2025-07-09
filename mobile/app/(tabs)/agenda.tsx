@@ -51,7 +51,7 @@ export default function AgendaScreen() {
 
     const handleDateSelect = (date: Date) => {
         setSelectedDate(date);
-        router.push({ pathname: '/tracking/[date]', params: { date: date.toISOString() } });
+        router.push({ pathname: '/(tabs)/tracking', params: { date: date.toISOString() } });
     };
 
     return (

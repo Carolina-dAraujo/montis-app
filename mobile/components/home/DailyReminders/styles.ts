@@ -79,10 +79,10 @@ export const styles = StyleSheet.create({
 		marginBottom: 4,
 	},
 	checkInTitle: {
-		color: Colors.light.background,
+		color: '#FFFFFF',
 	},
 	checkInTitleCompleted: {
-		color: Colors.light.text,
+		color: '#FFFFFF',
 	},
 	reminderTime: {
 		fontSize: 14,
@@ -90,12 +90,12 @@ export const styles = StyleSheet.create({
 		opacity: 0.6,
 	},
 	checkInTime: {
-		color: Colors.light.background,
-		opacity: 0.8,
+		color: '#FFFFFF',
+		opacity: 0.9,
 	},
 	checkInTimeCompleted: {
-		color: Colors.light.text,
-		opacity: 0.6,
+		color: '#F8FAFC',
+		opacity: 0.9,
 	},
 	onlineTag: {
 		fontSize: 12,
@@ -126,5 +126,12 @@ export const styles = StyleSheet.create({
 		color: Colors.light.text,
 		opacity: 0.6,
 		textAlign: 'center',
+	},
+	emptyStateAction: {
+		fontSize: 12,
+		color: Colors.containers.blue,
+		fontWeight: '500',
+		textAlign: 'center',
+		marginTop: 8,
 	},
 });

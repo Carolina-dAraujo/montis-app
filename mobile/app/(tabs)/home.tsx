@@ -15,7 +15,7 @@ export default function Home() {
 				style={styles.content}
 				contentContainerStyle={[
 					styles.contentContainer,
-					{ paddingBottom: insets.bottom + 24 }
+					{ paddingBottom: insets.bottom + 80 }
 				]}
 				showsVerticalScrollIndicator={false}
 			>

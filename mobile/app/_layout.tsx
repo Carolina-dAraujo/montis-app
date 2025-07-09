@@ -10,8 +10,7 @@ const StackLayout = () => {
                     <Stack.Screen name="index" />
                     <Stack.Screen name="(tabs)" />
                     <Stack.Screen name="(auth)/cadastro" />
-                    <Stack.Screen name="(auth)/login" />
-                    <Stack.Screen name="tracking/[date]" />
+                                        <Stack.Screen name="(auth)/login" />
                     <Stack.Screen name="onboarding/welcome" />
                     <Stack.Screen name="onboarding/personalInfo" />
                     <Stack.Screen name="onboarding/sobrietyStatus" />
