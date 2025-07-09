@@ -82,4 +82,9 @@ export class OnboardingDto {
 	@ValidateIf((o) => o.neighborhood !== undefined && o.neighborhood !== null)
 	@IsString()
 	neighborhood?: string;
+
+	@ApiProperty({ description: 'User CEP', example: '12345-678' })
+	@ValidateIf((o) => o.cep !== undefined && o.cep !== null)
+	@IsString()
+	cep?: string;
 }

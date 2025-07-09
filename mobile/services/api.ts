@@ -55,6 +55,7 @@ export interface OnboardingRequest {
     address?: string;
     city?: string;
     neighborhood?: string;
+    cep?: string;
 }
 
 export interface PreferencesRequest {

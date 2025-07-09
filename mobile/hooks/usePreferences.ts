@@ -9,6 +9,19 @@ export interface Preferences {
 	notificationFrequency: NotificationFrequency;
 	crisisSupport: boolean;
 	shareProgress: boolean;
+	// Campos extras do onboarding
+	displayName?: string;
+	phone?: string;
+	birthDate?: string;
+	sobrietyGoal?: string;
+	sobrietyStartDate?: string;
+	lastDrinkDate?: string;
+	emergencyContactName?: string;
+	emergencyContactPhone?: string;
+	address?: string;
+	city?: string;
+	neighborhood?: string;
+	cep?: string;
 }
 
 export interface Permissions {
@@ -42,10 +55,9 @@ export const usePreferences = () => {
 			if (token) {
 				const data = await apiService.getPreferences(token);
 				setPreferences({
-					dailyReminders: data.dailyReminders,
+					...preferences,
+					...data,
 					notificationFrequency: data.notificationFrequency as NotificationFrequency,
-					crisisSupport: data.crisisSupport,
-					shareProgress: data.shareProgress,
 				});
 			}
 		} catch (error) {
@@ -75,23 +87,9 @@ export const usePreferences = () => {
 			const token = await storageService.getAuthToken();
 			
 			if (token) {
-				// If daily reminders are disabled, set frequency to 'never'
-				const notificationFrequency = updatedPreferences.dailyReminders 
-					? updatedPreferences.notificationFrequency 
-					: NotificationFrequency.NEVER;
-
-				await apiService.updatePreferences(token, {
-					dailyReminders: updatedPreferences.dailyReminders,
-					notificationFrequency: notificationFrequency,
-					crisisSupport: updatedPreferences.crisisSupport,
-					shareProgress: updatedPreferences.shareProgress,
-				});
-				
-				// Update local state with the corrected frequency
-				setPreferences({
-					...updatedPreferences,
-					notificationFrequency: notificationFrequency,
-				});
+				// Enviar todos os campos para o backend
+				await apiService.updatePreferences(token, updatedPreferences);
+				setPreferences(updatedPreferences);
 			}
 		} catch (error) {
 			console.error('Error updating preferences:', error);

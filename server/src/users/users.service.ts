@@ -121,6 +121,9 @@ export class UsersService {
       if (onboardingData.neighborhood) {
         onboardingPreferences.neighborhood = onboardingData.neighborhood;
       }
+      if (onboardingData.cep) {
+        onboardingPreferences.cep = onboardingData.cep;
+      }
 
       // Add phone number to preferences (stored in database, not Firebase Auth)
       if (onboardingData.phone) {

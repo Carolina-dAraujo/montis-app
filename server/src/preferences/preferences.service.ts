@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UpdatePreferencesDto } from './dtos/update-preferences.dto';
 import { UpdatePermissionsDto } from './dtos/update-permissions.dto';
+import { FirebaseService } from '../firebase/firebase.service';
+import { Inject } from '@nestjs/common';
 
 export interface Preferences {
   dailyReminders: boolean;
@@ -20,11 +22,19 @@ export interface Permissions {
   };
 }
 
+function removeUndefined(obj: any) {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, v]) => v !== undefined)
+  );
+}
+
 @Injectable()
 export class PreferencesService {
   // In a real app, this would be stored in a database
   private preferences: Map<string, Preferences> = new Map();
   private permissions: Map<string, Permissions> = new Map();
+
+  constructor(@Inject(FirebaseService) private readonly firebaseService: FirebaseService) {}
 
   async updatePreferences(userId: string, preferences: UpdatePreferencesDto): Promise<{ message: string }> {
     // If daily reminders are disabled, set frequency to 'never'
@@ -32,12 +42,23 @@ export class PreferencesService {
       ? preferences.notificationFrequency 
       : 'never';
 
-    this.preferences.set(userId, {
-      dailyReminders: preferences.dailyReminders,
+    const prefsToSave = removeUndefined({
+      ...preferences,
       notificationFrequency: notificationFrequency,
-      crisisSupport: preferences.crisisSupport,
-      shareProgress: preferences.shareProgress,
     });
+
+    // Garantir que os campos obrigatórios estejam presentes
+    const prefsForMap: Preferences = {
+      dailyReminders: typeof prefsToSave.dailyReminders === 'boolean' ? prefsToSave.dailyReminders : false,
+      notificationFrequency: typeof prefsToSave.notificationFrequency === 'string' ? prefsToSave.notificationFrequency : 'daily',
+      crisisSupport: typeof prefsToSave.crisisSupport === 'boolean' ? prefsToSave.crisisSupport : false,
+      shareProgress: typeof prefsToSave.shareProgress === 'boolean' ? prefsToSave.shareProgress : false,
+    };
+    this.preferences.set(userId, prefsForMap);
+
+    // Salvar também no Firebase para manter sincronizado
+    console.log('Salvando no Firebase:', prefsToSave);
+    await this.firebaseService.savePreferences(userId, prefsToSave);
 
     return { message: 'Preferências atualizadas com sucesso' };
   }
@@ -46,6 +67,16 @@ export class PreferencesService {
     const userPreferences = this.preferences.get(userId);
     
     if (!userPreferences) {
+      // Buscar do Firebase (onboarding) se não houver no Map
+      const onboarding = await this.firebaseService.getOnboardingData(userId);
+      if (onboarding) {
+        return {
+          dailyReminders: onboarding.dailyReminders ?? false,
+          notificationFrequency: onboarding.notificationFrequency ?? 'daily',
+          crisisSupport: onboarding.crisisSupport ?? false,
+          shareProgress: onboarding.shareProgress ?? false,
+        };
+      }
       // Return default preferences
       return {
         dailyReminders: false,
@@ -69,6 +100,9 @@ export class PreferencesService {
         canRequest: !permissions.location, // Can request if not granted
       },
     });
+
+    // Salvar permissão de localização como booleano no Firebase
+    await this.firebaseService.saveUserData(userId, { locationPermission: !!permissions.location }, 'preferences');
 
     return { message: 'Permissões atualizadas com sucesso' };
   }
