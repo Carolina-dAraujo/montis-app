@@ -32,6 +32,8 @@ export interface OnboardingData {
 	address?: string;
 	city?: string;
 	neighborhood?: string;
+	cep?: string;
+	_initialized?: boolean;
 }
 
 interface OnboardingContextType {

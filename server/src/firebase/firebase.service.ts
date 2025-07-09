@@ -183,6 +183,7 @@ export class FirebaseService implements OnModuleInit {
 			const ref = this.database.ref(`users/${uid}${path ? '/' + path : ''}`);
 			await ref.set(data);
 		} catch (error) {
+			console.error('Erro ao salvar dados no Firebase:', error);
 			throw error;
 		}
 	}

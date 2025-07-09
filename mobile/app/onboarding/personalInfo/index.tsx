@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Pressable, TouchableOpacity, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -24,15 +24,34 @@ export default function PersonalInfoScreen() {
 	const [address, setAddress] = useState(onboardingData.address || '');
 	const [city, setCity] = useState(onboardingData.city || '');
 	const [neighborhood, setNeighborhood] = useState(onboardingData.neighborhood || '');
+	const [cep, setCep] = useState(onboardingData.cep || '');
 	const [errors, setErrors] = useState<{ name?: string; phone?: string; birthDate?: string; address?: string; city?: string; neighborhood?: string }>({});
+
+	// Garante que campos opcionais venham em branco ao iniciar o onboarding
+	useEffect(() => {
+		if (!onboardingData._initialized) {
+			setPhone('');
+			setBirthDate(null);
+			setAddress('');
+			setCity('');
+			setNeighborhood('');
+			setCep('');
+			updateOnboardingData({
+				phone: undefined,
+				birthDate: undefined,
+				address: undefined,
+				city: undefined,
+				neighborhood: undefined,
+				cep: undefined,
+				_initialized: true,
+			});
+		}
+	}, []);
 
 	const handleNext = () => {
 		const nameValidation = validateName(name);
 		const phoneValidation = phone ? validatePhone(phone) : { isValid: true };
 		const birthDateValidation = birthDate ? { isValid: true } : { isValid: false, error: 'Data de nascimento é obrigatória' };
-		const addressValidation = address.trim() ? { isValid: true } : { isValid: false, error: 'Endereço é obrigatório' };
-		const cityValidation = city.trim() ? { isValid: true } : { isValid: false, error: 'Cidade é obrigatória' };
-		const neighborhoodValidation = neighborhood.trim() ? { isValid: true } : { isValid: false, error: 'Bairro é obrigatório' };
 
 		if (!nameValidation.isValid) {
 			setErrors({ name: nameValidation.error });
@@ -49,28 +68,14 @@ export default function PersonalInfoScreen() {
 			return;
 		}
 
-		if (!addressValidation.isValid) {
-			setErrors({ address: addressValidation.error });
-			return;
-		}
-
-		if (!cityValidation.isValid) {
-			setErrors({ city: cityValidation.error });
-			return;
-		}
-
-		if (!neighborhoodValidation.isValid) {
-			setErrors({ neighborhood: neighborhoodValidation.error });
-			return;
-		}
-
 		const userData = {
 			displayName: name,
 			phone: phone || undefined,
 			birthDate: birthDate?.toISOString(),
-			address: address.trim(),
-			city: city.trim(),
-			neighborhood: neighborhood.trim(),
+			address: address.trim() || undefined,
+			city: city.trim() || undefined,
+			neighborhood: neighborhood.trim() || undefined,
+			cep: cep.trim() || undefined,
 		};
 
 		updateOnboardingData(userData);
@@ -107,7 +112,9 @@ export default function PersonalInfoScreen() {
 			<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
 				<View style={styles.form}>
 					<View style={styles.inputContainer}>
-						<Text style={styles.label}>Nome completo</Text>
+						<Text style={styles.label}>
+							Nome completo <Text style={{ color: 'red' }}>*</Text>
+						</Text>
 						<NameInput
 							value={name}
 							onChangeText={(text) => {
@@ -120,7 +127,9 @@ export default function PersonalInfoScreen() {
 					</View>
 
 					<View style={styles.inputContainer}>
-						<Text style={styles.label}>Número de celular</Text>
+						<Text style={styles.label}>
+							Número de celular <Text style={{ color: 'red' }}>*</Text>
+						</Text>
 						<PhoneInput
 							value={phone}
 							onChangeText={(text) => {
@@ -133,10 +142,13 @@ export default function PersonalInfoScreen() {
 					</View>
 
 					<View style={styles.inputContainer}>
+						<Text style={styles.label}>
+							Data de nascimento <Text style={{ color: 'red' }}>*</Text>
+						</Text>
 						<CustomDateInput
 							value={birthDate}
 							onChange={handleBirthDateChange}
-							label="Data de nascimento"
+							label=""
 							placeholder="Selecione sua data de nascimento"
 							error={errors.birthDate}
 							maximumDate={new Date()}
@@ -188,6 +200,28 @@ export default function PersonalInfoScreen() {
 						/>
 						{errors.neighborhood && <Text style={{ color: 'red', fontSize: 12 }}>{errors.neighborhood}</Text>}
 					</View>
+
+					<View style={styles.inputContainer}>
+						<Text style={styles.label}>CEP</Text>
+						<TextInput
+							value={cep}
+							onChangeText={text => {
+								// Aplica máscara xxxxx-xxx
+								let cleaned = text.replace(/\D/g, '');
+								let masked = cleaned;
+								if (cleaned.length > 5) {
+									masked = cleaned.slice(0, 5) + '-' + cleaned.slice(5, 8);
+								}
+								setCep(masked);
+							}}
+							style={styles.input}
+							placeholder="CEP"
+							keyboardType="numeric"
+							maxLength={9}
+							autoCapitalize="none"
+						/>
+					</View>
+					<View style={{ height: 40 }} />
 				</View>
 			</ScrollView>
 

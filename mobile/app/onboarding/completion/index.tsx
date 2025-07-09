@@ -9,11 +9,13 @@ import { storageService } from '@/mobile/services/storage';
 import { styles as welcomeButtonStyles } from '../welcome/_styles';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { styles } from './_styles'
+import { usePreferences } from '@/mobile/hooks/usePreferences';
 
 export default function CompletionScreen() {
 	const router = useRouter();
 	const { onboardingData, clearOnboardingData } = useOnboarding();
 	const { updateUser } = useAuth();
+	const { updatePreferences } = usePreferences();
 
 	const handleCompleteOnboarding = async () => {
 		try {
@@ -23,43 +25,8 @@ export default function CompletionScreen() {
 				return;
 			}
 
-			const requiredFields: Record<string, any> = {
-				displayName: onboardingData.displayName,
-				birthDate: onboardingData.birthDate,
-				sobrietyGoal: onboardingData.sobrietyGoal,
-				dailyReminders: onboardingData.dailyReminders,
-				notificationFrequency: onboardingData.notificationFrequency,
-				crisisSupport: onboardingData.crisisSupport,
-				shareProgress: onboardingData.shareProgress,
-			};
-
-			if (onboardingData.isCurrentlySober) {
-				requiredFields.sobrietyStartDate = onboardingData.sobrietyStartDate;
-			}
-
-			const missingFields = Object.entries(requiredFields)
-				.filter(([key, value]) => value === undefined || value === null)
-				.map(([key]) => key);
-
-			if (missingFields.length > 0) {
-				console.error('Missing required fields:', missingFields);
-				Alert.alert('Erro', `Campos obrigatórios faltando: ${missingFields.join(', ')}`);
-				return;
-			}
-
 			const onboardingPayload: Record<string, any> = {
-				displayName: onboardingData.displayName!,
-				phone: onboardingData.phone,
-				birthDate: onboardingData.birthDate!,
-				sobrietyGoal: onboardingData.sobrietyGoal!,
-				lastDrinkDate: onboardingData.lastDrinkDate,
-				dailyReminders: onboardingData.dailyReminders!,
-				notificationFrequency: onboardingData.notificationFrequency!,
-				crisisSupport: onboardingData.crisisSupport!,
-				shareProgress: onboardingData.shareProgress!,
-				address: onboardingData.address,
-				city: onboardingData.city,
-				neighborhood: onboardingData.neighborhood,
+				...onboardingData
 			};
 
 			if (onboardingData.sobrietyStartDate) {
@@ -67,6 +34,14 @@ export default function CompletionScreen() {
 			}
 
 			await apiService.completeOnboarding(token, onboardingPayload as OnboardingRequest);
+
+			// Salvar preferências também no endpoint /user/preferences
+			await updatePreferences({
+				dailyReminders: onboardingData.dailyReminders,
+				notificationFrequency: onboardingData.notificationFrequency as any,
+				crisisSupport: onboardingData.crisisSupport,
+				shareProgress: onboardingData.shareProgress,
+			});
 
 			// Don't clear onboarding data - we need it for the sobriety counter
 			// clearOnboardingData();
@@ -162,6 +137,10 @@ export default function CompletionScreen() {
 					<View style={styles.infoRow}>
 						<Text style={styles.infoLabel}>Bairro:</Text>
 						<Text style={styles.infoValue}>{onboardingData.neighborhood || 'Não informado'}</Text>
+					</View>
+					<View style={styles.infoRow}>
+						<Text style={styles.infoLabel}>CEP:</Text>
+						<Text style={styles.infoValue}>{onboardingData.cep || 'Não informado'}</Text>
 					</View>
 				</View>
 
