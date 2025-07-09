@@ -12,7 +12,6 @@ export class EmergencyAlertsService {
 	) { }
 
 	async create(userId: string, createEmergencyAlertDto: CreateEmergencyAlertDto): Promise<EmergencyAlert> {
-		// Get user's active emergency contacts
 		const contacts = await this.emergencyContactsService.findAll(userId);
 		const activeContacts = contacts.filter(contact => contact.isActive);
 
@@ -20,9 +19,9 @@ export class EmergencyAlertsService {
 			throw new Error('Nenhum contato de emergência ativo encontrado');
 		}
 
-		// Create alert record
 		const alertData = {
 			...createEmergencyAlertDto,
+			message: createEmergencyAlertDto.message || 'Preciso de ajuda urgente!',
 			userId,
 			contacts: activeContacts.map(c => c.id),
 			status: 'sent' as const,
@@ -32,10 +31,8 @@ export class EmergencyAlertsService {
 
 		const alertId = `alert_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-		// Save alert to database
 		await this.firebaseService.saveUserData(userId, alertData, `emergency_alerts/${alertId}`);
 
-		// Send SMS to all active contacts
 		await this.sendSMSToContacts(activeContacts, createEmergencyAlertDto);
 
 		return {
@@ -45,25 +42,22 @@ export class EmergencyAlertsService {
 	}
 
 	private async sendSMSToContacts(contacts: any[], alertData: CreateEmergencyAlertDto): Promise<void> {
-		// This is where you would integrate with an SMS service like Twilio
-		// For now, we'll simulate the SMS sending
-		
 		const message = this.formatEmergencyMessage(alertData);
-		
+
 		for (const contact of contacts) {
 			try {
 				// TODO: Replace with actual SMS service integration
 				// Example with Twilio:
 				// await this.twilioService.sendSMS(contact.phone, message);
-				
+
 				console.log(`SMS sent to ${contact.name} (${contact.phone}): ${message}`);
-				
+
 				// In production, you would:
 				// 1. Use Twilio, AWS SNS, or similar SMS service
 				// 2. Handle delivery status updates
 				// 3. Retry failed messages
 				// 4. Log all SMS activities
-				
+
 			} catch (error) {
 				console.error(`Failed to send SMS to ${contact.name}:`, error);
 			}
@@ -73,11 +67,11 @@ export class EmergencyAlertsService {
 	private formatEmergencyMessage(alertData: CreateEmergencyAlertDto): string {
 		let message = '🚨 ALERTA DE EMERGÊNCIA 🚨\n\n';
 		message += 'Seu contato precisa de ajuda urgente!\n\n';
-		
+
 		if (alertData.message) {
 			message += `Mensagem: ${alertData.message}\n\n`;
 		}
-		
+
 		if (alertData.location) {
 			message += `📍 Localização:\n`;
 			if (alertData.location.address) {
@@ -85,11 +79,11 @@ export class EmergencyAlertsService {
 			}
 			message += `https://maps.google.com/?q=${alertData.location.latitude},${alertData.location.longitude}\n\n`;
 		}
-		
+
 		message += 'Por favor, entre em contato imediatamente!\n';
 		message += '---\n';
 		message += 'Montis App';
-		
+
 		return message;
 	}
 
@@ -138,4 +132,4 @@ export class EmergencyAlertsService {
 			throw new NotFoundException('Emergency alert not found');
 		}
 	}
-} 
+}
