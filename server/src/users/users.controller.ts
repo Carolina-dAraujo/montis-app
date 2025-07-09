@@ -292,16 +292,12 @@ export class UsersController {
 	})
 	async testOnboarding(@CurrentUser() user: any, @Body() onboardingData: any) {
 		try {
-			console.log('Test onboarding - User:', user.uid);
-			console.log('Test onboarding - Data received:', JSON.stringify(onboardingData, null, 2));
-			
 			return {
 				message: "Dados recebidos com sucesso",
 				receivedData: onboardingData,
 				userId: user.uid,
 			};
 		} catch (error) {
-			console.error("Test onboarding error:", error);
 			throw new BadRequestException("Erro no teste de onboarding");
 		}
 	}

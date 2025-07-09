@@ -1,28 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, ScrollView, TextInput, Image, Alert } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, ScrollView, TextInput, Image, ActivityIndicator, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/mobile/constants/Colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { ChevronLeft } from 'lucide-react-native';
-import { apiService } from '@/mobile/services/api';
+import FontAwesome from '@expo/vector-icons/build/FontAwesome';
+import { apiService } from 'services/api';
 import { storageService } from '@/mobile/services/storage';
+// import { apiService } from '@/mobile/services/api';
 
 interface AAGroup {
 	id: string;
 	name: string;
-	address: string;
-	city: string;
-	neighborhood: string;
-	online: boolean;
-	monday: null | { start: string; end: string };
-	tuesday: null | { start: string; end: string };
-	wednesday: null | { start: string; end: string };
-	thursday: null | { start: string; end: string };
-	friday: null | { start: string; end: string };
-	saturday: null | { start: string; end: string };
-	sunday: null | { start: string; end: string };
-	phone?: string;
+	address: {
+		city: string;
+		state: string;
+		neighborhood?: string;
+		street?: string;
+		number?: string | null;
+		cep?: string;
+		place?: string;
+	};
+	schedule: {
+		[key: string]: { start: string; end: string }[];
+	};
+	type: 'virtual' | 'in-person';
+	platform?: string;
+	link?: string;
+	isFeminine?: boolean;
+	description?: string;
 }
 
 const weekDays = [
@@ -39,36 +46,81 @@ export default function AAGroupsScreen() {
 	const router = useRouter();
 	const insets = useSafeAreaInsets();
 	const [searchQuery, setSearchQuery] = useState('');
-	const [selectedFilter, setSelectedFilter] = useState<'all' | 'online' | 'in-person'>('all');
-	const [aaGroups, setAAGroups] = useState<AAGroup[]>([]);
+	const [selectedFilter, setSelectedFilter] = useState<'all' | 'online' | 'in-person' | 'feminine'>('all');
+	const [aaGroups, setAAGroups] = useState<{ groups: AAGroup[] }>({ groups: [] });
 	const [loadingAAGroups, setLoadingAAGroups] = useState(true);
+	const [userGroups, setUserGroups] = useState<string[]>([]);
+	const [addingGroupId, setAddingGroupId] = useState<string | null>(null);
 
 	useEffect(() => {
 		loadAAGroups();
+		loadUserGroups();
 	}, []);
 
 	const loadAAGroups = async () => {
 		setLoadingAAGroups(true);
+
 		try {
-			const groups = await apiService.getAllAAGroups();
-			setAAGroups(groups);
-		} catch (error) {
-			console.error('Error loading AA groups:', error);
-			setAAGroups([]);
+			// const groups = await apiService.getAllAAGroups();
+
+			const groups = require('@/mobile/data/groups.json');
+			if (groups && Array.isArray(groups.groups)) {
+				const sortedGroups = [...groups.groups].sort((a, b) =>
+					a.name.localeCompare(b.name, 'pt-BR')
+				);
+
+				setAAGroups({ groups: sortedGroups as AAGroup[] });
+			} else {
+				setAAGroups({ groups: [] });
+			}
+		} catch (e) {
+			setAAGroups({ groups: [] });
 		} finally {
 			setLoadingAAGroups(false);
 		}
 	};
 
-	const filteredGroups = aaGroups.filter(group => {
+	const loadUserGroups = async () => {
+		try {
+			const token = await storageService.getAuthToken();
+			if (!token) return;
+			const groups = await apiService.getUserGroups(token);
+			setUserGroups(groups.map((g: any) => String(g.groupId ?? g.id ?? g.group_id)));
+		} catch (error) {
+			console.error('Error loading user groups:', error);
+			setUserGroups([]);
+		}
+	};
+
+	const handleAddGroup = async (groupId: string) => {
+		try {
+			setAddingGroupId(groupId);
+			const token = await storageService.getAuthToken();
+			if (!token) throw new Error('Usuário não autenticado');
+
+			await apiService.addAAGroup(token, { groupId, notificationsEnabled: false });
+
+			setUserGroups(prev => [...prev, groupId]);
+			Alert.alert('Sucesso', 'Adicionado aos seus grupos');
+
+			router.push('/grupos');
+		} catch (error: any) {
+			console.error('Erro ao adicionar grupo:', error);
+			Alert.alert('Erro', error.message || 'Não foi possível adicionar o grupo');
+		} finally {
+			setAddingGroupId(null);
+		}
+	};
+
+	const filteredGroups = aaGroups.groups.filter(group => {
 		const matchesSearch = (group.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-			(group.address || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-			(group.city || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-			(group.neighborhood || '').toLowerCase().includes(searchQuery.toLowerCase());
+			(group.address.city || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+			(group.address.neighborhood || '').toLowerCase().includes(searchQuery.toLowerCase());
 		const matchesFilter =
 			selectedFilter === 'all' ||
-			(selectedFilter === 'online' && group.online) ||
-			(selectedFilter === 'in-person' && !group.online);
+			(selectedFilter === 'online' && group.type === 'virtual') ||
+			(selectedFilter === 'in-person' && group.type === 'in-person') ||
+			(selectedFilter === 'feminine' && group.isFeminine === true);
 		return matchesSearch && matchesFilter;
 	});
 
@@ -110,6 +162,7 @@ export default function AAGroupsScreen() {
 						{ key: 'all', label: 'Todos' },
 						{ key: 'in-person', label: 'Presencial' },
 						{ key: 'online', label: 'Online' },
+						{ key: 'feminine', label: 'Feminino' },
 					].map((filter) => (
 						<TouchableOpacity
 							key={filter.key}
@@ -133,52 +186,84 @@ export default function AAGroupsScreen() {
 			</View>
 
 			<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-				{loadingAAGroups ? (
-					<Text style={{ textAlign: 'center', marginTop: 32 }}>Carregando grupos...</Text>
-				) : filteredGroups.map((group) => (
-					<View key={group.id} style={styles.serviceCard}>
-						<View style={styles.serviceHeader}>
-							<Text style={styles.serviceName}>{group.name}</Text>
-							<View style={styles.headerActions}>
-								<View style={[styles.typeBadge, { backgroundColor: group.online ? '#007AFF' : '#34C759' }]}>
-									<MaterialCommunityIcons
-										name={group.online ? 'monitor' : 'account-group'}
-										size={12}
-										color="#FFFFFF"
-									/>
-									<Text style={styles.typeText}>{group.online ? 'Online' : 'Presencial'}</Text>
+				{filteredGroups.map((group) => {
+					const alreadyAdded = userGroups.includes(String(group.id));
+						return (
+						<View key={group.id} style={styles.serviceCard}>
+							<View style={styles.serviceHeader}>
+								<Text style={styles.serviceName}>{group.name}</Text>
+								<View style={styles.headerActions}>
+									{alreadyAdded ? (
+										<TouchableOpacity
+											style={styles.addedButton}
+											disabled={true}
+										>
+											<MaterialCommunityIcons name="check" size={18} color="#FFFFFF" />
+										</TouchableOpacity>
+									) : (
+										<TouchableOpacity
+											style={styles.addButton}
+											onPress={() => handleAddGroup(group.id)}
+											disabled={addingGroupId === group.id}
+										>
+											<MaterialCommunityIcons name="plus" size={18} color="#FFFFFF" />
+										</TouchableOpacity>
+									)}
 								</View>
 							</View>
-						</View>
-						<View>
-							<View style={styles.infoRow}>
-								<MaterialCommunityIcons name="map-marker" size={16} color={Colors.icon.gray} />
-								<Text style={styles.infoText}>{group.address.split('#')[0]}</Text>
-							</View>
-							<View style={styles.infoRow}>
-								<MaterialCommunityIcons name="city" size={16} color={Colors.icon.gray} />
-								<Text style={styles.infoText}>{group.city} - {group.neighborhood}</Text>
-							</View>
-							{group.phone && group.phone.trim() !== '' && (
-								<View style={styles.infoRow}>
-									<MaterialCommunityIcons name="phone" size={16} color={Colors.icon.gray} />
-									<Text style={styles.infoText}>{group.phone}</Text>
-								</View>
-							)}
-							{weekDays.map(day => {
-								const meeting = group[day.key as keyof AAGroup] as null | { start: string; end: string };
-								if (!meeting) return null;
-								return (
-									<View key={day.key} style={styles.infoRow}>
-										<MaterialCommunityIcons name="calendar" size={16} color={Colors.icon.gray} />
-										<Text style={styles.infoText}>{day.label}: {meeting.start} às {meeting.end}</Text>
+							<View>
+								{group.address.street && group.address.number && (
+									<View style={styles.infoRow}>
+										<FontAwesome name="map-pin" style={{ marginLeft: 3, marginRight: 3 }} size={16} color={Colors.icon.gray} />
+										<Text style={styles.infoText}>{group.address.street}, {group.address.number || 'S/N'}</Text>
 									</View>
-								);
-							})}
+								)}
+								{group.address.place && (
+									<View style={styles.infoRow}>
+										<MaterialCommunityIcons name="map-marker" size={16} color={Colors.icon.gray} />
+										<Text style={styles.infoText}>{group.address.place}</Text>
+									</View>
+								)}
+
+								{(group.address.neighborhood || group.address.state || group.address.city) && (
+									<View style={styles.infoRow}>
+										<MaterialCommunityIcons name="city" size={16} color={Colors.icon.gray} />
+										<Text style={{ ...styles.infoText, marginLeft: 8 }}>{group.address.neighborhood ? group.address.neighborhood + ' - ' : ''}{group.address.city} - {group.address.state}</Text>
+									</View>
+								)}
+								{weekDays.map(day => {
+									const meeting = group.schedule[day.key as keyof AAGroup['schedule']] as null | { start: string; end: string }[];
+									if (!meeting) return null;
+									return (
+										<View key={day.key} style={styles.infoRow}>
+											<MaterialCommunityIcons name="calendar" size={16} color={Colors.icon.gray} />
+											<Text style={styles.infoText}>{day.label}: {meeting.map(m => `${m.start} às ${m.end}`).join(', ')}</Text>
+										</View>
+									);
+								})}
+							</View>
+							<View style={styles.badgesRow}>
+								{group.type && (
+									<View style={[styles.typeBadge, { backgroundColor: group.type === 'virtual' ? '#007AFF' : '#34C759' }]}>
+										<MaterialCommunityIcons
+											name={group.type === 'virtual' ? 'monitor' : 'account-group'}
+											size={12}
+											color="#FFFFFF"
+										/>
+										<Text style={styles.typeText}>{group.type === 'virtual' ? 'Online' : 'Presencial'}</Text>
+									</View>
+								)}
+								{group.isFeminine && (
+									<View style={styles.feminineBadge}>
+										<MaterialCommunityIcons name="gender-female" size={14} color="#fff" />
+										<Text style={styles.badgeText}>Feminino</Text>
+									</View>
+								)}
+							</View>
 						</View>
-					</View>
-				))}
-			</ScrollView>
+						);
+				})}
+					</ScrollView>
 		</SafeAreaView>
 	);
 }
@@ -297,7 +382,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		paddingHorizontal: 8,
 		paddingVertical: 4,
-		borderRadius: 12,
+		borderRadius: 8,
 	},
 	typeText: {
 		fontSize: 12,
@@ -314,5 +399,48 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		color: Colors.light.text,
 		marginLeft: 8,
+		flexShrink: 1,
+		flexWrap: 'nowrap',
+	},
+	loadingContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginTop: 40,
+	},
+	loadingText: {
+		marginTop: 12,
+		fontSize: 16,
+		color: Colors.light.text,
+	},
+	badgesRow: {
+		flexDirection: 'row',
+		marginTop: 12,
+		gap: 8,
+	},
+	feminineBadge: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		backgroundColor: '#E75480',
+		borderRadius: 8,
+		paddingHorizontal: 8,
+		paddingVertical: 4,
+	},
+	badgeText: {
+		color: '#fff',
+		fontSize: 12,
+		marginLeft: 4,
+		fontWeight: 'bold',
+	},
+	addedButton: {
+		padding: 6,
+		borderRadius: 16,
+		backgroundColor: '#34C759',
+		opacity: 0.8,
+	},
+	addButton: {
+		padding: 6,
+		borderRadius: 16,
+		backgroundColor: Colors.containers.blue,
 	},
 });

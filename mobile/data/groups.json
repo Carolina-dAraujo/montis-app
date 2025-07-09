@@ -1,0 +1,993 @@
+{
+    "groups": [
+        {
+            "id": "grupo-8-de-dezembro",
+            "name": "Grupo 8 de Dezembro",
+            "address": {
+                "city": "Teresina",
+                "state": "PI"
+            },
+            "schedule": {
+                "sunday": [
+                    {
+                        "start": "07:00",
+                        "end": "09:00"
+                    }
+                ]
+            },
+            "type": "virtual",
+            "platform": "Google Meet",
+            "link": "https://meet.google.com/jdf-edtx-iij",
+            "isFeminine": true
+        },
+        {
+            "id": "grupo-boa-vontade",
+            "name": "Grupo Boa Vontade",
+            "address": {
+                "city": "Teresina",
+                "state": "PI"
+            },
+            "schedule": {
+                "sunday": [
+                    {
+                        "start": "07:00",
+                        "end": "09:00"
+                    }
+                ],
+                "saturday": [
+                    {
+                        "start": "07:00",
+                        "end": "09:00"
+                    }
+                ]
+            },
+            "type": "virtual",
+            "platform": "Google Meet",
+            "link": "https://meet.google.com/wip-mjfw-ejy",
+            "isFeminine": false
+        },
+        {
+            "id": "grupo-ipanema",
+            "name": "Grupo Ipanema",
+            "address": {
+                "city": "São Paulo",
+                "state": "SP"
+            },
+            "schedule": {
+                "sunday": [
+                    {
+                        "start": "08:00",
+                        "end": "09:30"
+                    }
+                ],
+                "saturday": [
+                    {
+                        "start": "08:00",
+                        "end": "09:30"
+                    }
+                ],
+                "monday": [
+                    {
+                        "start": "08:00",
+                        "end": "09:30"
+                    }
+                ],
+                "tuesday": [
+                    {
+                        "start": "08:00",
+                        "end": "09:30"
+                    }
+                ],
+                "wednesday": [
+                    {
+                        "start": "08:00",
+                        "end": "09:30"
+                    }
+                ],
+                "thursday": [
+                    {
+                        "start": "08:00",
+                        "end": "09:30"
+                    }
+                ],
+                "friday": [
+                    {
+                        "start": "08:00",
+                        "end": "09:30"
+                    }
+                ]
+            },
+            "type": "virtual",
+            "platform": "Zoom",
+            "link": "https://us06web.zoom.us/j/87125801163?pwd=CoVZBpBNXNf8aOyZrZfhBHbXbaqt4w.1",
+            "isFeminine": false
+        },
+        {
+            "id": "grupo-rio-de-janeiro",
+            "name": "Grupo Rio de Janeiro",
+            "address": {
+                "city": "Rio de Janeiro",
+                "state": "RJ"
+            },
+            "schedule": {
+                "sunday": [
+                    {
+                        "start": "08:00",
+                        "end": "10:00"
+                    },
+                    {
+                        "start": "18:00",
+                        "end": "20:00"
+                    },
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "saturday": [
+                    {
+                        "start": "08:00",
+                        "end": "10:00"
+                    },
+                    {
+                        "start": "18:00",
+                        "end": "20:00"
+                    },
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "monday": [
+                    {
+                        "start": "08:00",
+                        "end": "10:00"
+                    },
+                    {
+                        "start": "18:00",
+                        "end": "20:00"
+                    },
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "tuesday": [
+                    {
+                        "start": "08:00",
+                        "end": "10:00"
+                    },
+                    {
+                        "start": "18:00",
+                        "end": "20:00"
+                    },
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "wednesday": [
+                    {
+                        "start": "08:00",
+                        "end": "10:00"
+                    },
+                    {
+                        "start": "18:00",
+                        "end": "20:00"
+                    },
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "thursday": [
+                    {
+                        "start": "08:00",
+                        "end": "10:00"
+                    },
+                    {
+                        "start": "18:00",
+                        "end": "20:00"
+                    },
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "friday": [
+                    {
+                        "start": "08:00",
+                        "end": "10:00"
+                    },
+                    {
+                        "start": "18:00",
+                        "end": "20:00"
+                    },
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ]
+            },
+            "type": "virtual",
+            "platform": "Zoom",
+            "link": "https://us02web.zoom.us/j/8147845044",
+            "isFeminine": false
+        },
+        {
+            "id": "grupo-reencontro",
+            "name": "Grupo Reencontro",
+            "address": {
+                "city": "Rio de Janeiro",
+                "state": "RJ"
+            },
+            "schedule": {
+                "sunday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ],
+                "monday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "tuesday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "friday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "saturday": [
+                    {
+                        "start": "18:00",
+                        "end": "20:00"
+                    }
+                ]
+            },
+            "type": "virtual",
+            "platform": "Google Meet",
+            "link": "https://meet.google.com/owu-ztpk-oia",
+            "isFeminine": false
+        },
+        {
+            "id": "grupo-unidos-de-brotas",
+            "name": "Grupo Unidos de Brotas",
+            "address": {
+                "city": "Caxias do Sul",
+                "state": "RS"
+            },
+            "schedule": {
+                "sunday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ],
+                "friday": [
+                    {
+                        "start": "19:00",
+                        "end": "21:00"
+                    }
+                ]
+            },
+            "type": "virtual",
+            "platform": "Google Meet",
+            "link": "https://meet.google.com/dud-zjer-ywi",
+            "isFeminine": false
+        },
+        {
+            "id": "grupo-nova-lapa",
+            "name": "Grupo Nova Lapa",
+            "address": {
+                "city": "Salvador",
+                "state": "BA"
+            },
+            "schedule": {
+                "sunday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ],
+                "wednesday": [
+                    {
+                        "start": "18:15",
+                        "end": "20:15"
+                    }
+                ],
+                "friday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ]
+            },
+            "type": "virtual",
+            "platform": "Google Meet",
+            "link": "https://meet.google.com/hjt-crhd-hfg",
+            "isFeminine": false
+        },
+        {
+            "id": "grupo-central",
+            "name": "Grupo Central",
+            "address": {
+                "city": "São Paulo",
+                "state": "SP"
+            },
+            "schedule": {
+                "sunday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ],
+                "monday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ],
+                "tuesday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ],
+                "wednesday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ],
+                "thursday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ],
+                "friday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ],
+                "saturday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ]
+            },
+            "type": "virtual",
+            "platform": "Google Meet",
+            "link": "https://meet.google.com/czb-qeen-ktf",
+            "isFeminine": false
+        },
+        {
+            "id": "grupo-viver-sobrio",
+            "name": "Grupo Viver Sóbrio",
+            "address": {
+                "city": "Vilhena",
+                "state": "RO"
+            },
+            "schedule": {
+                "sunday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ]
+            },
+            "type": "virtual",
+            "platform": "Google Meet",
+            "link": "https://meet.google.com/gug-ezmt-icq",
+            "description": "Horário de Rondonia GMT-4",
+            "isFeminine": false
+        },
+        {
+            "id": "grupo-14-de-julho",
+            "name": "Grupo 14 de Julho",
+            "address": {
+                "city": "Canoas",
+                "state": "RS"
+            },
+            "schedule": {
+                "sunday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    },
+                    {
+                        "start": "19:00",
+                        "end": "21:00"
+                    }
+                ],
+                "monday": [
+                    {
+                        "start": "19:00",
+                        "end": "21:00"
+                    }
+                ],
+                "tuesday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "thursday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ]
+            },
+            "type": "virtual",
+            "platform": "Google Meet",
+            "link": "https://meet.google.com/fam-zavc-hhq",
+            "isFeminine": false
+        },
+        {
+            "id": "grupo-praca-de-boa-viagem",
+            "name": "Grupo Praça de Boa Viagem",
+            "address": {
+                "city": "Recife",
+                "state": "PE"
+            },
+            "schedule": {
+                "tuesday": [
+                    {
+                        "start": "19:00",
+                        "end": "21:00"
+                    }
+                ],
+                "friday": [
+                    {
+                        "start": "19:00",
+                        "end": "22:00"
+                    }
+                ]
+            },
+            "type": "virtual",
+            "platform": "Google Meet",
+            "link": "https://meet.google.com/raj-jhax-gfp",
+            "isFeminine": false
+        },
+        {
+            "id": "grupo-24-horas",
+            "name": "Grupo 24 Horas",
+            "address": {
+                "city": "Recife",
+                "state": "PE"
+            },
+            "schedule": {
+                "sunday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "monday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "tuesday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "wednesday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "thursday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "friday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "saturday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ]
+            },
+            "type": "virtual",
+            "platform": "Google Meet",
+            "link": "https://meet.google.com/jda-mrhq-mrd",
+            "isFeminine": false
+        },
+        {
+            "id": "grupo-funciona",
+            "name": "Grupo Funciona",
+            "address": {
+                "city": "Serra",
+                "state": "ES"
+            },
+            "schedule": {
+                "sunday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ],
+                "monday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ],
+                "wednesday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ],
+                "thursday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ],
+                "friday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    },
+                    {
+                        "start": "23:59",
+                        "end": "01:59"
+                    }
+                ],
+                "saturday": [
+                    {
+                        "start": "09:00",
+                        "end": "11:00"
+                    }
+                ]
+            },
+            "type": "virtual",
+            "platform": "Google Meet",
+            "link": "https://meet.google.com/mrx-ooyn-qbr",
+            "isFeminine": true
+        },
+        {
+            "id": "grupo-esperanca-de-vida",
+            "name": "Grupo Esperança de Vida",
+            "address": {
+                "city": "João Pessoa",
+                "state": "PB"
+            },
+            "schedule": {
+                "sunday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ],
+                "tuesday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ]
+            },
+            "type": "virtual",
+            "platform": "Google Meet",
+            "link": "https://meet.google.com/zxg-zmfp-cbs",
+            "isFeminine": false
+        },
+        {
+            "id": "grupo-iv-centenario",
+            "name": "Grupo IV Centenário",
+            "address": {
+                "city": "João Pessoa",
+                "state": "PB"
+            },
+            "schedule": {
+                "thursday": [
+                    {
+                        "start": "20:00",
+                        "end": "22:00"
+                    }
+                ]
+            },
+            "type": "virtual",
+            "platform": "Google Meet",
+            "link": "https://meet.google.com/zxg-zmfp-cbs",
+            "isFeminine": false
+        },
+        {
+			"id": "grupo-encruzilhada",
+			"name": "Grupo Encruzilhada",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Encruzilhada",
+				"street": "Avenida João de Barros",
+				"number": "1769",
+				"cep": "52171011",
+				"place": "Escola Técnica Prof. Agamenon Magalhães - ETPAM"
+			},
+			"schedule": {
+				"wednesday": [
+					{
+						"start": "19:00",
+						"end": "21:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-espinheiro",
+			"name": "Grupo Espinheiro",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Aflitos",
+				"street": "Rua Conselheiro Portela",
+				"number": null,
+				"cep": "52021050",
+				"place": "Portão de acesso no lado esquerdo da Igreja - Anexo da Igreja Matriz do Espinheiro"
+			},
+			"schedule": {
+				"tuesday": [
+					{
+						"start": "19:00",
+						"end": "21:00"
+					}
+				],
+				"thursday": [
+					{
+						"start": "19:00",
+						"end": "21:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-quero-viver",
+			"name": "Grupo Quero Viver",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Avenida Governador Agamenon Magalhães",
+				"number": "1286",
+				"cep": "50030230",
+				"place": "Espaço Cultural Santo"
+			},
+			"schedule": {
+				"tuesday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-solidariedade",
+			"name": "Grupo Solidariedade",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Campo Grande",
+				"street": "Estrada de Belém",
+				"number": "848",
+				"cep": "52040000",
+				"place": "Igreja do Bom Parto Caixa Postal 51- Paulista"
+			},
+			"schedule": {
+				"saturday": [
+					{
+						"start": "19:00",
+						"end": "21:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-mangabeira",
+			"name": "Grupo Mangabeira",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Mangabeira",
+				"street": "Rua Nicéas Arco-Verde Gusmão",
+				"number": null,
+				"cep": "52110210",
+				"place": "Escola Municipal de Integral da Mangabeira"
+			},
+			"schedule": {
+				"sunday": [
+					{
+						"start": "10:00",
+						"end": "12:00"
+					}
+				],
+				"monday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				],
+				"thursday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-sio",
+			"name": "Grupo Sio",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Mangabeira",
+				"street": "Rua Maria Gonçalves",
+				"number": "56",
+				"cep": "52111230",
+				"place": "Circulo Operário da Mangabeira"
+			},
+			"schedule": {
+				"tuesday": [
+					{
+						"start": "20:00",
+						"end": "22:00"
+					}
+				],
+				"friday": [
+					{
+						"start": "20:00",
+						"end": "22:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-tradicional",
+			"name": "Grupo Tradicional",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Bomba do Hemetério",
+				"street": "Rua Chã de Alegria",
+				"number": "117",
+				"cep": "52211130",
+				"place": "Escola Prof. Mardonio de Andrade Lima Coelho"
+			},
+			"schedule": {
+				"saturday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-triunfo",
+			"name": "Grupo Triunfo",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Água Fria",
+				"street": "Avenida Beberibe",
+				"number": "2131",
+				"cep": "52130000",
+				"place": "ASSOCIAÇÃO DOS MORADORES DE FUNDÃO"
+			},
+			"schedule": {
+				"saturday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-ultima-gota",
+			"name": "Grupo Última Gota",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Bomba do Hemetério",
+				"street": "Rua Córrego João Francisco",
+				"number": "283",
+				"cep": "52171011",
+				"place": "Igreja São Francisco de Assis"
+			},
+			"schedule": {
+				"wednesday": [
+					{
+						"start": "19:00",
+						"end": "21:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-lutadores-do-bem",
+			"name": "Grupo Lutadores do Bem",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Rua Severina Santana Pedrosa",
+				"number": "249",
+				"cep": "50110191",
+				"place": "Rua da Bola"
+			},
+			"schedule": {
+				"sunday": [
+					{
+						"start": "10:00",
+						"end": "12:00"
+					}
+				],
+				"thursday": [
+					{
+						"start": "20:00",
+						"end": "22:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-frei-cassimiro",
+			"name": "Grupo Frei Cassimiro",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Rua Severina Santana Pedrosa",
+				"number": "249",
+				"cep": "50110191",
+				"place": "Rua da Bola"
+			},
+			"schedule": {
+				"sunday": [
+					{
+						"start": "16:00",
+						"end": "18:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-simplicidade",
+			"name": "Grupo Simplicidade",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Rua Severina Santana Pedrosa",
+				"number": "249",
+				"cep": "50110191",
+				"place": "Rua da Bola"
+			},
+			"schedule": {
+				"sunday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-santo-amaro",
+			"name": "Grupo Santo Amaro",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Rua Severina Santana Pedrosa",
+				"number": "249",
+				"cep": "50110191",
+				"place": "Rua da Bola"
+			},
+			"schedule": {
+				"wednesday": [
+					{
+						"start": "20:00",
+						"end": "22:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-tiradente",
+			"name": "Grupo Tiradente",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Santo Amaro",
+				"street": "Rua Severina Santana Pedrosa",
+				"number": "249",
+				"cep": "50110191",
+				"place": "Rua da Bola"
+			},
+			"schedule": {
+				"monday": [
+					{
+						"start": "20:00",
+						"end": "22:00"
+					}
+				]
+			},
+			"type": "in-person"
+		},
+		{
+			"id": "grupo-sempre-alerta",
+			"name": "Grupo Sempre Alerta",
+			"address": {
+				"city": "Recife",
+				"state": "PE",
+				"neighborhood": "Alto José do Pinho",
+				"street": "Rua Acaiaca",
+				"number": "70",
+				"cep": "52210240",
+				"place": "Escola Municipal de Integral da Mangabeira"
+			},
+			"schedule": {
+				"sunday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				],
+				"wednesday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				],
+				"saturday": [
+					{
+						"start": "19:30",
+						"end": "21:30"
+					}
+				]
+			},
+			"type": "in-person"
+		}
+    ]
+}

@@ -153,7 +153,7 @@ export default function PreferencesScreen() {
 				<View style={styles.infoBox}>
 					<View style={styles.infoHeader}>
 						<MaterialCommunityIcons name="shield-check" size={16} color={Colors.containers.blue} />
-						<Text style={styles.infoTitle}>Privacity</Text>
+						<Text style={styles.infoTitle}>Privacidade</Text>
 					</View>
 					<Text style={styles.infoText}>
 						Todas as suas informações são mantidas em sigilo. Você pode alterar essas configurações a qualquer momento.

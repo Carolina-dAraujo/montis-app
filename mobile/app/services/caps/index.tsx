@@ -8,6 +8,7 @@ import {
     ScrollView,
     TextInput,
     Image,
+    Linking,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/mobile/constants/Colors';
@@ -108,6 +109,13 @@ export default function CAPSServicesScreen() {
         }
     };
 
+    const handleCall = (phoneNumber: string) => {
+        const url = `tel:${phoneNumber.replace(/\D/g, '')}`;
+        Linking.openURL(url).catch(err => {
+            console.error('Erro ao tentar abrir o discador:', err);
+        });
+    };
+
     return (
         <SafeAreaView style={[styles.container, { paddingTop: insets.top }]}>
             <View style={styles.header}>
@@ -195,7 +203,7 @@ export default function CAPSServicesScreen() {
                             )}
                         </View>
 
-                        <TouchableOpacity style={styles.contactButton}>
+                        <TouchableOpacity style={styles.contactButton} onPress={() => handleCall(service.phone)}>
                             <Text style={styles.contactButtonText}>Entrar em contato</Text>
                         </TouchableOpacity>
                     </TouchableOpacity>

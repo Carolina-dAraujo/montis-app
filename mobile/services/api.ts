@@ -314,14 +314,7 @@ class ApiService {
     }
 
     async getUserGroups(token: string): Promise<Array<{
-        groupId: string;
-        groupName: string;
-        type: string;
-        address: string;
-        phone: string;
-        schedule: string;
-        distance: string;
-        meetingSchedules: Array<{ day: string; time: string; enabled: boolean }>;
+        id: string;
         notificationsEnabled: boolean;
         addedAt: string;
     }>> {
@@ -329,6 +322,7 @@ class ApiService {
             const result = await this.makeAuthenticatedRequest<any>('/groups/user-groups', token, {
                 method: 'GET',
             });
+
             return result;
         } catch (error) {
             console.error('API Service - getUserGroups error:', error);
@@ -349,15 +343,41 @@ class ApiService {
         }
     }
 
-    async updateMeetingSchedules(token: string, groupId: string, meetingSchedules: Array<{ day: string; time: string; enabled: boolean }>): Promise<{ message: string }> {
+    async updateMeetingNotification(
+        token: string,
+        groupId: string,
+        day: string,
+        meetingIndex: number,
+        notificationsEnabled: boolean
+    ): Promise<{ message: string }> {
         try {
-            const result = await this.makeAuthenticatedRequest<{ message: string }>(`/groups/group/${groupId}/schedules`, token, {
-                method: 'PUT',
-                body: JSON.stringify({ meetingSchedules }),
-            });
+            const result = await this.makeAuthenticatedRequest<{ message: string }>(
+                `/groups/group/${groupId}/meeting/${day}/${meetingIndex}/notifications`,
+                token,
+                {
+                    method: 'PUT',
+                    body: JSON.stringify({ notificationsEnabled }),
+                }
+            );
             return result;
         } catch (error) {
-            console.error('API Service - updateMeetingSchedules error:', error);
+            console.error('API Service - updateMeetingNotification error:', error);
+            throw error;
+        }
+    }
+
+    async getMeetingNotifications(token: string, groupId: string): Promise<{ [day: string]: { [index: number]: boolean } }> {
+        try {
+            const result = await this.makeAuthenticatedRequest<{ [day: string]: { [index: number]: boolean } }>(
+                `/groups/group/${groupId}/meeting-notifications`,
+                token,
+                {
+                    method: 'GET',
+                }
+            );
+            return result;
+        } catch (error) {
+            console.error('API Service - getMeetingNotifications error:', error);
             throw error;
         }
     }
@@ -365,7 +385,6 @@ class ApiService {
     async getAllAAGroups(): Promise<any[]> {
         try {
             const result = await this.makeRequest<any[]>('/groups/all-aa-groups');
-            console.log('[API DEBUG] getAllAAGroups result:', result);
             return result;
         } catch (error) {
             throw error;

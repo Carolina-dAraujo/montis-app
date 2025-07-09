@@ -1,18 +1,12 @@
-import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeHeader } from '@/mobile/components/home/HomeHeader';
 import { SobrietyCounter } from '@/mobile/components/home/SobrietyCounter';
 import { DailyReminders } from '@/mobile/components/home/DailyReminders';
-import { CrisisButton } from '@/mobile/components/common/CrisisButton';
 import { Colors } from '@/mobile/constants/Colors';
 
 export default function Home() {
 	const insets = useSafeAreaInsets();
-
-	const handleCrisisPress = () => {
-		// TODO: Navigate to crisis management screen
-	};
 
 	return (
 		<View style={styles.container}>
@@ -28,7 +22,6 @@ export default function Home() {
 				<SobrietyCounter />
 				<DailyReminders />
 			</ScrollView>
-			<CrisisButton onPress={handleCrisisPress} />
 		</View>
 	);
 }
