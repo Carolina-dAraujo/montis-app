@@ -3,9 +3,46 @@ import { ChevronLeft } from "lucide-react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { Dumbbell, Frown, Heart, Laptop, Meh, Smile, Wine, WineOff } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/mobile/constants/Colors';
+import { saveDailyTracking, getDailyTracking, checkFirebaseAuthStatus } from '@/mobile/services/firebase';
+import { getAuth } from 'firebase/auth';
+import { getDatabase, ref, get, child } from 'firebase/database';
+
+// Função para buscar todos os registros de um mês
+async function getMonthTrackingData(year: number, month: number) {
+    try {
+        const user = getAuth().currentUser;
+        if (!user) return {};
+        
+        const startDate = new Date(year, month, 1);
+        const endDate = new Date(year, month + 1, 0);
+        
+        const startDateStr = startDate.toISOString().slice(0, 10);
+        const endDateStr = endDate.toISOString().slice(0, 10);
+        
+        // Buscar dados do mês inteiro
+        const dbRef = ref(getDatabase());
+        const snapshot = await get(child(dbRef, `users/${user.uid}/dailyTracking`));
+        
+        if (!snapshot.exists()) return {};
+        
+        const monthData: { [key: string]: any } = {};
+        const data = snapshot.val();
+        
+        Object.keys(data).forEach(date => {
+            if (date >= startDateStr && date <= endDateStr) {
+                monthData[date] = data[date];
+            }
+        });
+        
+        return monthData;
+    } catch (error) {
+        console.error('Error loading month data:', error);
+        return {};
+    }
+}
 
 const WEEKDAYS = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 
@@ -36,28 +73,57 @@ export default function TrackingScreen() {
     const { date } = useLocalSearchParams();
     const initialDate = date ? new Date(date as string) : new Date();
     const [selectedDate, setSelectedDate] = useState(initialDate);
-    const [trackingByDate, setTrackingByDate] = useState<Record<string, DailyTracking>>({});
-    const prevTracking = trackingByDate[selectedDate.toDateString()];
-    const [tracking, setTracking] = useState<DailyTracking>(
-        prevTracking || {
-            alcohol: null,
-            exercise: null,
-            mood: null,
-            sleep: null,
-        }
-    );
+    const [loading, setLoading] = useState(false);
+    const [tracking, setTracking] = useState<DailyTracking>({
+        alcohol: null,
+        exercise: null,
+        mood: null,
+        sleep: null,
+    });
+    const [hasExistingData, setHasExistingData] = useState(false);
+    const [monthData, setMonthData] = useState<{ [key: string]: any }>({});
 
+    // Função para formatar a data como YYYY-MM-DD
+    function formatDate(date: Date) {
+        return date.toISOString().slice(0, 10);
+    }
+
+    // Carrega o registro do dia ao abrir ou trocar de data
     useEffect(() => {
-        const prev = trackingByDate[selectedDate.toDateString()];
-        setTracking(
-            prev || {
-                alcohol: null,
-                exercise: null,
-                mood: null,
-                sleep: null,
+        setLoading(true);
+        // Verificar status do Firebase Auth
+        checkFirebaseAuthStatus();
+        
+        getDailyTracking(formatDate(selectedDate)).then(data => {
+            if (data) {
+                setTracking(data);
+                setHasExistingData(true);
+            } else {
+                setTracking({ alcohol: null, exercise: null, mood: null, sleep: null });
+                setHasExistingData(false);
             }
-        );
-    }, [selectedDate, trackingByDate]);
+        }).catch(error => {
+            console.error('Error loading tracking data:', error);
+            Alert.alert('Erro', 'Não foi possível carregar os dados. Verifique se você está logado.');
+            setHasExistingData(false);
+        }).finally(() => setLoading(false));
+    }, [selectedDate]);
+
+    // Carrega os dados do mês para marcar os dias no calendário
+    useEffect(() => {
+        const loadMonthData = async () => {
+            try {
+                const year = selectedDate.getFullYear();
+                const month = selectedDate.getMonth();
+                const data = await getMonthTrackingData(year, month);
+                setMonthData(data);
+            } catch (error) {
+                console.error('Error loading month data:', error);
+            }
+        };
+        
+        loadMonthData();
+    }, [selectedDate.getFullYear(), selectedDate.getMonth()]);
 
     const alcoholOptions = [
         { id: 'none', label: 'Abstinência', icon: WineOff, color: '#77aae3' },
@@ -86,22 +152,27 @@ export default function TrackingScreen() {
     };
 
     const allSelected = tracking.alcohol && tracking.exercise && tracking.mood;
-    const isUpdate = !!prevTracking;
-    const changed =
-        isUpdate && prevTracking
-            ? prevTracking.alcohol !== tracking.alcohol ||
-              prevTracking.exercise !== tracking.exercise ||
-              prevTracking.mood !== tracking.mood
-            : allSelected;
-    const buttonEnabled = allSelected && (!isUpdate || changed);
-    const buttonText = isUpdate ? 'Atualizar' : 'Registrar';
+    const buttonEnabled = allSelected && !loading;
+    const buttonText = loading ? 'Salvando...' : (hasExistingData ? 'Atualizar' : 'Salvar');
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!buttonEnabled) return;
-        setTrackingByDate(prev => ({
-            ...prev,
-            [selectedDate.toDateString()]: tracking,
-        }));
+        setLoading(true);
+        try {
+            await saveDailyTracking(formatDate(selectedDate), tracking);
+            setHasExistingData(true);
+            
+            // Atualizar os dados do mês para refletir a mudança no calendário
+            const year = selectedDate.getFullYear();
+            const month = selectedDate.getMonth();
+            const data = await getMonthTrackingData(year, month);
+            setMonthData(data);
+            
+            // Opcional: Alert.alert('Sucesso', 'Registro salvo!');
+        } catch (err: any) {
+            Alert.alert('Erro ao salvar', err?.message || String(err));
+        }
+        setLoading(false);
     };
 
     const weekDays = getCurrentWeekDays(selectedDate);
@@ -134,15 +205,31 @@ export default function TrackingScreen() {
                     ))}
                 </View>
                 <View style={styles.datesRow}>
-                    {weekDays.map((d, idx) => (
-                        <TouchableOpacity
-                            key={d.label + d.date}
-                            style={[styles.dayButton, d.fullDate.toDateString() === selectedDate.toDateString() && styles.dayButtonSelected]}
-                            onPress={() => setSelectedDate(new Date(d.fullDate))}
-                        >
-                            <Text style={[styles.dayNumber, d.fullDate.toDateString() === selectedDate.toDateString() && styles.dayNumberSelected]}>{d.date}</Text>
-                        </TouchableOpacity>
-                    ))}
+                    {weekDays.map((d, idx) => {
+                        const dateStr = formatDate(d.fullDate);
+                        const hasData = monthData[dateStr];
+                        const isToday = d.fullDate.toDateString() === new Date().toDateString();
+                        const isSelected = d.fullDate.toDateString() === selectedDate.toDateString();
+                        
+                        return (
+                            <TouchableOpacity
+                                key={d.label + d.date}
+                                style={[
+                                    styles.dayButton, 
+                                    isToday && styles.dayButtonToday,
+                                    isSelected && styles.dayButtonSelected,
+                                    hasData && !isToday && styles.dayButtonWithData
+                                ]}
+                                onPress={() => setSelectedDate(new Date(d.fullDate))}
+                            >
+                                <Text style={[
+                                    styles.dayNumber, 
+                                    isToday && styles.dayNumberToday,
+                                    isSelected && styles.dayNumberSelected
+                                ]}>{d.date}</Text>
+                            </TouchableOpacity>
+                        );
+                    })}
                 </View>
             </View>
             <ScrollView
@@ -255,15 +342,26 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    dayButtonToday: {
+        backgroundColor: '#254A8E',
+    },
     dayButtonSelected: {
         borderWidth: 3,
         borderColor: '#595858',
         backgroundColor: '#E3E3E3',
     },
+    dayButtonWithData: {
+        backgroundColor: '#9CA3AF',
+    },
     dayNumber: {
         fontSize: 16,
         color: '#595858',
         fontFamily: 'Inter',
+        backgroundColor: 'transparent',
+    },
+    dayNumberToday: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
         backgroundColor: 'transparent',
     },
     dayNumberSelected: {

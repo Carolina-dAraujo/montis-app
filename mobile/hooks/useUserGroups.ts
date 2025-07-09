@@ -47,6 +47,7 @@ export function useUserGroups() {
           ...userGroup,
           groupName: full?.name || userGroup.groupName || userGroup.name || '',
           address: full?.address || userGroup.address || '',
+          meetingSchedules: full?.meetingSchedules || userGroup.meetingSchedules || [],
           city: full?.city || userGroup.city || '',
           neighborhood: full?.neighborhood || userGroup.neighborhood || '',
           online: typeof full?.online === 'boolean' ? full.online : (userGroup.online ?? false),
