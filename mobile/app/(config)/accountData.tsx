@@ -63,7 +63,6 @@ export default function AccountDataScreen() {
 
 		if (!result.canceled) {
 			setProfileImage(result.assets[0].uri);
-			// TODO: Upload image to server
 			Alert.alert('Sucesso', 'Imagem de perfil atualizada!');
 		}
 	};

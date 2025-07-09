@@ -398,6 +398,36 @@ class ApiService {
             body: JSON.stringify({ groupId, notificationsEnabled }),
         });
     }
+
+    async uploadProfileImage(token: string, fileUri: string): Promise<{ imageUrl: string }> {
+        const formData = new FormData();
+        // Extrai o nome do arquivo
+        const fileName = fileUri.split('/').pop() || `profile.jpg`;
+        // Detecta o tipo mime
+        const fileType = fileName.endsWith('.png') ? 'image/png' : 'image/jpeg';
+        // Para React Native, o campo "uri" é obrigatório
+        formData.append('file', {
+            uri: fileUri,
+            name: fileName,
+            type: fileType,
+        } as any);
+
+        const response = await fetch(`${this.baseUrl}/auth/profile/image`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                // Não definir Content-Type, o RN/fetch faz isso automaticamente para multipart
+            },
+            body: formData as any,
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: 'Erro ao enviar imagem' }));
+            throw new Error(errorData.message || `HTTP ${response.status}`);
+        }
+
+        return await response.json();
+    }
 }
 
 export const apiService = new ApiService();

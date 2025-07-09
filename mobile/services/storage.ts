@@ -5,6 +5,7 @@ export interface StoredUserData {
 	email: string;
 	displayName?: string;
 	phoneNumber?: string;
+	profileImage?: string;
 }
 
 class StorageService {

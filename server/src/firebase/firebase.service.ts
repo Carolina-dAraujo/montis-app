@@ -5,11 +5,16 @@ import { UpdateRequest } from "firebase-admin/lib/auth/auth-config";
 import { UserRecord } from "firebase-admin/lib/auth/user-record";
 import { ConfigService } from "@nestjs/config";
 import axios from "axios";
+import { Storage } from '@google-cloud/storage';
+import * as path from 'path';
+import { Express } from 'express';
 
 @Injectable()
 export class FirebaseService implements OnModuleInit {
 	private firebaseApp: firebaseAdmin.app.App;
 	private database: firebaseAdmin.database.Database;
+	private storage: Storage;
+	private bucketName: string = 'montis-892b4.appspot.com';
 
 	constructor(private configService: ConfigService) { }
 
@@ -24,6 +29,7 @@ export class FirebaseService implements OnModuleInit {
 		}
 
 		this.database = this.firebaseApp.database();
+		this.storage = new Storage();
 	}
 
 	async createUser(props: CreateRequest): Promise<UserRecord> {
@@ -255,5 +261,27 @@ export class FirebaseService implements OnModuleInit {
 		} catch (error) {
 			throw error;
 		}
+	}
+
+	/**
+	 * Faz upload da imagem de perfil para o Firebase Storage e retorna a URL pública
+	 */
+	async uploadProfileImage(uid: string, file: any): Promise<string> {
+		const ext = path.extname(file.originalname) || '.jpg';
+		const destination = `users/${uid}/profile${ext}`;
+		const bucket = this.storage.bucket(this.bucketName);
+		const blob = bucket.file(destination);
+		await blob.save(file.buffer, {
+			contentType: file.mimetype,
+			public: true,
+			resumable: false,
+			metadata: {
+				cacheControl: 'public, max-age=31536000',
+			},
+		});
+		// Torna o arquivo público
+		await blob.makePublic();
+		// Retorna a URL pública
+		return `https://storage.googleapis.com/${this.bucketName}/${destination}`;
 	}
 }

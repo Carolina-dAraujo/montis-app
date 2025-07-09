@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpCode, HttpStatus, Get, UseGuards, Put, Delete, Req } from "@nestjs/common";
+import { Controller, Post, Body, HttpCode, HttpStatus, Get, UseGuards, Put, Delete, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { UsersService } from "./users.service";
 import { RegisterUserDto, LoginUserDto, AuthResponseDto } from "./dtos/auth";
@@ -8,6 +8,7 @@ import { AuthGuard } from "../auth/auth.guard";
 import { CurrentUser } from "../auth/current-user.decorator";
 import { getPasswordRules } from "../common/password.validator";
 import { BadRequestException } from "@nestjs/common";
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags("Authentication")
 @Controller("auth")
@@ -183,6 +184,19 @@ export class UsersController {
 	})
 	async updatePassword(@CurrentUser() user: any, @Body() passwordData: UpdatePasswordDto) {
 		return await this.usersService.updateUserPassword(user.uid, passwordData);
+	}
+
+	@Put('profile/image')
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
+	@UseInterceptors(FileInterceptor('file'))
+	async uploadProfileImage(@CurrentUser() user: any, @UploadedFile() file: any) {
+		if (!file) {
+			throw new BadRequestException('Nenhum arquivo enviado');
+		}
+		// Faz upload para o Storage
+		const imageUrl = await this.usersService.uploadProfileImage(user.uid, file);
+		return { imageUrl };
 	}
 
 	@Delete("profile")

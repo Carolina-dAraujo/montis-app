@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@google-cloud/storage": "^7.16.0",
+    "@types/multer": "^2.0.0",
+    "multer": "^2.0.1"
+  }
+}

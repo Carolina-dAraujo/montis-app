@@ -9,6 +9,7 @@ import { PreferencesModule } from "./preferences/preferences.module";
 import { GroupsModule } from "./groups/groups.module";
 import { EmergencyContactsModule } from "./emergency-contacts/emergency-contacts.module";
 import { ConfigModule } from "@nestjs/config";
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ConfigModule } from "@nestjs/config";
     PreferencesModule,
     GroupsModule,
     EmergencyContactsModule,
+    MulterModule.register({}),
   ],
   controllers: [AppController],
   providers: [AppService],

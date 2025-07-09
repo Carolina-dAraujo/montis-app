@@ -202,11 +202,35 @@ export class UsersService {
     try {
       const userRecord = await this.firebaseService.getUser(uid);
 
+      let phoneNumber = userRecord.phoneNumber;
+      // Se phoneNumber estiver vazio, tenta buscar em preferences e onboarding
+      if (!phoneNumber) {
+        const preferences = await this.firebaseService.getPreferences(uid);
+        if (preferences && preferences.phone) {
+          phoneNumber = preferences.phone;
+        } else {
+          const onboarding = await this.firebaseService.getOnboardingData(uid);
+          if (onboarding && onboarding.phone) {
+            phoneNumber = onboarding.phone;
+          }
+        }
+      }
+
+      // Busca a URL da imagem de perfil, se existir
+      let profileImage: string | undefined = undefined;
+      try {
+        const userData = await this.firebaseService.getUserData(uid);
+        if (userData && userData.profileImage) {
+          profileImage = userData.profileImage;
+        }
+      } catch (e) {}
+
       return {
         uid: userRecord.uid,
         email: userRecord.email,
         displayName: userRecord.displayName,
-        phoneNumber: userRecord.phoneNumber,
+        phoneNumber,
+        profileImage,
       };
     } catch (error) {
       console.error("Get profile error:", error);
@@ -231,6 +255,15 @@ export class UsersService {
       }
 
       const userRecord = await this.firebaseService.updateUser(uid, updateFields);
+
+      // Se o telefone foi atualizado, também atualiza em preferences no Realtime Database
+      if (updateData.phone !== undefined) {
+        // Busca as preferências atuais
+        const currentPreferences = await this.firebaseService.getPreferences(uid) || {};
+        // Atualiza apenas o campo phone, preservando os outros
+        const updatedPreferences = { ...currentPreferences, phone: updateData.phone };
+        await this.firebaseService.savePreferences(uid, updatedPreferences);
+      }
 
       return {
         uid: userRecord.uid,
@@ -335,5 +368,13 @@ export class UsersService {
       console.error("Get all user data error:", error);
       return null;
     }
+  }
+
+  async uploadProfileImage(uid: string, file: any): Promise<string> {
+    // Faz upload para o Storage
+    const imageUrl = await this.firebaseService.uploadProfileImage(uid, file);
+    // Salva a URL em users/{uid}/profileImage no Realtime Database
+    await this.firebaseService.updateUserData(uid, { profileImage: imageUrl }, '');
+    return imageUrl;
   }
 }

@@ -8,10 +8,6 @@ import * as express from 'express';
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 
-	// Add body parser middleware with explicit configuration
-	app.use(express.json({ limit: '10mb' }));
-	app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
 	// Habilita o CORS para permitir requisições do React Native
 	app.enableCors({
 		origin: true, // Allow all origins in development
