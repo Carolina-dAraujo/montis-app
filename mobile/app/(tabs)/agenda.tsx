@@ -13,7 +13,6 @@ export default function AgendaScreen() {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [trackedDays, setTrackedDays] = useState<string[]>([]);
 
-    // Função para buscar todos os dias que têm dados salvos
     const loadTrackedDays = async () => {
         try {
             const user = getAuth().currentUser;
@@ -26,9 +25,8 @@ export default function AgendaScreen() {
                 const data = snapshot.val();
                 console.log('Raw data from Firebase:', data);
                 const days = Object.keys(data).map(dateStr => {
-                    // Converter YYYY-MM-DD para Date sem problemas de fuso horário
                     const [year, month, day] = dateStr.split('-').map(Number);
-                    const date = new Date(year, month - 1, day); // month - 1 porque Date usa 0-11
+                    const date = new Date(year, month - 1, day);
                     const dateString = date.toDateString();
                     console.log(`Converting ${dateStr} -> ${dateString}`);
                     return dateString;
@@ -45,7 +43,6 @@ export default function AgendaScreen() {
         loadTrackedDays();
     }, []);
 
-    // Recarregar dados quando a tela ganhar foco (quando voltar do tracking)
     useFocusEffect(
         React.useCallback(() => {
             loadTrackedDays();
@@ -60,15 +57,6 @@ export default function AgendaScreen() {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity 
-                    style={styles.backIconContainer} 
-                    onPress={() => router.navigate('/home')}
-                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                >
-                    				<TouchableOpacity style={styles.backButton}>
-					<ChevronLeft size={24} color={Colors.icon.gray} />
-				</TouchableOpacity>
-                </TouchableOpacity>
                 <Text style={styles.title}>Agenda</Text>
             </View>
 
@@ -87,24 +75,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#F9FAFB',
     },
     header: {
-        flexDirection: 'column',
         paddingHorizontal: 20,
+        paddingTop: 16,
         paddingBottom: 8,
         backgroundColor: '#F9FAFB',
     },
-    	backIconContainer: {
-		marginBottom: 8,
-		alignItems: 'center',
-		justifyContent: 'center',
-		width: 40,
-		height: 40,
-		zIndex: 1,
-	},
-	backButton: {
-		padding: 8,
-	},
     title: {
-        fontSize: 20,
+        fontSize: 24,
         fontFamily: 'Inter-Bold',
         color: '#111827',
         textAlign: 'left',
