@@ -40,7 +40,7 @@ export default function ServicesScreen() {
 	return (
 		<SafeAreaView style={[styles.container, { paddingTop: insets.top }]}>
 			<View style={styles.header}>
-				<Text style={styles.title}>Encontrar Serviços</Text>
+				<Text style={styles.title}>Encontrar serviços</Text>
 				<Text style={styles.subtitle}>
 					Encontre os serviços de apoio mais próximos de você
 				</Text>

@@ -124,7 +124,7 @@ export function DailyReminders() {
                                     styles.reminderTitle,
                                     isDailyCheckCompleted ? styles.checkInTitleCompleted : styles.checkInTitle
                                 ]}>
-                                    Registro Diário
+                                    Registro diário
                                 </Text>
                                 <Text style={styles.reminderTime}>
                                     {isDailyCheckCompleted ? 'Completo' : 'Pendente'}

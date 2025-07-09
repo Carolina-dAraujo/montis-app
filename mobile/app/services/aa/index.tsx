@@ -193,13 +193,20 @@ export default function AAGroupsScreen() {
 							<View style={styles.serviceHeader}>
 								<Text style={styles.serviceName}>{group.name}</Text>
 								<View style={styles.headerActions}>
-									{!alreadyAdded && (
+									{alreadyAdded ? (
 										<TouchableOpacity
-											style={{ padding: 6, borderRadius: 16, backgroundColor: Colors.containers.blue }}
+											style={styles.addedButton}
+											disabled={true}
+										>
+											<MaterialCommunityIcons name="check" size={18} color="#FFFFFF" />
+										</TouchableOpacity>
+									) : (
+										<TouchableOpacity
+											style={styles.addButton}
 											onPress={() => handleAddGroup(group.id)}
 											disabled={addingGroupId === group.id}
 										>
-											<MaterialCommunityIcons name="plus" size={18} color="#fff" />
+											<MaterialCommunityIcons name="plus" size={18} color="#FFFFFF" />
 										</TouchableOpacity>
 									)}
 								</View>
@@ -424,5 +431,16 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		marginLeft: 4,
 		fontWeight: 'bold',
+	},
+	addedButton: {
+		padding: 6,
+		borderRadius: 16,
+		backgroundColor: '#34C759',
+		opacity: 0.8,
+	},
+	addButton: {
+		padding: 6,
+		borderRadius: 16,
+		backgroundColor: Colors.containers.blue,
 	},
 });

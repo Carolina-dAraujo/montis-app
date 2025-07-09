@@ -24,7 +24,6 @@ export default function GruposScreen() {
 	const {
 		groups,
 		loading,
-		handleNotificationToggle,
 	} = useUserGroups();
 
 	const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -135,7 +134,7 @@ export default function GruposScreen() {
 		}
 	};
 
-	if (auth.isLoading) {
+	if (auth.isLoading || loading) {
 		return (
 			<SafeAreaView style={[styles.container, { paddingTop: 50 }]}>
 				<View style={styles.header}>
@@ -144,16 +143,20 @@ export default function GruposScreen() {
 						Gerencie seus grupos e preferências de notificações
 					</Text>
 				</View>
-				<View style={styles.emptyState}>
-					<MaterialCommunityIcons
-						name="account-group-outline"
-						size={48}
-						color={Colors.icon.gray}
-					/>
-					<Text style={styles.emptyTitle}>Carregando...</Text>
-					<Text style={styles.emptySubtitle}>
-						Aguarde um momento
-					</Text>
+				<View style={styles.loadingContainer}>
+					<Animated.View style={styles.loadingAnimation}>
+						<MaterialCommunityIcons
+							name="account-group"
+							size={48}
+							color={Colors.containers.blue}
+						/>
+					</Animated.View>
+					<Text style={styles.loadingText}>Carregando...</Text>
+					<View style={styles.loadingDots}>
+						<Animated.View style={[styles.dot, { opacity: dot1Anim }]} />
+						<Animated.View style={[styles.dot, { opacity: dot2Anim }]} />
+						<Animated.View style={[styles.dot, { opacity: dot3Anim }]} />
+					</View>
 				</View>
 			</SafeAreaView>
 		);
@@ -270,6 +273,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
+		paddingBottom: 140,
 	},
 	loadingText: {
 		fontSize: 16,

@@ -1,5 +1,4 @@
-import { Linking, Alert } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
+import { Linking, Alert, Clipboard } from 'react-native';
 
 export interface Address {
 	city: string;
