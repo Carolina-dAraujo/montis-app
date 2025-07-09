@@ -78,6 +78,12 @@ class EmergencyContactsService {
 		});
 	}
 
+	async getContact(token: string, id: string): Promise<EmergencyContact> {
+		return this.makeAuthenticatedRequest<EmergencyContact>(`/emergency-contacts/${id}`, token, {
+			method: 'GET',
+		});
+	}
+
 	async createContact(token: string, contactData: CreateEmergencyContactDto): Promise<EmergencyContact> {
 		return this.makeAuthenticatedRequest<EmergencyContact>('/emergency-contacts', token, {
 			method: 'POST',

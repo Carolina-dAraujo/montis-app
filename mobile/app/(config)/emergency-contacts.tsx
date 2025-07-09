@@ -1,14 +1,22 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, FlatList } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '@/mobile/constants/Colors';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { ChevronLeft, Plus, Phone, User, Heart } from 'lucide-react-native';
 import { useEmergencyContacts } from '@/mobile/hooks/useEmergencyContacts';
 import { EmergencyContact } from '@/mobile/services/EmergencyContactsService';
+import { useCallback } from 'react';
 
 const EmergencyContactsScreen = () => {
-	const { contacts, loading, error, deleteContact, toggleContact } = useEmergencyContacts();
+	const { contacts, loading, error, deleteContact, toggleContact, fetchContacts } = useEmergencyContacts();
+
+	// Refresh contacts when screen comes into focus
+	useFocusEffect(
+		useCallback(() => {
+			fetchContacts();
+		}, [fetchContacts])
+	);
 
 	const handleDeleteContact = async (id: string) => {
 		Alert.alert(
@@ -41,6 +49,29 @@ const EmergencyContactsScreen = () => {
 
 	const handleAddContact = () => {
 		router.push('/(config)/add-emergency-contact');
+	};
+
+	const handleEditContact = (id: string) => {
+		router.push(`/(config)/edit-emergency-contact?id=${id}`);
+	};
+
+	const handleShowContactOptions = (contact: EmergencyContact) => {
+		Alert.alert(
+			contact.name,
+			'Escolha uma ação:',
+			[
+				{ text: 'Cancelar', style: 'cancel' },
+				{ 
+					text: 'Editar', 
+					onPress: () => handleEditContact(contact.id)
+				},
+				{ 
+					text: 'Remover', 
+					style: 'destructive',
+					onPress: () => handleDeleteContact(contact.id)
+				}
+			]
+		);
 	};
 
 	const renderContact = ({ item }: { item: EmergencyContact }) => (
@@ -88,10 +119,10 @@ const EmergencyContactsScreen = () => {
 				</TouchableOpacity>
 
 				<TouchableOpacity
-					style={[styles.actionButton, styles.deleteButton]}
-					onPress={() => handleDeleteContact(item.id)}
+					style={[styles.actionButton, styles.moreButton]}
+					onPress={() => handleShowContactOptions(item)}
 				>
-					<Ionicons name="trash-outline" size={20} color="#FF3B30" />
+					<Ionicons name="ellipsis-vertical" size={20} color={Colors.light.icon} />
 				</TouchableOpacity>
 			</View>
 		</View>
@@ -185,9 +216,9 @@ const EmergencyContactsScreen = () => {
 						</Text>
 					</View>
 					<View style={styles.infoCard}>
-						<Ionicons name="trash-outline" size={20} color={Colors.containers.blue} />
+						<Ionicons name="ellipsis-vertical" size={20} color={Colors.containers.blue} />
 						<Text style={styles.infoText}>
-							Toque no ícone de lixeira para remover um contato.
+							Toque nos três pontos para editar ou remover um contato.
 						</Text>
 					</View>
 				</View>
@@ -325,7 +356,13 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
+	editButton: {
+		backgroundColor: Colors.lightGray,
+	},
 	toggleButton: {
+		backgroundColor: Colors.lightGray,
+	},
+	moreButton: {
 		backgroundColor: Colors.lightGray,
 	},
 	deleteButton: {

@@ -95,6 +95,22 @@ export const useEmergencyContacts = () => {
 		}
 	}, []);
 
+	const getContact = useCallback(async (id: string): Promise<EmergencyContact> => {
+		try {
+			const token = await storageService.getAuthToken();
+			if (!token) throw new Error('Token não disponível');
+
+			setError(null);
+			const contact = await emergencyContactsService.getContact(token, id);
+			return contact;
+		} catch (err) {
+			console.error('Error fetching emergency contact:', err);
+			const errorMessage = err instanceof Error ? err.message : 'Erro ao carregar contato';
+			setError(errorMessage);
+			throw new Error(errorMessage);
+		}
+	}, []);
+
 	useEffect(() => {
 		fetchContacts();
 	}, [fetchContacts]);
@@ -108,5 +124,6 @@ export const useEmergencyContacts = () => {
 		updateContact,
 		deleteContact,
 		toggleContact,
+		getContact,
 	};
 };

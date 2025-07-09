@@ -1,28 +1,54 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput, Alert } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '@/mobile/constants/Colors';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { ChevronLeft, User, Phone, Heart } from 'lucide-react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useEmergencyContacts } from '@/mobile/hooks/useEmergencyContacts';
+import { EmergencyContact } from '@/mobile/services/EmergencyContactsService';
 
-interface NewContact {
-    name: string;
-    phone: string;
-    relationship: string;
+interface EditContact {
+	name: string;
+	phone: string;
+	relationship: string;
 }
 
-const AddEmergencyContactScreen = () => {
-    const insets = useSafeAreaInsets();
-    const { createContact } = useEmergencyContacts();
-    const [contact, setContact] = useState<NewContact>({
-        name: '',
-        phone: '',
-        relationship: ''
-    });
-    const [focusedInput, setFocusedInput] = useState<string | null>(null);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+const EditEmergencyContactScreen = () => {
+	const { id } = useLocalSearchParams<{ id: string }>();
+	const { getContact, updateContact } = useEmergencyContacts();
+	const [contact, setContact] = useState<EditContact>({
+		name: '',
+		phone: '',
+		relationship: ''
+	});
+	const [focusedInput, setFocusedInput] = useState<string | null>(null);
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [loading, setLoading] = useState(true);
+	const [contactToEdit, setContactToEdit] = useState<EmergencyContact | null>(null);
+
+	useEffect(() => {
+		const loadContact = async () => {
+			if (!id) return;
+			
+			try {
+				setLoading(true);
+				const contactData = await getContact(id);
+				setContactToEdit(contactData);
+				setContact({
+					name: contactData.name,
+					phone: contactData.phone,
+					relationship: contactData.relationship
+				});
+			} catch (error) {
+				console.error('Error loading contact:', error);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		loadContact();
+	}, [id, getContact]);
 
 	const formatPhoneNumber = (text: string) => {
 		const cleaned = text.replace(/\D/g, '');
@@ -53,20 +79,19 @@ const AddEmergencyContactScreen = () => {
 			return;
 		}
 
-		if (isSubmitting) return;
+		if (!id || isSubmitting) return;
 
 		try {
 			setIsSubmitting(true);
-			await createContact({
+			await updateContact(id, {
 				name: contact.name.trim(),
 				phone: contact.phone.trim(),
-				relationship: contact.relationship.trim(),
-				isActive: true
+				relationship: contact.relationship.trim()
 			});
 
 			Alert.alert(
-				'Contato salvo',
-				'Contato de emergência adicionado com sucesso!',
+				'Contato atualizado',
+				'Contato de emergência atualizado com sucesso!',
 				[
 					{
 						text: 'OK',
@@ -75,7 +100,7 @@ const AddEmergencyContactScreen = () => {
 				]
 			);
 		} catch (error) {
-			Alert.alert('Erro', 'Não foi possível salvar o contato. Tente novamente.');
+			Alert.alert('Erro', 'Não foi possível atualizar o contato. Tente novamente.');
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -85,7 +110,7 @@ const AddEmergencyContactScreen = () => {
 		if (contact.name || contact.phone || contact.relationship) {
 			Alert.alert(
 				'Cancelar',
-				'Tem certeza que deseja cancelar? As informações serão perdidas.',
+				'Tem certeza que deseja cancelar? As alterações serão perdidas.',
 				[
 					{ text: 'Continuar editando', style: 'cancel' },
 					{ text: 'Cancelar', style: 'destructive', onPress: () => router.back() }
@@ -96,6 +121,51 @@ const AddEmergencyContactScreen = () => {
 		}
 	};
 
+	if (loading) {
+		return (
+			<SafeAreaView style={styles.container}>
+				<View style={styles.header}>
+					<View style={styles.headerRow}>
+						<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+							<ChevronLeft size={24} color={Colors.icon.gray} />
+						</TouchableOpacity>
+						<View style={styles.titleContainer}>
+							<Text style={styles.title}>Editar contato</Text>
+						</View>
+						<View style={{ width: 24 }} />
+					</View>
+				</View>
+				<View style={styles.loadingContainer}>
+					<View style={styles.loadingIconContainer}>
+						<Ionicons name="people-circle" size={48} color={Colors.containers.blue} />
+					</View>
+					<Text style={styles.loadingText}>Carregando contato...</Text>
+				</View>
+			</SafeAreaView>
+		);
+	}
+
+	if (!contactToEdit) {
+		return (
+			<SafeAreaView style={styles.container}>
+				<View style={styles.header}>
+					<View style={styles.headerRow}>
+						<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+							<ChevronLeft size={24} color={Colors.icon.gray} />
+						</TouchableOpacity>
+						<View style={styles.titleContainer}>
+							<Text style={styles.title}>Editar contato</Text>
+						</View>
+						<View style={{ width: 24 }} />
+					</View>
+				</View>
+				<View style={styles.errorContainer}>
+					<Text style={styles.errorText}>Contato não encontrado</Text>
+				</View>
+			</SafeAreaView>
+		);
+	}
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
@@ -104,7 +174,7 @@ const AddEmergencyContactScreen = () => {
 						<ChevronLeft size={24} color={Colors.icon.gray} />
 					</TouchableOpacity>
 					<View style={styles.titleContainer}>
-						<Text style={styles.title}>Adicionar contato</Text>
+						<Text style={styles.title}>Editar contato</Text>
 					</View>
 					<View style={{ width: 24 }} />
 				</View>
@@ -115,9 +185,9 @@ const AddEmergencyContactScreen = () => {
 					<View style={styles.iconContainer}>
 						<Ionicons name="people-circle" size={48} color={Colors.containers.blue} />
 					</View>
-					<Text style={styles.heroTitle}>Contato de Emergência</Text>
+					<Text style={styles.heroTitle}>Editar contato de emergência</Text>
 					<Text style={styles.heroSubtitle}>
-						Adicione um contato que receberá alertas quando você enviar um sinal de emergência
+						Atualize as informações do contato que receberá alertas de emergência
 					</Text>
 				</View>
 
@@ -203,18 +273,18 @@ const AddEmergencyContactScreen = () => {
 			</ScrollView>
 
 			<View style={styles.bottomContainer}>
-				                <TouchableOpacity
-                    style={[
-                        styles.saveButton,
-                        (!contact.name.trim() || !contact.phone.trim() || !contact.relationship.trim() || isSubmitting) && styles.saveButtonDisabled
-                    ]}
-                    onPress={handleSave}
-                    disabled={!contact.name.trim() || !contact.phone.trim() || !contact.relationship.trim() || isSubmitting}
-                >
-                    <Text style={styles.saveButtonText}>
-                        {isSubmitting ? 'Salvando...' : 'Salvar contato'}
-                    </Text>
-                </TouchableOpacity>
+				<TouchableOpacity
+					style={[
+						styles.saveButton,
+						(!contact.name.trim() || !contact.phone.trim() || !contact.relationship.trim() || isSubmitting) && styles.saveButtonDisabled
+					]}
+					onPress={handleSave}
+					disabled={!contact.name.trim() || !contact.phone.trim() || !contact.relationship.trim() || isSubmitting}
+				>
+					<Text style={styles.saveButtonText}>
+						{isSubmitting ? 'Salvando...' : 'Salvar alterações'}
+					</Text>
+				</TouchableOpacity>
 			</View>
 		</SafeAreaView>
 	);
@@ -362,6 +432,37 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		fontWeight: '600',
 	},
+	errorContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 20,
+	},
+	errorText: {
+		fontSize: 16,
+		color: Colors.light.icon,
+		textAlign: 'center',
+	},
+	loadingContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 20,
+	},
+	loadingIconContainer: {
+		width: 80,
+		height: 80,
+		borderRadius: 40,
+		backgroundColor: Colors.lightGray,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginBottom: 16,
+	},
+	loadingText: {
+		fontSize: 16,
+		color: Colors.light.text,
+		textAlign: 'center',
+	},
 });
 
-export default AddEmergencyContactScreen;
+export default EditEmergencyContactScreen; 

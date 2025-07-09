@@ -73,9 +73,11 @@ export class EmergencyContactsService {
 	}
 
 	async update(userId: string, id: string, updateEmergencyContactDto: UpdateEmergencyContactDto): Promise<EmergencyContact> {
-		await this.findOne(userId, id);
+		const existingContact = await this.findOne(userId, id);
 
+		const { id: _, ...contactWithoutId } = existingContact;
 		const updateData = {
+			...contactWithoutId,
 			...updateEmergencyContactDto,
 			updatedAt: new Date().toISOString(),
 		};
