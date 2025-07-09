@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
 	View,
 	Text,
@@ -8,14 +8,17 @@ import {
 	TouchableOpacity,
 	Alert,
 	Linking,
+	Switch,
+	Animated,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Colors } from '@/mobile/constants/Colors';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { apiService } from '@/mobile/services/api';
 import { storageService } from '@/mobile/services/storage';
+import { LocationService } from '@/mobile/services/locationService';
 import { ChevronLeft } from 'lucide-react-native';
-import { AAGroup, UserGroup } from '@/mobile/hooks/useUserGroups';
+import { AAGroup, useUserGroups } from '@/mobile/hooks/useUserGroups';
 
 const weekDays = [
 	{ key: 'monday', label: 'Segunda' },
@@ -33,10 +36,33 @@ export default function GroupDetailScreen() {
 	const [group, setGroup] = useState<AAGroup | null>(null);
 	const [loading, setLoading] = useState(true);
 	const { groups } = require('@/mobile/data/groups.json');
+	const { handleMeetingNotificationToggle } = useUserGroups();
+	const shimmerAnim = useRef(new Animated.Value(0)).current;
 
 	useEffect(() => {
 		loadGroupDetails();
 	}, [id]);
+
+	useEffect(() => {
+		if (loading) {
+			const shimmerAnimation = Animated.loop(
+				Animated.sequence([
+					Animated.timing(shimmerAnim, {
+						toValue: 1,
+						duration: 1000,
+						useNativeDriver: true,
+					}),
+					Animated.timing(shimmerAnim, {
+						toValue: 0,
+						duration: 1000,
+						useNativeDriver: true,
+					}),
+				])
+			);
+			shimmerAnimation.start();
+			return () => shimmerAnimation.stop();
+		}
+	}, [loading]);
 
 	const loadGroupDetails = async () => {
 		try {
@@ -45,7 +71,32 @@ export default function GroupDetailScreen() {
 			const foundGroup = groups.find((g: AAGroup) => g.id === id);
 
 			if (foundGroup) {
-				setGroup(foundGroup);
+				const token = await storageService.getAuthToken();
+
+				if (token) {
+					try {
+						const meetingNotifications = await apiService.getMeetingNotifications(token, foundGroup.id);
+
+						const updatedGroup = { ...foundGroup };
+						if (updatedGroup.schedule) {
+							Object.keys(updatedGroup.schedule).forEach(day => {
+								if (updatedGroup.schedule[day]) {
+									updatedGroup.schedule[day] = updatedGroup.schedule[day].map((meeting: any, index: number) => ({
+										...meeting,
+										notificationsEnabled: meetingNotifications[day]?.[index] ?? false
+									}));
+								}
+							});
+						}
+
+						setGroup(updatedGroup);
+					} catch (error) {
+						console.error('Error loading meeting notifications:', error);
+						setGroup(foundGroup);
+					}
+				} else {
+					setGroup(foundGroup);
+				}
 			} else {
 				Alert.alert('Erro', 'Grupo não encontrado');
 				router.back();
@@ -76,69 +127,65 @@ export default function GroupDetailScreen() {
 		}
 	};
 
-	const handleScheduleToggle = async (day: string, enabled: boolean) => {
-		if (!group) return;
-
-		try {
-			const token = await storageService.getAuthToken();
-			if (!token) {
-				console.error('No auth token available');
-				return;
-			}
-
-			// setGroup(prev => prev ? { ...prev, schedule: { ...prev.schedule, [day]: enabled ? ...prev.schedule[day] : [] } } : null);
-		} catch (error) {
-			console.error('Error updating meeting schedules:', error);
-			Alert.alert('Erro', 'Não foi possível atualizar os horários de reunião');
-		}
-	};
-
 	const handleCall = () => {
 		if (group?.link) {
 			Linking.openURL(group.link);
 		}
 	};
 
-	const handleShare = () => {
+	const copyAddress = () => {
 		if (group) {
-			const shareText = `${group.name}\n\nEndereço: ${group.address.street}, ${group.address.number || 'S/N'}\nTelefone: ${group.link}\nHorário: ${group.schedule}`;
-			// You can implement sharing functionality here
-			Alert.alert('Compartilhar', shareText);
+			LocationService.copyAddress(group.address);
 		}
 	};
 
-	const getTypeIcon = (type: string) => {
-		switch (type) {
-			case 'virtual':
-				return 'monitor';
-			case 'in-person':
-				return 'account-group';
-			default:
-				return 'help-circle';
+	const openInMaps = () => {
+		if (group) {
+			LocationService.openInMaps(group.address);
 		}
 	};
 
-	const getTypeColor = (type: string) => {
-		switch (type) {
-			case 'virtual':
-				return Colors.light.tint;
-			case 'in-person':
-				return Colors.containers.blueLight;
-			default:
-				return Colors.icon.gray;
+	const openInGoogleMaps = () => {
+		if (group) {
+			LocationService.openInGoogleMaps(group.address);
+		}
+	};
+
+	const openInWaze = () => {
+		if (group) {
+			LocationService.openInWaze(group.address);
 		}
 	};
 
 	if (loading) {
 		return (
 			<SafeAreaView style={styles.container}>
+				<View style={styles.header}>
+					<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+						<ChevronLeft size={24} color={Colors.icon.gray} />
+					</TouchableOpacity>
+					<View style={styles.headerSpacer} />
+				</View>
+
 				<View style={styles.loadingContainer}>
-					<MaterialCommunityIcons
-						name="account-group"
-						size={48}
-						color={Colors.containers.blue}
-					/>
-					<Text style={styles.loadingText}>Carregando detalhes...</Text>
+					<Animated.View
+						style={[
+							styles.loadingIcon,
+							{
+								opacity: shimmerAnim.interpolate({
+									inputRange: [0, 1],
+									outputRange: [0.4, 1],
+								}),
+							}
+						]}
+					>
+						<MaterialCommunityIcons
+							name="account-group"
+							size={48}
+							color={Colors.containers.blue}
+						/>
+					</Animated.View>
+					<Text style={styles.loadingText}>Carregando...</Text>
 				</View>
 			</SafeAreaView>
 		);
@@ -180,8 +227,6 @@ export default function GroupDetailScreen() {
 			</View>
 
 			<ScrollView showsVerticalScrollIndicator={false}>
-
-
 				<View style={styles.infoSection}>
 					<View style={styles.infoCard}>
 						<View style={styles.infoHeader}>
@@ -194,21 +239,41 @@ export default function GroupDetailScreen() {
 						{group.address.city && (
 							<Text style={styles.infoContent}>{group.address.city} - {group.address.state}</Text>
 						)}
-						{/* <View style={styles.infoMeta}>
-							<MaterialCommunityIcons name="map-marker-distance" size={14} color={Colors.icon.gray} />
-							<Text style={styles.infoMetaText}>{group.address.neighborhood}</Text>
-						</View> */}
+
+						{group.type === 'in-person' && (
+							<View style={styles.locationActions}>
+								<TouchableOpacity style={styles.locationActionButton} onPress={copyAddress}>
+									<MaterialCommunityIcons name="content-copy" size={16} color={Colors.icon.gray} />
+									<Text style={styles.locationActionText}>Copiar</Text>
+								</TouchableOpacity>
+
+								<TouchableOpacity style={styles.locationActionButton} onPress={openInMaps}>
+									<MaterialCommunityIcons name="map" size={16} color={Colors.icon.gray} />
+									<Text style={styles.locationActionText}>Maps</Text>
+								</TouchableOpacity>
+
+								<TouchableOpacity style={styles.locationActionButton} onPress={openInGoogleMaps}>
+									<MaterialCommunityIcons name="google-maps" size={16} color={Colors.icon.gray} />
+									<Text style={styles.locationActionText}>Google</Text>
+								</TouchableOpacity>
+
+								<TouchableOpacity style={styles.locationActionButton} onPress={openInWaze}>
+									<MaterialCommunityIcons name="car" size={16} color={Colors.icon.gray} />
+									<Text style={styles.locationActionText}>Waze</Text>
+								</TouchableOpacity>
+							</View>
+						)}
 					</View>
 
 					{group.link && (
-					<TouchableOpacity style={[styles.infoCard, styles.phoneCard]} onPress={handleCall}>
-						<View style={styles.infoCardContent}>
-							<View style={styles.infoHeader}>
-								<MaterialCommunityIcons name="link" size={18} color={Colors.containers.blue} />
-								<Text style={styles.infoTitle}>Link de reunião</Text>
+						<TouchableOpacity style={[styles.infoCard, styles.phoneCard]} onPress={handleCall}>
+							<View style={styles.infoCardContent}>
+								<View style={styles.infoHeader}>
+									<MaterialCommunityIcons name="link" size={18} color={Colors.containers.blue} />
+									<Text style={styles.infoTitle}>Link de reunião</Text>
+								</View>
+								<Text style={styles.infoContent}>{group.link}</Text>
 							</View>
-							<Text style={styles.infoContent}>{group.link}</Text>
-						</View>
 						</TouchableOpacity>
 					)}
 				</View>
@@ -233,25 +298,24 @@ export default function GroupDetailScreen() {
 											/>
 											<Text style={styles.scheduleDay}>{day.label}</Text>
 										</View>
-										<Text style={[styles.scheduleTime, {
-											color: isEnabled ? Colors.light.text : Colors.icon.gray
-										}]}>
-											{schedule?.map(s => `${s.start} - ${s.end}`).join(', ') || 'Não agendado'}
-										</Text>
+										<View style={styles.meetingTimesList}>
+											{schedule.map((meeting, index) => (
+												<View key={index} style={styles.meetingTimeItem}>
+													<Text style={styles.meetingTimeText}>
+														{meeting.start} - {meeting.end}
+													</Text>
+													<Switch
+														value={!!meeting.notificationsEnabled}
+														onValueChange={(enabled) =>
+															handleMeetingNotificationToggle(group.id, day.key, index, enabled)
+														}
+														trackColor={{ false: '#E9ECEF', true: Colors.containers.blue }}
+														thumbColor={meeting.notificationsEnabled ? '#FFFFFF' : '#FFFFFF'}
+													/>
+												</View>
+											))}
+										</View>
 									</View>
-									<TouchableOpacity
-										style={[styles.scheduleToggle, {
-											backgroundColor: isEnabled ? Colors.containers.blue : '#F8F9FA',
-											borderColor: isEnabled ? Colors.containers.blue : '#E9ECEF'
-										}]}
-										onPress={() => handleScheduleToggle(day.key, !isEnabled)}
-									>
-										<MaterialCommunityIcons
-											name={isEnabled ? 'bell' : 'bell-off'}
-											size={16}
-											color={isEnabled ? '#FFFFFF' : Colors.icon.gray}
-										/>
-									</TouchableOpacity>
 								</View>
 							);
 						})}
@@ -482,5 +546,62 @@ const styles = StyleSheet.create({
 		borderRadius: 12,
 		justifyContent: 'center',
 		alignItems: 'center',
+	},
+	meetingTimesList: {
+		marginTop: 8,
+		gap: 8,
+	},
+	meetingTimeItem: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		paddingVertical: 4,
+		paddingHorizontal: 8,
+		backgroundColor: '#F8F9FA',
+		borderRadius: 6,
+	},
+	meetingTimeText: {
+		fontSize: 12,
+		color: Colors.light.text,
+		fontWeight: '500',
+	},
+	skeletonTitle: {
+		backgroundColor: '#E9ECEF',
+		borderRadius: 4,
+	},
+	skeletonIcon: {
+		backgroundColor: '#E9ECEF',
+		borderRadius: 12,
+	},
+	skeletonText: {
+		backgroundColor: '#E9ECEF',
+		borderRadius: 4,
+	},
+	skeletonSwitch: {
+		backgroundColor: '#E9ECEF',
+		borderRadius: 16,
+	},
+	loadingIcon: {
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	locationActions: {
+		flexDirection: 'row',
+		marginTop: 12,
+		gap: 12,
+	},
+	locationActionButton: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		paddingHorizontal: 8,
+		paddingVertical: 6,
+		backgroundColor: '#F8F9FA',
+		borderRadius: 8,
+		gap: 4,
+	},
+	locationActionText: {
+		fontSize: 12,
+		color: Colors.icon.gray,
+		fontWeight: '500',
 	},
 });

@@ -201,25 +201,7 @@ export default function GruposScreen() {
 						>
 							<View style={styles.cardContent}>
 								<View style={styles.mainInfo}>
-									<View style={styles.groupHeader}>
-										<Text style={styles.groupName}>{group.name}</Text>
-										{/* <View style={styles.distanceInfo}>
-											<MaterialCommunityIcons name="map-marker-distance" size={12} color={Colors.icon.gray} />
-											<Text style={styles.distanceText}>{group.distance}</Text>
-										</View> */}
-									</View>
-									{group.address.street && (
-										<Text style={styles.groupAddress}>{group.address.street}, {group.address.number || 'S/N'}</Text>
-									)}
-									{group.address.city && (
-										<Text style={styles.groupAddress}>{group.address.city}</Text>
-									)}
-									{group.address.neighborhood && (
-										<Text style={styles.groupAddress}>{group.address.neighborhood}</Text>
-									)}
-								</View>
-
-								<View style={styles.cardActions}>
+									<Text style={styles.groupName}>{group.name}</Text>
 									<View style={[styles.typeBadge, { backgroundColor: getTypeColor(group.type) }]}>
 										<MaterialCommunityIcons
 											name={getTypeIcon(group.type) as any}
@@ -230,21 +212,21 @@ export default function GruposScreen() {
 											{group.type === 'virtual' ? 'Online' : 'Presencial'}
 										</Text>
 									</View>
-
-									<TouchableOpacity
-										style={styles.notificationButton}
-										onPress={(e) => {
-											e.stopPropagation();
-											handleNotificationToggle(group.id, !group.notificationsEnabled);
-										}}
-									>
-										<MaterialCommunityIcons
-											name={group.notificationsEnabled ? 'bell' : 'bell-outline'}
-											size={20}
-											color={group.notificationsEnabled ? Colors.containers.blue : Colors.icon.gray}
-										/>
-									</TouchableOpacity>
 								</View>
+
+								<TouchableOpacity
+									style={styles.notificationButton}
+									onPress={(e) => {
+										e.stopPropagation();
+										router.push(`/group-detail/${group.id}`);
+									}}
+								>
+									<MaterialCommunityIcons
+										name="chevron-right"
+										size={20}
+										color={Colors.icon.gray}
+									/>
+								</TouchableOpacity>
 							</View>
 						</TouchableOpacity>
 					))}
@@ -364,8 +346,8 @@ const styles = StyleSheet.create({
 	},
 	groupCard: {
 		backgroundColor: '#FFFFFF',
-		borderRadius: 16,
-		marginBottom: 12,
+		borderRadius: 12,
+		marginBottom: 8,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
@@ -377,55 +359,20 @@ const styles = StyleSheet.create({
 		borderWidth: 0,
 	},
 	cardContent: {
-		padding: 20,
+		padding: 16,
+		flexDirection: 'row',
+		alignItems: 'center',
 	},
 	mainInfo: {
 		flex: 1,
-		marginBottom: 12,
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 12,
 	},
 	groupName: {
-		fontSize: 18,
-		fontWeight: '700',
+		fontSize: 16,
+		fontWeight: '600',
 		color: Colors.light.text,
-		marginBottom: 8,
-	},
-	groupHeader: {
-		marginBottom: 8,
-	},
-	groupMeta: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 12,
-	},
-	distanceInfo: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 4,
-	},
-	distanceText: {
-		fontSize: 12,
-		color: Colors.icon.gray,
-		fontWeight: '500',
-	},
-	groupAddress: {
-		fontSize: 14,
-		color: Colors.icon.gray,
-		lineHeight: 20,
-	},
-	cardActions: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
-	},
-	headerActions: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 12,
-	},
-	notificationButton: {
-		padding: 8,
-		justifyContent: 'center',
-		alignItems: 'center',
 	},
 	typeBadge: {
 		flexDirection: 'row',
@@ -441,62 +388,10 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginLeft: 4,
 	},
-	notificationToggle: {
+	notificationButton: {
+		padding: 4,
+		justifyContent: 'center',
 		alignItems: 'center',
-	},
-	toggleLabel: {
-		fontSize: 12,
-		color: Colors.icon.gray,
-		marginBottom: 4,
-	},
-	groupDetails: {
-		marginBottom: 16,
-	},
-	detailRow: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginBottom: 8,
-	},
-	detailText: {
-		fontSize: 14,
-		color: Colors.light.text,
-		marginLeft: 8,
-	},
-	schedulesSection: {
-		borderTopWidth: 1,
-		borderTopColor: Colors.input,
-		paddingTop: 16,
-	},
-	schedulesTitle: {
-		fontSize: 16,
-		fontWeight: 'bold',
-		color: Colors.light.text,
-		marginBottom: 12,
-	},
-	schedulesList: {
-		gap: 8,
-	},
-	scheduleItem: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingVertical: 8,
-		paddingHorizontal: 12,
-		backgroundColor: Colors.lightGray,
-		borderRadius: 8,
-	},
-	scheduleInfo: {
-		flex: 1,
-	},
-	scheduleDay: {
-		fontSize: 14,
-		fontWeight: '500',
-		color: Colors.light.text,
-	},
-	scheduleTime: {
-		fontSize: 12,
-		color: Colors.icon.gray,
-		marginTop: 2,
 	},
 
 });

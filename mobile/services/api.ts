@@ -342,6 +342,46 @@ class ApiService {
             throw error;
         }
     }
+
+    async updateMeetingNotification(
+        token: string,
+        groupId: string,
+        day: string,
+        meetingIndex: number,
+        notificationsEnabled: boolean
+    ): Promise<{ message: string }> {
+        try {
+            const result = await this.makeAuthenticatedRequest<{ message: string }>(
+                `/groups/group/${groupId}/meeting/${day}/${meetingIndex}/notifications`,
+                token,
+                {
+                    method: 'PUT',
+                    body: JSON.stringify({ notificationsEnabled }),
+                }
+            );
+            return result;
+        } catch (error) {
+            console.error('API Service - updateMeetingNotification error:', error);
+            throw error;
+        }
+    }
+
+    async getMeetingNotifications(token: string, groupId: string): Promise<{ [day: string]: { [index: number]: boolean } }> {
+        try {
+            const result = await this.makeAuthenticatedRequest<{ [day: string]: { [index: number]: boolean } }>(
+                `/groups/group/${groupId}/meeting-notifications`,
+                token,
+                {
+                    method: 'GET',
+                }
+            );
+            return result;
+        } catch (error) {
+            console.error('API Service - getMeetingNotifications error:', error);
+            throw error;
+        }
+    }
+
     async getAllAAGroups(): Promise<any[]> {
         try {
             const result = await this.makeRequest<any[]>('/groups/all-aa-groups');

@@ -9,6 +9,16 @@ export interface MeetingSchedule {
 	enabled: boolean;
 }
 
+export interface MeetingTime {
+	start: string;
+	end: string;
+	notificationsEnabled?: boolean;
+}
+
+export interface GroupSchedule {
+	[key: string]: MeetingTime[];
+}
+
 export interface AAGroup {
 	id: string;
 	name: string;
@@ -21,9 +31,7 @@ export interface AAGroup {
 		cep?: string;
 		place?: string;
 	};
-	schedule: {
-		[key: string]: { start: string; end: string }[];
-	};
+	schedule: GroupSchedule;
 	type: 'virtual' | 'in-person';
 	platform?: string;
 	link?: string;
@@ -85,11 +93,45 @@ export function useUserGroups() {
 		Alert.alert('Aviso', 'Notificações de grupo devem ser implementadas com Firebase.');
 	};
 
+	const handleMeetingNotificationToggle = async (
+		groupId: string,
+		day: string,
+		meetingIndex: number,
+		enabled: boolean
+	) => {
+		try {
+			const token = await storageService.getAuthToken();
+			if (!token) throw new Error('Usuário não autenticado');
+
+			await apiService.updateMeetingNotification(token, groupId, day, meetingIndex, enabled);
+
+			setGroups(prevGroups =>
+				prevGroups.map(group => {
+					if (group.id === groupId && group.schedule && group.schedule[day]) {
+						const updatedSchedule = { ...group.schedule };
+						if (updatedSchedule[day] && updatedSchedule[day][meetingIndex]) {
+							updatedSchedule[day][meetingIndex] = {
+								...updatedSchedule[day][meetingIndex],
+								notificationsEnabled: enabled
+							};
+						}
+						return { ...group, schedule: updatedSchedule };
+					}
+					return group;
+				})
+			);
+		} catch (error) {
+			console.error('Error updating meeting notification:', error);
+			Alert.alert('Erro', 'Não foi possível atualizar as notificações da reunião');
+		}
+	};
+
 	return {
 		groups,
 		loading,
 		error,
 		reloadGroups: loadGroups,
 		handleNotificationToggle,
+		handleMeetingNotificationToggle,
 	};
 }

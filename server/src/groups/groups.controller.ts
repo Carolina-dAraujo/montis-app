@@ -7,7 +7,7 @@ import { CurrentUser } from "../auth/current-user.decorator";
 @ApiTags("Groups")
 @Controller("groups")
 export class GroupsController {
-	constructor(private readonly groupsService: GroupsService) {}
+	constructor(private readonly groupsService: GroupsService) { }
 
 	@Post("add-aa-group")
 	@UseGuards(AuthGuard)
@@ -133,6 +133,78 @@ export class GroupsController {
 		} catch (error) {
 			console.error("Update group notifications error:", error);
 			throw new Error("Não foi possível atualizar as preferências de notificação");
+		}
+	}
+
+	@Put("group/:groupId/meeting/:day/:meetingIndex/notifications")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
+	@ApiOperation({ summary: "Update meeting-specific notification preferences" })
+	@ApiResponse({
+		status: 200,
+		description: "Meeting notification preferences updated successfully",
+	})
+	@ApiResponse({
+		status: 400,
+		description: "Validation error",
+	})
+	@ApiResponse({
+		status: 401,
+		description: "Unauthorized",
+	})
+	async updateMeetingNotification(
+		@CurrentUser() user: any,
+		@Param('groupId') groupId: string,
+		@Param('day') day: string,
+		@Param('meetingIndex') meetingIndex: string,
+		@Body() body: { notificationsEnabled: boolean }
+	) {
+		try {
+			await this.groupsService.updateMeetingNotification(
+				user.uid,
+				groupId,
+				day,
+				parseInt(meetingIndex),
+				body.notificationsEnabled
+			);
+			return {
+				message: "Preferências de notificação da reunião atualizadas com sucesso",
+			};
+		} catch (error) {
+			console.error("Update meeting notification error:", error);
+			throw new Error("Não foi possível atualizar as preferências de notificação da reunião");
+		}
+	}
+
+	@Get("group/:groupId/meeting-notifications")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
+	@ApiOperation({ summary: "Get meeting-specific notification preferences" })
+	@ApiResponse({
+		status: 200,
+		description: "Meeting notification preferences retrieved successfully",
+		schema: {
+			type: "object",
+			additionalProperties: {
+				type: "object",
+				additionalProperties: { type: "boolean" }
+			}
+		}
+	})
+	@ApiResponse({
+		status: 401,
+		description: "Unauthorized",
+	})
+	async getMeetingNotifications(
+		@CurrentUser() user: any,
+		@Param('groupId') groupId: string
+	) {
+		try {
+			const notifications = await this.groupsService.getMeetingNotifications(user.uid, groupId);
+			return notifications;
+		} catch (error) {
+			console.error("Get meeting notifications error:", error);
+			throw new Error("Não foi possível carregar as preferências de notificação das reuniões");
 		}
 	}
 

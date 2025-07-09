@@ -15,26 +15,27 @@ export function DailyReminders() {
     const { onboardingData } = useOnboarding();
     const { groups, loading } = useUserGroups();
     const router = useRouter();
-    
-    // TODO: Replace with actual check from user's daily check-in data
+
     const isDailyCheckCompleted = false;
-    
-    // Check if user has enabled daily reminders
     const hasDailyReminders = onboardingData?.dailyReminders ?? false;
 
-    // Find today's meetings from all groups
     const todayKey = getTodayWeekdayKey();
-    const todayMeetings = groups.flatMap(group =>
-        (group.meetingSchedules || [])
-            .filter(sch => sch.day === todayKey && sch.enabled)
-            .map(sch => ({
-                groupId: group.groupId,
-                groupName: group.groupName,
-                time: sch.time,
+    const todayMeetings = groups.flatMap(group => {
+        if (!group.schedule || !group.schedule[todayKey]) {
+            return [];
+        }
+
+        return group.schedule[todayKey]
+            .filter(meeting => meeting.notificationsEnabled !== false)
+            .map(meeting => ({
+                groupId: group.id,
+                groupName: group.name,
+                time: `${meeting.start} - ${meeting.end}`,
                 type: group.type,
-                isOnline: group.type === 'online',
-            }))
-    );
+                isOnline: group.type === 'virtual',
+                notificationsEnabled: meeting.notificationsEnabled !== false,
+            }));
+    });
 
     return (
         <View style={styles.container}>
@@ -50,12 +51,20 @@ export function DailyReminders() {
                         todayMeetings.map((meeting, idx) => (
                             <Pressable
                                 key={meeting.groupId + meeting.time + idx}
-                                style={styles.reminderButton}
+                                style={({ pressed }) => [
+                                    styles.reminderButton,
+                                    pressed && {
+                                        opacity: 0.8,
+                                        shadowOpacity: 0.1,
+                                        elevation: 3,
+                                    }
+                                ]}
                                 onPress={() => router.push(`/group-detail/${meeting.groupId}`)}
+                                android_ripple={{ color: Colors.containers.blueLight, borderless: false }}
                             >
                                 <View style={styles.iconContainer}>
                                     <FontAwesome6
-                                        name={meeting.type === 'online' ? 'video' : meeting.type === 'in-person' ? 'users' : 'monitor'}
+                                        name={meeting.type === 'virtual' ? 'video' : meeting.type === 'in-person' ? 'users' : 'monitor'}
                                         size={24}
                                         color={Colors.containers.blue}
                                     />
@@ -86,13 +95,19 @@ export function DailyReminders() {
                     <View style={styles.section}>
                         <Text style={styles.sectionTitle}>Agenda</Text>
                         <Pressable
-                            style={[
+                            style={({ pressed }) => [
                                 styles.reminderButton,
-                                isDailyCheckCompleted ? styles.checkInButtonCompleted : styles.checkInButton
+                                isDailyCheckCompleted ? styles.checkInButtonCompleted : styles.checkInButton,
+                                pressed && {
+                                    opacity: 0.8,
+                                    shadowOpacity: 0.1,
+                                    elevation: 3,
+                                }
                             ]}
                             onPress={() => {
                                 // TODO: Navigate to daily check-in form or view
                             }}
+                            android_ripple={{ color: 'rgba(255, 255, 255, 0.2)', borderless: false }}
                         >
                             <View style={[
                                 styles.iconContainer,
@@ -101,7 +116,7 @@ export function DailyReminders() {
                                 <FontAwesome6
                                     name={isDailyCheckCompleted ? "check" : "note-sticky"}
                                     size={24}
-                                    color={isDailyCheckCompleted ? Colors.containers.blue : Colors.light.background} 
+                                    color={isDailyCheckCompleted ? Colors.containers.blue : Colors.light.background}
                                 />
                             </View>
                             <View style={styles.textContainer}>
