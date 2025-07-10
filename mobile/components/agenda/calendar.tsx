@@ -116,7 +116,7 @@ export default function CalendarList({ selectedDate, onDateSelect, trackedDays =
 
     const handleDateSelect = (date: Date) => {
         onDateSelect(date);
-        router.push({ pathname: '/(tabs)/tracking', params: { date: date.toISOString() } });
+        router.push({ pathname: '/tracking/[date]', params: { date: date.toISOString() } });
     };
 
     const renderMonth = (monthData: MonthData) => {
