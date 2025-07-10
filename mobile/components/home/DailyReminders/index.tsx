@@ -145,7 +145,7 @@ export function DailyReminders() {
                                 }
                             ]}
                             onPress={() => {
-                                router.push({ pathname: '/(tabs)/tracking', params: { date: new Date().toISOString() } });
+                                router.push({ pathname: '/tracking/[date]', params: { date: new Date().toISOString() } });
                             }}
                             android_ripple={{ color: 'rgba(255, 255, 255, 0.2)', borderless: false }}
                         >

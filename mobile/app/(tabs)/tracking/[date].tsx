@@ -183,12 +183,10 @@ export default function TrackingScreen() {
                 <View style={styles.headerRow}>
                     <TouchableOpacity 
                         style={styles.backIconWrapper} 
-                        onPress={() => router.push('/agenda')}
+                        onPress={() => router.push('/(tabs)/agenda')}
                         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                     >
-                        				<TouchableOpacity style={styles.backButton}>
-					<ChevronLeft size={24} color={Colors.icon.gray} />
-				</TouchableOpacity>
+                        <ChevronLeft size={24} color={Colors.icon.gray} />
                     </TouchableOpacity>
                     <Text style={styles.dateText} numberOfLines={2}>
                         {selectedDate.toDateString() === new Date().toDateString()
@@ -343,15 +341,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     dayButtonToday: {
-        backgroundColor: '#254A8E',
+        backgroundColor: '#3B82F6',
     },
     dayButtonSelected: {
         borderWidth: 3,
-        borderColor: '#595858',
-        backgroundColor: '#E3E3E3',
+        borderColor: '#1F2937',
+        backgroundColor: '#F3F4F6',
     },
     dayButtonWithData: {
-        backgroundColor: '#9CA3AF',
+        backgroundColor: '#10B981',
     },
     dayNumber: {
         fontSize: 16,
@@ -365,7 +363,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     dayNumberSelected: {
-        color: '#595858',
+        color: '#1F2937',
         fontWeight: 'bold',
         backgroundColor: 'transparent',
     },

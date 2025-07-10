@@ -111,9 +111,7 @@ export default function TrackingScreen() {
             <View style={styles.header}>
                 <View style={styles.headerRow}>
                     <TouchableOpacity style={styles.backIconWrapper} onPress={() => router.back()}>
-                        				<TouchableOpacity style={styles.backButton}>
-					<ChevronLeft size={24} color={Colors.icon.gray} />
-				</TouchableOpacity>
+                        <ChevronLeft size={24} color={Colors.icon.gray} />
                     </TouchableOpacity>
                     <Text style={styles.dateText} numberOfLines={2}>
                         {selectedDate.toDateString() === new Date().toDateString()
