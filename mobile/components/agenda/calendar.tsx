@@ -37,18 +37,15 @@ export default function CalendarList({ selectedDate, onDateSelect, trackedDays =
 
     useEffect(() => {
         if (months.length > 0) {
-            // Find the index of the current month
             const currentDate = new Date();
             const currentMonthIndex = months.findIndex(
                 month => month.year === currentDate.getFullYear() && month.month === currentDate.getMonth()
             );
 
             if (currentMonthIndex !== -1) {
-                // Calculate the approximate position to scroll to
                 const monthHeight = 400; // Approximate height of a month component
                 const scrollPosition = currentMonthIndex * monthHeight;
 
-                // Scroll to the current month
                 setTimeout(() => {
                     scrollViewRef.current?.scrollTo({
                         y: scrollPosition,
@@ -116,8 +113,10 @@ export default function CalendarList({ selectedDate, onDateSelect, trackedDays =
 
     const handleDateSelect = (date: Date) => {
         onDateSelect(date);
-        router.push({ pathname: '/(tabs)/tracking', params: { date: date.toISOString() } });
+        const encodedDate = encodeURIComponent(date.toISOString());
+        router.push(`/tracking/${encodedDate}`);
     };
+
 
     const renderMonth = (monthData: MonthData) => {
         return (
