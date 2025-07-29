@@ -5,9 +5,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/mobile/constants/Colors';
-import { getAuth } from 'firebase/auth';
-import { getDatabase, ref, get, child } from 'firebase/database';
 import { useFocusEffect } from '@react-navigation/native';
+import { apiService } from '@/mobile/services/api';
+import { storageService } from '@/mobile/services/storage';
 
 export default function AgendaScreen() {
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -15,27 +15,29 @@ export default function AgendaScreen() {
 
     const loadTrackedDays = async () => {
         try {
-            const user = getAuth().currentUser;
-            if (!user) return;
-            
-            const dbRef = ref(getDatabase());
-            const snapshot = await get(child(dbRef, `users/${user.uid}/dailyTracking`));
-            
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                console.log('Raw data from Firebase:', data);
-                const days = Object.keys(data).map(dateStr => {
-                    const [year, month, day] = dateStr.split('-').map(Number);
-                    const date = new Date(year, month - 1, day);
-                    const dateString = date.toDateString();
-                    console.log(`Converting ${dateStr} -> ${dateString}`);
-                    return dateString;
-                });
-                console.log('Final tracked days:', days);
-                setTrackedDays(days);
+            const token = await storageService.getAuthToken();
+            if (!token) return;
+
+            try {
+                const currentDate = new Date();
+                const year = currentDate.getFullYear();
+                const month = currentDate.getMonth();
+
+                const trackingData = await apiService.getDailyTracking(token, currentDate.toISOString().slice(0, 10));
+
+                if (trackingData) {
+                    const days = [currentDate.toDateString()];
+                    setTrackedDays(days);
+                } else {
+                    setTrackedDays([]);
+                }
+            } catch (error) {
+                console.error('Error loading tracked days from API:', error);
+                setTrackedDays([]);
             }
         } catch (error) {
             console.error('Error loading tracked days:', error);
+            setTrackedDays([]);
         }
     };
 

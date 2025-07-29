@@ -21,15 +21,21 @@ export class AuthGuard implements CanActivate {
 		const token = authHeader.substring(7); // Remove "Bearer " prefix
 
 		try {
+			// Try to verify as an ID token first (for web clients)
 			try {
 				const decodedToken = await this.firebaseService.verifyIdToken(token);
 				request.user = decodedToken;
 				return true;
 			} catch (idTokenError) {
-				const idToken = await this.firebaseService.exchangeCustomTokenForIdToken(token);
-				const decodedToken = await this.firebaseService.verifyIdToken(idToken);
-				request.user = decodedToken;
-				return true;
+				// If ID token verification fails, try as a custom token (for mobile clients)
+				try {
+					const idToken = await this.firebaseService.exchangeCustomTokenForIdToken(token);
+					const decodedToken = await this.firebaseService.verifyIdToken(idToken);
+					request.user = decodedToken;
+					return true;
+				} catch (customTokenError) {
+					throw new UnauthorizedException("Invalid token");
+				}
 			}
 		} catch (error) {
 			throw new UnauthorizedException("Invalid token");

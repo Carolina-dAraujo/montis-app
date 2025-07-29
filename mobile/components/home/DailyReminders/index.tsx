@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable } from 'react-native';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import { Colors } from '@/mobile/constants/Colors';
-import { styles } from './styles';
-import { useOnboarding } from '@/mobile/contexts/OnboardingContext';
-import { useUserGroups } from '@/mobile/hooks/useUserGroups';
-import { useRouter } from 'expo-router';
-import { getAuth } from 'firebase/auth';
-import { getDatabase, ref, get, child } from 'firebase/database';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { router } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
+import { FontAwesome6 } from '@expo/vector-icons';
+import { Colors } from '@/mobile/constants/Colors';
+import { useUserGroups } from '@/mobile/hooks/useUserGroups';
 import { MeetingSkeleton } from './MeetingSkeleton';
+import { apiService } from '@/mobile/services/api';
+import { storageService } from '@/mobile/services/storage';
+import { styles } from './styles';
 
 function getTodayWeekdayKey(): string {
     const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -17,24 +16,25 @@ function getTodayWeekdayKey(): string {
 }
 
 export function DailyReminders() {
-    const { onboardingData } = useOnboarding();
     const { groups, loading } = useUserGroups();
-    const router = useRouter();
     const [isDailyCheckCompleted, setIsDailyCheckCompleted] = useState(false);
     const [checkingCompletion, setCheckingCompletion] = useState(true);
 
-    const hasDailyReminders = onboardingData?.dailyReminders ?? false;
-
     const checkTodayCompletion = async () => {
         try {
-            const user = getAuth().currentUser;
-            if (!user) return;
+            const token = await storageService.getAuthToken();
+            if (!token) return;
 
             const today = new Date().toISOString().slice(0, 10);
-            const dbRef = ref(getDatabase());
-            const snapshot = await get(child(dbRef, `users/${user.uid}/dailyTracking/${today}`));
 
-            setIsDailyCheckCompleted(snapshot.exists());
+            try {
+                const trackingData = await apiService.getDailyTracking(token, today);
+                const isCompleted = Object.keys(trackingData).length > 0;
+
+                setIsDailyCheckCompleted(isCompleted);
+            } catch (error) {
+                setIsDailyCheckCompleted(false);
+            }
         } catch (error) {
             console.error('Error checking daily completion:', error);
         } finally {
@@ -131,51 +131,49 @@ export function DailyReminders() {
                     )}
                 </View>
 
-                {hasDailyReminders && (
-                    <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Agenda</Text>
-                        <Pressable
-                            style={({ pressed }) => [
-                                styles.reminderButton,
-                                isDailyCheckCompleted ? styles.checkInButtonCompleted : styles.checkInButton,
-                                pressed && {
-                                    opacity: 0.8,
-                                    shadowOpacity: 0.1,
-                                    elevation: 3,
-                                }
-                            ]}
-                            onPress={() => {
-                                router.push({ pathname: '/tracking/[date]', params: { date: new Date().toISOString() } });
-                            }}
-                            android_ripple={{ color: 'rgba(255, 255, 255, 0.2)', borderless: false }}
-                        >
-                            <View style={[
-                                styles.iconContainer,
-                                isDailyCheckCompleted ? styles.checkInIconCompleted : styles.checkInIcon
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Agenda</Text>
+                    <Pressable
+                        style={({ pressed }) => [
+                            styles.reminderButton,
+                            isDailyCheckCompleted ? styles.checkInButtonCompleted : styles.checkInButton,
+                            pressed && {
+                                opacity: 0.8,
+                                shadowOpacity: 0.1,
+                                elevation: 3,
+                            }
+                        ]}
+                        onPress={() => {
+                            router.push({ pathname: '/tracking/[date]', params: { date: new Date().toISOString() } });
+                        }}
+                        android_ripple={{ color: 'rgba(255, 255, 255, 0.2)', borderless: false }}
+                    >
+                        <View style={[
+                            styles.iconContainer,
+                            isDailyCheckCompleted ? styles.checkInIconCompleted : styles.checkInIcon
+                        ]}>
+                            <FontAwesome6
+                                name={isDailyCheckCompleted ? "check" : "note-sticky"}
+                                size={24}
+                                color={isDailyCheckCompleted ? Colors.containers.blue : Colors.light.background}
+                            />
+                        </View>
+                        <View style={styles.textContainer}>
+                            <Text style={[
+                                styles.reminderTitle,
+                                isDailyCheckCompleted ? styles.checkInTitleCompleted : styles.checkInTitle
                             ]}>
-                                <FontAwesome6
-                                    name={isDailyCheckCompleted ? "check" : "note-sticky"}
-                                    size={24}
-                                    color={isDailyCheckCompleted ? Colors.containers.blue : Colors.light.background}
-                                />
-                            </View>
-                            <View style={styles.textContainer}>
-                                <Text style={[
-                                    styles.reminderTitle,
-                                    isDailyCheckCompleted ? styles.checkInTitleCompleted : styles.checkInTitle
-                                ]}>
-                                    Registro diário
-                                </Text>
-                                <Text style={[
-                                    styles.reminderTime,
-                                    isDailyCheckCompleted ? styles.checkInTimeCompleted : styles.checkInTime
-                                ]}>
-                                    {isDailyCheckCompleted ? 'Completo' : 'Pendente'}
-                                </Text>
-                            </View>
-                        </Pressable>
-                    </View>
-                )}
+                                Registro diário
+                            </Text>
+                            <Text style={[
+                                styles.reminderTime,
+                                isDailyCheckCompleted ? styles.checkInTimeCompleted : styles.checkInTime
+                            ]}>
+                                {isDailyCheckCompleted ? 'Completo' : 'Pendente'}
+                            </Text>
+                        </View>
+                    </Pressable>
+                </View>
             </View>
         </View>
     );

@@ -269,6 +269,31 @@ class ApiService {
         }
     }
 
+    async getDailyTracking(token: string, date: string): Promise<any> {
+        try {
+            const result = await this.makeAuthenticatedRequest<any>(`/auth/tracking/${date}`, token, {
+                method: 'GET',
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - getDailyTracking error:', error);
+            throw error;
+        }
+    }
+
+    async saveDailyTracking(token: string, date: string, data: any): Promise<any> {
+        try {
+            const result = await this.makeAuthenticatedRequest<any>(`/auth/tracking/${date}`, token, {
+                method: 'PUT',
+                body: JSON.stringify(data),
+            });
+            return result;
+        } catch (error) {
+            console.error('API Service - saveDailyTracking error:', error);
+            throw error;
+        }
+    }
+
     async updatePermissions(token: string, permissions: PermissionsRequest): Promise<{ message: string }> {
         try {
             const result = await this.makeAuthenticatedRequest<{ message: string }>('/user/permissions', token, {

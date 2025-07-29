@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { apiService } from '../services/api';
-import { storageService, StoredUserData } from '../services/storage';
 import { router } from 'expo-router';
-import { getAuth, signInWithCustomToken } from 'firebase/auth';
+import { apiService } from '@/mobile/services/api';
+import { storageService, StoredUserData } from '@/mobile/services/storage';
 
 interface AuthContextType {
     user: StoredUserData | null;
@@ -43,12 +42,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             try {
                 const profile = await apiService.getProfile(token);
 
-                // Token is valid, authenticate with Firebase Auth
-                const auth = getAuth();
-                console.log('Attempting Firebase Auth with stored token...');
-                await signInWithCustomToken(auth, token);
-                console.log('Firebase Auth successful with stored token!');
-
                 // Token is valid, user is authenticated
                 setUser(profile);
                 setIsAuthenticated(true);
@@ -57,7 +50,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 await storageService.setUserData(profile);
                 await storageService.setAuthToken(token);
 
-                // Check onboarding status and redirect if needed
                 try {
                     const onboardingStatus = await apiService.checkOnboardingStatus(token);
                     
@@ -92,13 +84,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
             const response = await apiService.login({ email, password });
 
-            // Authenticate with Firebase using the custom token
-            const auth = getAuth();
-            console.log('Attempting Firebase Auth with custom token...');
-            await signInWithCustomToken(auth, response.token);
-            console.log('Firebase Auth successful!');
-
-            // Store auth data
+            // Store auth data without Firebase Auth
             await storageService.setAuthToken(response.token);
             await storageService.setUserData(response.user);
 
@@ -135,12 +121,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
             const response = await apiService.register({ email, password });
 
-            // Authenticate with Firebase using the custom token
-            const auth = getAuth();
-            console.log('Attempting Firebase Auth with custom token (register)...');
-            await signInWithCustomToken(auth, response.token);
-            console.log('Firebase Auth successful (register)!');
-
+            // Store auth data without Firebase Auth
             await storageService.setAuthToken(response.token);
             await storageService.setUserData(response.user);
 
@@ -159,10 +140,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const logout = async () => {
         try {
-            // Sign out from Firebase Auth
-            const auth = getAuth();
-            await auth.signOut();
-
+            // Clear auth data without Firebase Auth
             await storageService.clearAuthData();
 
             setUser(null);

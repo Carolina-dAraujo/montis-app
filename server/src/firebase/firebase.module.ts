@@ -29,7 +29,7 @@ export class FirebaseModule {
 					return firebaseAdmin;
 				}
 
-				const credentialsPath = configService.get<string>("FIREBASE_CREDENTIALS_PATH");
+				const credentialsPath = configService.get<string>("FIREBASE_CREDENTIALS_PATH") || "./firebase-credentials.json";
 				const serviceAccountJson = configService.get<string>("FIREBASE_SERVICE_ACCOUNT");
 
 				let serviceAccount: firebaseAdmin.ServiceAccount;

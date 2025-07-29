@@ -1,43 +1,27 @@
-import TrackingSection from '@/mobile/components/daily-tracking/tracking-section';
-import { ChevronLeft } from "lucide-react-native";
-import { router, useLocalSearchParams } from "expo-router";
-import { Dumbbell, Frown, Heart, Laptop, Meh, Smile, Wine, WineOff } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
+import { useLocalSearchParams, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/mobile/constants/Colors';
-import { saveDailyTracking, getDailyTracking, checkFirebaseAuthStatus } from '@/mobile/services/firebase';
-import { getAuth } from 'firebase/auth';
-import { getDatabase, ref, get, child } from 'firebase/database';
+import { apiService } from '@/mobile/services/api';
+import { storageService } from '@/mobile/services/storage';
+import TrackingSection from '@/mobile/components/daily-tracking/tracking-section';
+import { ChevronLeft } from "lucide-react-native";
+import { Dumbbell, Frown, Heart, Laptop, Meh, Smile, Wine, WineOff } from 'lucide-react-native';
 
-// Função para buscar todos os registros de um mês
 async function getMonthTrackingData(year: number, month: number) {
     try {
-        const user = getAuth().currentUser;
-        if (!user) return {};
-        
-        const startDate = new Date(year, month, 1);
-        const endDate = new Date(year, month + 1, 0);
-        
-        const startDateStr = startDate.toISOString().slice(0, 10);
-        const endDateStr = endDate.toISOString().slice(0, 10);
-        
-        // Buscar dados do mês inteiro
-        const dbRef = ref(getDatabase());
-        const snapshot = await get(child(dbRef, `users/${user.uid}/dailyTracking`));
-        
-        if (!snapshot.exists()) return {};
-        
-        const monthData: { [key: string]: any } = {};
-        const data = snapshot.val();
-        
-        Object.keys(data).forEach(date => {
-            if (date >= startDateStr && date <= endDateStr) {
-                monthData[date] = data[date];
-            }
-        });
-        
-        return monthData;
+        const token = await storageService.getAuthToken();
+        if (!token) return {};
+
+        const currentDate = new Date(year, month, 1);
+        const trackingData = await apiService.getDailyTracking(token, currentDate.toISOString().slice(0, 10));
+
+        if (trackingData) {
+            return { [currentDate.toISOString().slice(0, 10)]: trackingData };
+        }
+
+        return {};
     } catch (error) {
         console.error('Error loading month data:', error);
         return {};
@@ -91,22 +75,30 @@ export default function TrackingScreen() {
     // Carrega o registro do dia ao abrir ou trocar de data
     useEffect(() => {
         setLoading(true);
-        // Verificar status do Firebase Auth
-        checkFirebaseAuthStatus();
-        
-        getDailyTracking(formatDate(selectedDate)).then(data => {
-            if (data) {
-                setTracking(data);
-                setHasExistingData(true);
-            } else {
-                setTracking({ alcohol: null, exercise: null, mood: null, sleep: null });
+
+        const loadTrackingData = async () => {
+            try {
+                const token = await storageService.getAuthToken();
+                if (!token) return;
+
+                const data = await apiService.getDailyTracking(token, formatDate(selectedDate));
+                if (data) {
+                    setTracking(data);
+                    setHasExistingData(true);
+                } else {
+                    setTracking({ alcohol: null, exercise: null, mood: null, sleep: null });
+                    setHasExistingData(false);
+                }
+            } catch (error) {
+                console.error('Error loading tracking data:', error);
+                Alert.alert('Erro', 'Não foi possível carregar os dados. Verifique se você está logado.');
                 setHasExistingData(false);
+            } finally {
+                setLoading(false);
             }
-        }).catch(error => {
-            console.error('Error loading tracking data:', error);
-            Alert.alert('Erro', 'Não foi possível carregar os dados. Verifique se você está logado.');
-            setHasExistingData(false);
-        }).finally(() => setLoading(false));
+        };
+
+        loadTrackingData();
     }, [selectedDate]);
 
     // Carrega os dados do mês para marcar os dias no calendário
@@ -121,7 +113,7 @@ export default function TrackingScreen() {
                 console.error('Error loading month data:', error);
             }
         };
-        
+
         loadMonthData();
     }, [selectedDate.getFullYear(), selectedDate.getMonth()]);
 
@@ -156,23 +148,24 @@ export default function TrackingScreen() {
     const buttonText = loading ? 'Salvando...' : (hasExistingData ? 'Atualizar' : 'Salvar');
 
     const handleSave = async () => {
-        if (!buttonEnabled) return;
         setLoading(true);
         try {
-            await saveDailyTracking(formatDate(selectedDate), tracking);
+            const token = await storageService.getAuthToken();
+            if (!token) {
+                Alert.alert('Erro', 'Token de autenticação não encontrado');
+                return;
+            }
+
+            await apiService.saveDailyTracking(token, formatDate(selectedDate), tracking);
             setHasExistingData(true);
-            
-            // Atualizar os dados do mês para refletir a mudança no calendário
-            const year = selectedDate.getFullYear();
-            const month = selectedDate.getMonth();
-            const data = await getMonthTrackingData(year, month);
-            setMonthData(data);
-            
-            // Opcional: Alert.alert('Sucesso', 'Registro salvo!');
-        } catch (err: any) {
-            Alert.alert('Erro ao salvar', err?.message || String(err));
+
+            Alert.alert('Sucesso', 'Dados salvos com sucesso!');
+        } catch (error) {
+            console.error('Error saving tracking data:', error);
+            Alert.alert('Erro', 'Não foi possível salvar os dados. Tente novamente.');
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     const weekDays = getCurrentWeekDays(selectedDate);
@@ -181,8 +174,8 @@ export default function TrackingScreen() {
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.headerRow}>
-                    <TouchableOpacity 
-                        style={styles.backIconWrapper} 
+                    <TouchableOpacity
+                        style={styles.backIconWrapper}
                         onPress={() => router.push('/(tabs)/agenda')}
                         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                     >
@@ -208,12 +201,12 @@ export default function TrackingScreen() {
                         const hasData = monthData[dateStr];
                         const isToday = d.fullDate.toDateString() === new Date().toDateString();
                         const isSelected = d.fullDate.toDateString() === selectedDate.toDateString();
-                        
+
                         return (
                             <TouchableOpacity
                                 key={d.label + d.date}
                                 style={[
-                                    styles.dayButton, 
+                                    styles.dayButton,
                                     isToday && styles.dayButtonToday,
                                     isSelected && styles.dayButtonSelected,
                                     hasData && !isToday && styles.dayButtonWithData
@@ -221,7 +214,7 @@ export default function TrackingScreen() {
                                 onPress={() => setSelectedDate(new Date(d.fullDate))}
                             >
                                 <Text style={[
-                                    styles.dayNumber, 
+                                    styles.dayNumber,
                                     isToday && styles.dayNumberToday,
                                     isSelected && styles.dayNumberSelected
                                 ]}>{d.date}</Text>
@@ -287,16 +280,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         minHeight: 48,
     },
-    	backIconWrapper: {
-		width: 40,
-		height: 40,
-		alignItems: 'center',
-		justifyContent: 'center',
-		zIndex: 1,
-	},
-	backButton: {
-		padding: 8,
-	},
+    backIconWrapper: {
+        width: 40,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1,
+    },
+    backButton: {
+        padding: 8,
+    },
     dateText: {
         flex: 1,
         textAlign: 'center',

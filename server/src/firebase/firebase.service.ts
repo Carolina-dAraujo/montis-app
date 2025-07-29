@@ -19,17 +19,52 @@ export class FirebaseService implements OnModuleInit {
 	constructor(private configService: ConfigService) { }
 
 	onModuleInit() {
-		if (!firebaseAdmin.apps.length) {
+		// Firebase is already initialized by the module
+		// Get the default app or the first available app
+		if (firebaseAdmin.apps.length > 0) {
+			this.firebaseApp = firebaseAdmin.app();
+		} else {
+			console.error('No Firebase apps found! Firebase may not be initialized properly.');
+			const serviceAccount = require('../../firebase-credentials.json');
 			this.firebaseApp = firebaseAdmin.initializeApp({
-				credential: firebaseAdmin.credential.applicationDefault(),
+				credential: firebaseAdmin.credential.cert(serviceAccount),
 				databaseURL: "https://montis-892b4-default-rtdb.firebaseio.com"
 			});
-		} else {
-			this.firebaseApp = firebaseAdmin.app();
 		}
 
 		this.database = this.firebaseApp.database();
 		this.storage = new Storage();
+
+		// Test Firebase connection
+		this.testFirebaseConnection();
+	}
+
+	async testFirebaseConnection() {
+		try {
+			console.log('Testing Firebase Admin SDK connection...');
+			const auth = this.firebaseApp.auth();
+			console.log('Firebase Admin SDK initialized successfully');
+
+			// Get project ID from credentials if not available in app options
+			let projectId = this.firebaseApp.options.projectId;
+			if (!projectId) {
+				// Try to get it from the credential
+				const credential = this.firebaseApp.options.credential as any;
+				if (credential && credential.projectId) {
+					projectId = credential.projectId;
+				}
+			}
+
+			console.log('Firebase project ID:', projectId);
+
+			// Test if we can access the auth service
+			console.log('Firebase Auth service available:', !!auth);
+
+			// List all initialized apps
+			console.log('Number of Firebase apps:', firebaseAdmin.apps.length);
+		} catch (error) {
+			console.error('Firebase connection test failed:', error);
+		}
 	}
 
 	async createUser(props: CreateRequest): Promise<UserRecord> {
@@ -52,7 +87,7 @@ export class FirebaseService implements OnModuleInit {
 		}
 	}
 
-	async signInWithEmailAndPassword(email: string, password: string): Promise<UserRecord> {
+	async signInWithEmailAndPassword(email: string, password: string): Promise<{ userRecord: UserRecord; idToken: string }> {
 		try {
 			const apiKey = this.configService.get<string>("FIREBASE_API_KEY");
 			if (!apiKey) {
@@ -64,12 +99,34 @@ export class FirebaseService implements OnModuleInit {
 				{
 					email,
 					password,
-					returnSecureToken: false
+					returnSecureToken: true
 				}
 			);
 
-			if (response.data && response.data.localId) {
-				return await this.getUserByEmail(email);
+			if (response.data && response.data.localId && response.data.idToken) {
+				// Create a user record from the REST API response instead of using Admin SDK
+				const userRecord: UserRecord = {
+					uid: response.data.localId,
+					email: response.data.email || email,
+					emailVerified: response.data.emailVerified || false,
+					displayName: response.data.displayName || email.split('@')[0],
+					photoURL: response.data.photoUrl || null,
+					phoneNumber: response.data.phoneNumber || null,
+					disabled: false,
+					metadata: {
+						creationTime: response.data.createdAt || new Date().toISOString(),
+						lastSignInTime: response.data.lastLoginAt || new Date().toISOString(),
+						lastRefreshTime: new Date().toISOString(),
+						toJSON: () => ({})
+					},
+					providerData: [],
+					toJSON: () => ({})
+				};
+
+				return {
+					userRecord,
+					idToken: response.data.idToken
+				};
 			} else {
 				throw new UnauthorizedException("Invalid credentials");
 			}
@@ -155,7 +212,12 @@ export class FirebaseService implements OnModuleInit {
 	}
 
 	async getUser(uid: string): Promise<UserRecord> {
-		return await this.firebaseApp.auth().getUser(uid);
+		try {
+			return await this.firebaseApp.auth().getUser(uid);
+		} catch (error) {
+			console.error('Firebase getUser error:', error);
+			throw new UnauthorizedException("User not found");
+		}
 	}
 
 	async exchangeCustomTokenForIdToken(customToken: string): Promise<string> {
@@ -181,6 +243,32 @@ export class FirebaseService implements OnModuleInit {
 		} catch (error) {
 			console.error('Token exchange error:', error.response?.data || error.message);
 			throw new UnauthorizedException("Invalid custom token");
+		}
+	}
+
+	async refreshIdToken(refreshToken: string): Promise<string> {
+		try {
+			const apiKey = this.configService.get<string>("FIREBASE_API_KEY");
+			if (!apiKey) {
+				throw new Error('FIREBASE_API_KEY not configured');
+			}
+
+			const response = await axios.post(
+				`https://securetoken.googleapis.com/v1/token?key=${apiKey}`,
+				{
+					grant_type: 'refresh_token',
+					refresh_token: refreshToken
+				}
+			);
+
+			if (response.data && response.data.id_token) {
+				return response.data.id_token;
+			} else {
+				throw new UnauthorizedException("Failed to refresh token");
+			}
+		} catch (error) {
+			console.error('Token refresh error:', error.response?.data || error.message);
+			throw new UnauthorizedException("Invalid refresh token");
 		}
 	}
 

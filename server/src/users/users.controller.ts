@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpCode, HttpStatus, Get, UseGuards, Put, Delete, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Controller, Post, Body, HttpCode, HttpStatus, Get, UseGuards, Put, Delete, Req, UploadedFile, UseInterceptors, Res, Param } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { UsersService } from "./users.service";
 import { RegisterUserDto, LoginUserDto, AuthResponseDto } from "./dtos/auth";
@@ -81,6 +81,22 @@ export class UsersController {
 	})
 	async login(@Body() loginUserDto: LoginUserDto): Promise<AuthResponseDto> {
 		return await this.usersService.loginUser(loginUserDto);
+	}
+
+	@Post("refresh")
+	@HttpCode(HttpStatus.OK)
+	@ApiOperation({ summary: "Refresh authentication token" })
+	@ApiResponse({
+		status: 200,
+		description: "Token refreshed successfully",
+		type: AuthResponseDto,
+	})
+	@ApiResponse({
+		status: 401,
+		description: "Invalid refresh token",
+	})
+	async refreshToken(@Body() body: { refreshToken: string }): Promise<AuthResponseDto> {
+		return await this.usersService.refreshToken(body.refreshToken);
 	}
 
 	@Post("onboarding")
@@ -313,6 +329,50 @@ export class UsersController {
 			};
 		} catch (error) {
 			throw new BadRequestException("Erro no teste de onboarding");
+		}
+	}
+
+	@Get("tracking/:date")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
+	@ApiOperation({ summary: "Get daily tracking data for a specific date" })
+	@ApiResponse({
+		status: 200,
+		description: "Tracking data retrieved successfully",
+	})
+	@ApiResponse({
+		status: 401,
+		description: "Unauthorized",
+	})
+	async getDailyTracking(@CurrentUser() user: any, @Param('date') date: string): Promise<any> {
+		try {
+			const trackingData = await this.usersService.getDailyTracking(user.uid, date);
+			return trackingData || {}; // Return empty object instead of null
+		} catch (error) {
+			console.error("Get daily tracking error:", error);
+			return {}; // Return empty object instead of null
+		}
+	}
+
+	@Put("tracking/:date")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
+	@ApiOperation({ summary: "Save daily tracking data for a specific date" })
+	@ApiResponse({
+		status: 200,
+		description: "Tracking data saved successfully",
+	})
+	@ApiResponse({
+		status: 401,
+		description: "Unauthorized",
+	})
+	async saveDailyTracking(@CurrentUser() user: any, @Param('date') date: string, @Body() trackingData: any): Promise<any> {
+		try {
+			const result = await this.usersService.saveDailyTracking(user.uid, date, trackingData);
+			return result;
+		} catch (error) {
+			console.error("Save daily tracking error:", error);
+			throw error;
 		}
 	}
 }

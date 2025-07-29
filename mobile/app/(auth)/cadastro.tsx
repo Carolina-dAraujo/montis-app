@@ -8,10 +8,12 @@ import { GoogleLoginButton } from '@/mobile/components/ui/GoogleLoginButton';
 import { Colors } from '@/mobile/constants/Colors';
 import { validatePassword } from '../../components/inputs/PasswordInput';
 import { useAuth } from '../../contexts/AuthContext';
+import { useOnboarding } from '../../contexts/OnboardingContext';
 
 const RegisterScreen: React.FC = () => {
     const router = useRouter();
     const { register, isLoading } = useAuth();
+    const { clearOnboardingData } = useOnboarding();
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
@@ -21,7 +23,8 @@ const RegisterScreen: React.FC = () => {
         setErrors({});
 
         try {
-            // Client-side validation
+            clearOnboardingData();
+
             const passwordValidation = validatePassword(senha);
             if (!passwordValidation.isValid) {
                 setErrors({ password: passwordValidation.error });

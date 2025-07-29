@@ -38,6 +38,7 @@ export const styles = StyleSheet.create({
 	content: {
 		flex: 1,
 		paddingHorizontal: 20,
+		paddingBottom: 120, // Extra padding to account for footer
 	},
 	form: {
 		gap: 24,
@@ -50,6 +51,11 @@ export const styles = StyleSheet.create({
 	footer: {
 		paddingHorizontal: 20,
 		paddingBottom: 20,
+		backgroundColor: Colors.light.background,
+		position: 'absolute',
+		bottom: 0,
+		left: 0,
+		right: 0,
 	},
     inputContainer: {
         gap: 8,
