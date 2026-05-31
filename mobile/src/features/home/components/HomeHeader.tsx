@@ -3,12 +3,12 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Colors } from '@/shared/theme/colors';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useAuth } from '@/features/auth/context/AuthProvider';
+import { useResolvedDisplayName } from '@/features/auth/hooks/useResolvedDisplayName';
 
 export function HomeHeader() {
     const router = useRouter();
     const insets = useSafeAreaInsets();
-    const { user } = useAuth();
+    const userName = useResolvedDisplayName();
     const currentDate = new Date();
     
     const day = currentDate.getDate();
@@ -27,7 +27,7 @@ export function HomeHeader() {
         <View style={[styles.container, { paddingTop: insets.top + 16 }]}>
             <View style={styles.textContainer}>
                 <Text style={styles.mainText}>
-                    {greeting()}, <Text style={styles.userName}>{user?.displayName || 'Usuário'}</Text>
+                    {greeting()}, <Text style={styles.userName}>{userName}</Text>
                 </Text>
                 <Text style={styles.date}>{formattedDate}</Text>
             </View>

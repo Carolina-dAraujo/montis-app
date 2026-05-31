@@ -6,7 +6,7 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import { Colors } from '@/shared/theme/colors';
 import { useUserGroups } from '@/features/groups/hooks/useUserGroups';
 import { MeetingSkeleton } from './MeetingSkeleton';
-import { apiService } from '@/services/api';
+import { trackingApi } from '@/features/tracking/api';
 import { storageService } from '@/shared/lib/storage';
 import { styles } from './styles';
 
@@ -28,7 +28,7 @@ export function DailyReminders() {
             const today = new Date().toISOString().slice(0, 10);
 
             try {
-                const trackingData = await apiService.getDailyTracking(token, today) as Record<string, unknown> | null;
+                const trackingData = await trackingApi.getDailyTracking(token, today);
                 const isCompleted = trackingData ? Object.keys(trackingData).length > 0 : false;
 
                 setIsDailyCheckCompleted(isCompleted);

@@ -3,12 +3,19 @@ import { Injectable, ConflictException, UnauthorizedException, BadRequestExcepti
 import { RegisterUserDto, LoginUserDto, AuthResponseDto } from "./dtos/auth";
 import { UpdateProfileDto, UpdatePasswordDto } from "./dtos/profile";
 import { OnboardingDto } from "./dtos/onboarding";
+import { DailyTrackingDto } from "./dtos/tracking/daily-tracking.dto";
 import { validatePassword } from "../common/password.validator";
 import * as firebaseAdmin from "firebase-admin";
 
 @Injectable()
 export class UsersService {
   constructor(private readonly firebaseService: FirebaseService) { }
+
+  /** Returns a Firebase ID token (not a custom token) for client Authorization headers. */
+  private async issueIdToken(uid: string): Promise<string> {
+    const customToken = await this.firebaseService.createCustomToken(uid);
+    return this.firebaseService.exchangeCustomTokenForIdToken(customToken);
+  }
 
   async registerUser(registerUserDto: RegisterUserDto): Promise<AuthResponseDto> {
     try {
@@ -20,13 +27,12 @@ export class UsersService {
       const userRecord = await this.firebaseService.createUser({
         email: registerUserDto.email,
         password: registerUserDto.password,
-        displayName: registerUserDto.email.split("@")[0],
       });
 
-      const customToken = await this.firebaseService.createCustomToken(userRecord.uid);
+      const idToken = await this.issueIdToken(userRecord.uid);
 
       return {
-        token: customToken,
+        token: idToken,
         user: {
           uid: userRecord.uid,
           email: userRecord.email || "",
@@ -65,10 +71,10 @@ export class UsersService {
         loginUserDto.password
       );
 
-      const customToken = await this.firebaseService.createCustomToken(userRecord.uid);
+      const idToken = await this.issueIdToken(userRecord.uid);
 
       return {
-        token: customToken,
+        token: idToken,
         user: {
           uid: userRecord.uid,
           email: userRecord.email || "",
@@ -100,6 +106,7 @@ export class UsersService {
 
       // Store onboarding preferences in Firebase Realtime Database
       const onboardingPreferences: any = {
+        displayName: onboardingData.displayName,
         birthDate: onboardingData.birthDate,
         sobrietyGoal: onboardingData.sobrietyGoal,
         lastDrinkDate: onboardingData.lastDrinkDate,
@@ -203,16 +210,23 @@ export class UsersService {
       const userRecord = await this.firebaseService.getUser(uid);
 
       let phoneNumber = userRecord.phoneNumber;
+      let displayName = userRecord.displayName;
+
+      const preferences = await this.firebaseService.getPreferences(uid);
+      const onboarding = await this.firebaseService.getOnboardingData(uid);
+
+      if (onboarding?.displayName) {
+        displayName = onboarding.displayName;
+      } else if (preferences?.displayName) {
+        displayName = preferences.displayName;
+      }
+
       // Se phoneNumber estiver vazio, tenta buscar em preferences e onboarding
       if (!phoneNumber) {
-        const preferences = await this.firebaseService.getPreferences(uid);
         if (preferences && preferences.phone) {
           phoneNumber = preferences.phone;
-        } else {
-          const onboarding = await this.firebaseService.getOnboardingData(uid);
-          if (onboarding && onboarding.phone) {
-            phoneNumber = onboarding.phone;
-          }
+        } else if (onboarding && onboarding.phone) {
+          phoneNumber = onboarding.phone;
         }
       }
 
@@ -228,7 +242,7 @@ export class UsersService {
       return {
         uid: userRecord.uid,
         email: userRecord.email,
-        displayName: userRecord.displayName,
+        displayName,
         phoneNumber,
         profileImage,
       };
@@ -376,5 +390,35 @@ export class UsersService {
     // Salva a URL em users/{uid}/profileImage no Realtime Database
     await this.firebaseService.updateUserData(uid, { profileImage: imageUrl }, '');
     return imageUrl;
+  }
+
+  private assertValidTrackingDate(date: string): void {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      throw new BadRequestException('Data inválida. Use o formato YYYY-MM-DD.');
+    }
+  }
+
+  async getDailyTracking(uid: string, date: string): Promise<DailyTrackingDto | null> {
+    this.assertValidTrackingDate(date);
+    const data = await this.firebaseService.getDailyTracking(uid, date);
+    return data as DailyTrackingDto | null;
+  }
+
+  async saveDailyTracking(uid: string, date: string, body: DailyTrackingDto): Promise<DailyTrackingDto> {
+    this.assertValidTrackingDate(date);
+    await this.firebaseService.saveDailyTracking(uid, date, { ...body });
+    return body;
+  }
+
+  async getDailyTrackingMonth(
+    uid: string,
+    year: number,
+    month: number,
+  ): Promise<Record<string, DailyTrackingDto>> {
+    if (month < 1 || month > 12) {
+      throw new BadRequestException('Mês inválido. Use um valor entre 1 e 12.');
+    }
+    const data = await this.firebaseService.getDailyTrackingForMonth(uid, year, month);
+    return data as unknown as Record<string, DailyTrackingDto>;
   }
 }

@@ -1,1 +1,1 @@
-export { default } from '@/features/crisis/views/crise';
+export { default } from '@/features/crisis/views/crisisTab';

@@ -6,7 +6,7 @@ import { PhoneInput, validatePhone } from '@/shared/components/inputs/PhoneInput
 import { EmailInput, validateEmail } from '@/shared/components/inputs/EmailInput';
 import { PasswordInput, validatePassword } from '@/shared/components/inputs/PasswordInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { apiService } from '@/services/api';
+import { authApi } from '@/features/auth/api';
 import { storageService } from '@/shared/lib/storage';
 import { useAuth } from '@/features/auth/context/AuthProvider';
 import { ConfigHeader } from '@/features/settings/components/ConfigHeader';
@@ -86,18 +86,22 @@ export default function EditField() {
 
 			if (field === 'password') {
 				// For password, we need current password from confirmPassword field
-				await apiService.updatePassword(token, {
+				await authApi.updatePassword(token, {
 					currentPassword: confirmPassword,
 					newPassword: inputValue,
 				});
 			} else {
 				// For other fields, update profile
-				const updateData: any = {};
+				const updateData: {
+					displayName?: string;
+					phone?: string;
+					email?: string;
+				} = {};
 				if (field === 'name') updateData.displayName = inputValue;
 				if (field === 'phone') updateData.phone = inputValue;
 				if (field === 'email') updateData.email = inputValue;
 
-				const updatedProfile = await apiService.updateProfile(token, updateData);
+				const updatedProfile = await authApi.updateProfile(token, updateData);
 				await updateUser(updatedProfile);
 			}
 
@@ -115,13 +119,11 @@ export default function EditField() {
 					}
 				}]
 			);
-		} catch (error: any) {
+		} catch (error: unknown) {
 			console.error('Error saving field:', error);
-			Alert.alert(
-				'Erro',
-				error.message || 'Não foi possível salvar as alterações',
-				[{ text: 'OK' }]
-			);
+			const message =
+				error instanceof Error ? error.message : 'Não foi possível salvar as alterações';
+			Alert.alert('Erro', message, [{ text: 'OK' }]);
 		} finally {
 			setIsLoading(false);
 		}

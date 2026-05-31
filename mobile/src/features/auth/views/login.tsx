@@ -3,7 +3,6 @@ import { useRouter } from 'expo-router';
 import { PrimaryButton } from '@/shared/components/ui/PrimaryButton';
 import { AuthScreenWrapper } from '@/shared/components/AuthScreenWrapper';
 import { AuthInput } from '@/shared/components/ui/AuthInput';
-import { GoogleLoginButton } from '@/shared/components/ui/GoogleLoginButton';
 import { useLoginForm } from '@/features/auth/hooks/useLoginForm';
 import { styles } from '@/features/auth/styles/authForm.styles';
 
@@ -67,13 +66,6 @@ export default function Login() {
 				</Text>
 			</TouchableOpacity>
 
-			<View style={styles.separatorContainer}>
-				<View style={styles.line} />
-				<Text style={styles.separatorText}>ou</Text>
-				<View style={styles.line} />
-			</View>
-
-			<GoogleLoginButton title="ENTRAR COM O GOOGLE" onPress={() => console.log('Google login')} />
 		</AuthScreenWrapper>
 	);
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
 import { styles } from './styles';
 import { MILESTONES } from './constants';
@@ -6,26 +6,38 @@ import { getMilestone } from './utils';
 import { MilestoneItem } from './MilestoneItem';
 import { Connector } from './Connector';
 import { useOnboarding } from '@/features/onboarding/context/OnboardingProvider';
+import { useSobrietyData } from '@/features/sobriety/hooks/useSobrietyData';
+
+function computeDaysFromDate(sobrietyDate: Date): number {
+	const today = new Date();
+	return Math.ceil(
+		Math.abs(today.getTime() - sobrietyDate.getTime()) / (1000 * 60 * 60 * 24),
+	);
+}
 
 export function SobrietyCounter() {
 	const { onboardingData } = useOnboarding();
-	const today = new Date();
-	
-	// Determine which date to use for calculation
-	let sobrietyDate: Date;
-	
-	if (onboardingData?.sobrietyStartDate) {
-		// User is currently sober and has a start date
-		sobrietyDate = new Date(onboardingData.sobrietyStartDate);
-	} else if (onboardingData?.lastDrinkDate) {
-		// User is not currently sober, use last drink date
-		sobrietyDate = new Date(onboardingData.lastDrinkDate);
-	} else {
-		// Fallback to today if no dates available
-		sobrietyDate = today;
-	}
-	
-	const days = Math.ceil(Math.abs(today.getTime() - sobrietyDate.getTime()) / (1000 * 60 * 60 * 24));
+	const { data: sobrietyData } = useSobrietyData();
+
+	const days = useMemo(() => {
+		if (sobrietyData?.totalDays != null && sobrietyData.totalDays >= 0) {
+			return sobrietyData.totalDays;
+		}
+
+		const today = new Date();
+		let sobrietyDate: Date;
+
+		if (onboardingData?.sobrietyStartDate) {
+			sobrietyDate = new Date(onboardingData.sobrietyStartDate);
+		} else if (onboardingData?.lastDrinkDate) {
+			sobrietyDate = new Date(onboardingData.lastDrinkDate);
+		} else {
+			sobrietyDate = today;
+		}
+
+		return computeDaysFromDate(sobrietyDate);
+	}, [sobrietyData, onboardingData]);
+
 	const currentMilestone = getMilestone(days);
 
 	return (

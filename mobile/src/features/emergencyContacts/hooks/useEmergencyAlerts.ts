@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { emergencyAlertService, EmergencyAlert, SendEmergencyAlertDto } from '@/features/emergencyContacts/alertsApi';
+import { emergencyAlertsApi, EmergencyAlert, SendEmergencyAlertDto } from '@/features/emergencyContacts/alertsApi';
 import { storageService } from '@/shared/lib/storage';
 import { Alert } from 'react-native';
 
@@ -15,7 +15,7 @@ export const useEmergencyAlerts = () => {
 			setLoading(true);
 			setError(null);
 			
-			const alert = await emergencyAlertService.sendEmergencyAlert(token, alertData);
+			const alert = await emergencyAlertsApi.sendEmergencyAlert(token, alertData);
 			
 			Alert.alert(
 				'Alerta enviado',
@@ -40,7 +40,7 @@ export const useEmergencyAlerts = () => {
 			if (!token) throw new Error('Token não disponível');
 
 			setError(null);
-			return await emergencyAlertService.getAlertHistory(token);
+			return await emergencyAlertsApi.getAlertHistory(token);
 		} catch (err) {
 			console.error('Error fetching alert history:', err);
 			const errorMessage = err instanceof Error ? err.message : 'Erro ao carregar histórico';

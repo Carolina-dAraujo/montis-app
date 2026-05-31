@@ -3,38 +3,22 @@ import { View, Text, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/shared/theme/colors';
-import { apiService } from '@/services/api';
-import { storageService } from '@/shared/lib/storage';
+import type { DailyTrackingRecord } from '@/features/tracking/api';
 import TrackingSection from '@/features/tracking/components/tracking-section';
 import { ChevronLeft } from "lucide-react-native";
 import { Dumbbell, Frown, Heart, Laptop, Meh, Smile, Wine, WineOff } from 'lucide-react-native';
 import { styles } from '@/features/tracking/styles/dailyTracking.styles';
-
-async function getMonthTrackingData(year: number, month: number) {
-    try {
-        const token = await storageService.getAuthToken();
-        if (!token) return {};
-
-        const currentDate = new Date(year, month, 1);
-        const trackingData = await apiService.getDailyTracking(token, currentDate.toISOString().slice(0, 10));
-
-        if (trackingData) {
-            return { [currentDate.toISOString().slice(0, 10)]: trackingData };
-        }
-
-        return {};
-    } catch (error) {
-        console.error('Error loading month data:', error);
-        return {};
-    }
-}
+import {
+	useDailyTracking,
+	formatTrackingDate,
+} from '@/features/tracking/hooks/useDailyTracking';
 
 const WEEKDAYS = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 
 function getCurrentWeekDays(selectedDate: Date) {
     const week = [];
     const start = new Date(selectedDate);
-    start.setDate(selectedDate.getDate() - selectedDate.getDay()); // Sunday
+    start.setDate(selectedDate.getDate() - selectedDate.getDay());
     for (let i = 0; i < 7; i++) {
         const d = new Date(start);
         d.setDate(start.getDate() + i);
@@ -47,18 +31,17 @@ function getCurrentWeekDays(selectedDate: Date) {
     return week;
 }
 
-interface DailyTracking {
-    alcohol: 'none' | 'light' | 'moderate' | 'heavy' | null;
-    exercise: 'none' | 'light' | 'moderate' | 'intense' | null;
-    mood: 'great' | 'good' | 'neutral' | 'bad' | 'terrible' | null;
+type DailyTracking = {
+    alcohol: DailyTrackingRecord['alcohol'] | null;
+    exercise: DailyTrackingRecord['exercise'] | null;
+    mood: DailyTrackingRecord['mood'] | null;
     sleep: number | null;
-}
+};
 
 export default function DailyTracking() {
     const { date } = useLocalSearchParams();
     const initialDate = date ? new Date(date as string) : new Date();
     const [selectedDate, setSelectedDate] = useState(initialDate);
-    const [loading, setLoading] = useState(false);
     const [tracking, setTracking] = useState<DailyTracking>({
         alcohol: null,
         exercise: null,
@@ -66,57 +49,24 @@ export default function DailyTracking() {
         sleep: null,
     });
     const [hasExistingData, setHasExistingData] = useState(false);
-    const [monthData, setMonthData] = useState<{ [key: string]: any }>({});
 
-    // Função para formatar a data como YYYY-MM-DD
-    function formatDate(date: Date) {
-        return date.toISOString().slice(0, 10);
-    }
+    const { dailyData, monthData, isLoading, isSaving, saveTracking } =
+        useDailyTracking(selectedDate);
 
-    // Carrega o registro do dia ao abrir ou trocar de data
     useEffect(() => {
-        setLoading(true);
-
-        const loadTrackingData = async () => {
-            try {
-                const token = await storageService.getAuthToken();
-                if (!token) return;
-
-                const data = await apiService.getDailyTracking(token, formatDate(selectedDate)) as DailyTracking | null;
-                if (data) {
-                    setTracking(data);
-                    setHasExistingData(true);
-                } else {
-                    setTracking({ alcohol: null, exercise: null, mood: null, sleep: null });
-                    setHasExistingData(false);
-                }
-            } catch (error) {
-                console.error('Error loading tracking data:', error);
-                Alert.alert('Erro', 'Não foi possível carregar os dados. Verifique se você está logado.');
-                setHasExistingData(false);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadTrackingData();
-    }, [selectedDate]);
-
-    // Carrega os dados do mês para marcar os dias no calendário
-    useEffect(() => {
-        const loadMonthData = async () => {
-            try {
-                const year = selectedDate.getFullYear();
-                const month = selectedDate.getMonth();
-                const data = await getMonthTrackingData(year, month);
-                setMonthData(data);
-            } catch (error) {
-                console.error('Error loading month data:', error);
-            }
-        };
-
-        loadMonthData();
-    }, [selectedDate.getFullYear(), selectedDate.getMonth()]);
+        if (dailyData) {
+            setTracking({
+                alcohol: dailyData.alcohol,
+                exercise: dailyData.exercise,
+                mood: dailyData.mood,
+                sleep: dailyData.sleep ?? null,
+            });
+            setHasExistingData(true);
+        } else if (!isLoading) {
+            setTracking({ alcohol: null, exercise: null, mood: null, sleep: null });
+            setHasExistingData(false);
+        }
+    }, [dailyData, isLoading]);
 
     const alcoholOptions = [
         { id: 'none', label: 'Abstinência', icon: WineOff, color: '#77aae3' },
@@ -140,32 +90,31 @@ export default function DailyTracking() {
         { id: 'terrible', label: 'Estressado', icon: Frown, color: '#254A8E' },
     ];
 
-    const updateTracking = (field: keyof DailyTracking, value: any) => {
+    const updateTracking = <K extends keyof DailyTracking>(
+        field: K,
+        value: DailyTracking[K],
+    ) => {
         setTracking(prev => ({ ...prev, [field]: value }));
     };
 
     const allSelected = tracking.alcohol && tracking.exercise && tracking.mood;
-    const buttonEnabled = allSelected && !loading;
-    const buttonText = loading ? 'Salvando...' : (hasExistingData ? 'Atualizar' : 'Salvar');
+    const saving = isLoading || isSaving;
+    const buttonEnabled = allSelected && !saving;
+    const buttonText = saving ? 'Salvando...' : (hasExistingData ? 'Atualizar' : 'Salvar');
 
     const handleSave = async () => {
-        setLoading(true);
         try {
-            const token = await storageService.getAuthToken();
-            if (!token) {
-                Alert.alert('Erro', 'Token de autenticação não encontrado');
-                return;
-            }
-
-            await apiService.saveDailyTracking(token, formatDate(selectedDate), tracking);
+            await saveTracking({
+                alcohol: tracking.alcohol!,
+                exercise: tracking.exercise!,
+                mood: tracking.mood!,
+                sleep: tracking.sleep,
+            });
             setHasExistingData(true);
-
             Alert.alert('Sucesso', 'Dados salvos com sucesso!');
         } catch (error) {
             console.error('Error saving tracking data:', error);
             Alert.alert('Erro', 'Não foi possível salvar os dados. Tente novamente.');
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -198,7 +147,7 @@ export default function DailyTracking() {
                 </View>
                 <View style={styles.datesRow}>
                     {weekDays.map((d, idx) => {
-                        const dateStr = formatDate(d.fullDate);
+                        const dateStr = formatTrackingDate(d.fullDate);
                         const hasData = monthData[dateStr];
                         const isToday = d.fullDate.toDateString() === new Date().toDateString();
                         const isSelected = d.fullDate.toDateString() === selectedDate.toDateString();
@@ -233,19 +182,19 @@ export default function DailyTracking() {
                         title="Consumo de álcool"
                         options={alcoholOptions}
                         selectedValue={tracking.alcohol as string}
-                        onValueChange={(value) => updateTracking('alcohol', value)}
+                        onValueChange={(value) => updateTracking('alcohol', value as DailyTracking['alcohol'])}
                     />
                     <TrackingSection
                         title="Exercício físico"
                         options={exerciseOptions}
                         selectedValue={tracking.exercise as string}
-                        onValueChange={(value) => updateTracking('exercise', value)}
+                        onValueChange={(value) => updateTracking('exercise', value as DailyTracking['exercise'])}
                     />
                     <TrackingSection
                         title="Sentimentos"
                         options={moodOptions}
                         selectedValue={tracking.mood as string}
-                        onValueChange={(value) => updateTracking('mood', value)}
+                        onValueChange={(value) => updateTracking('mood', value as DailyTracking['mood'])}
                     />
                     <View style={styles.saveButtonContainerScroll}>
                         <TouchableOpacity

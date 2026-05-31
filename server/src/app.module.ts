@@ -8,6 +8,8 @@ import { SobrietyModule } from "./sobriety/sobriety.module";
 import { PreferencesModule } from "./preferences/preferences.module";
 import { GroupsModule } from "./groups/groups.module";
 import { EmergencyContactsModule } from "./emergency-contacts/emergency-contacts.module";
+import { EmergencyAlertsModule } from "./emergency-alerts/emergency-alerts.module";
+import { CrisisLogModule } from "./crisis-log/crisis-log.module";
 import { ConfigModule } from "@nestjs/config";
 import { MulterModule } from '@nestjs/platform-express';
 
@@ -23,6 +25,8 @@ import { MulterModule } from '@nestjs/platform-express';
     PreferencesModule,
     GroupsModule,
     EmergencyContactsModule,
+    EmergencyAlertsModule,
+    CrisisLogModule,
     MulterModule.register({}),
   ],
   controllers: [AppController],

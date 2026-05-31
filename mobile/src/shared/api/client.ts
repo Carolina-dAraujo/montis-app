@@ -29,6 +29,30 @@ export function mapNetworkError(error: unknown, baseUrl: string): Error {
 	return error instanceof Error ? error : new Error(message);
 }
 
+/** True when fetch never reached the server (offline, wrong API_URL, backend down). */
+export function isConnectivityError(error: unknown): boolean {
+	const message = error instanceof Error ? error.message : String(error);
+	return (
+		message.includes('Network request failed')
+		|| message.includes('Network request timed out')
+		|| message.includes('Failed to fetch')
+		|| message.includes('Não foi possível conectar ao servidor')
+		|| message.includes('Servidor não respondeu a tempo')
+		|| (error instanceof Error && error.name === 'AbortError')
+	);
+}
+
+/** True when the server rejected the token (expired, invalid, etc.). */
+export function isAuthError(error: unknown): boolean {
+	const message = error instanceof Error ? error.message : String(error);
+	return (
+		message.includes('HTTP 401')
+		|| message.toLowerCase().includes('unauthorized')
+		|| message.toLowerCase().includes('invalid token')
+		|| message.toLowerCase().includes('no token provided')
+	);
+}
+
 export async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
 	const baseUrl = getApiUrl();
 	const url = `${baseUrl}${endpoint}`;
@@ -49,8 +73,13 @@ export async function request<T>(endpoint: string, options: RequestInit = {}): P
 
 		return await response.json();
 	} catch (error) {
-		console.error('[API] Request failed:', url, error);
-		throw mapNetworkError(error, baseUrl);
+		const mapped = mapNetworkError(error, baseUrl);
+		if (isConnectivityError(mapped)) {
+			console.warn('[API] Connectivity error:', url, mapped.message);
+		} else {
+			console.error('[API] Request failed:', url, mapped.message);
+		}
+		throw mapped;
 	} finally {
 		clearTimeout(timeoutId);
 	}

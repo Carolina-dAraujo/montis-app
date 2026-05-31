@@ -3,7 +3,6 @@ import { useRouter } from 'expo-router';
 import { PrimaryButton } from '@/shared/components/ui/PrimaryButton';
 import { AuthScreenWrapper } from '@/shared/components/AuthScreenWrapper';
 import { AuthInput } from '@/shared/components/ui/AuthInput';
-import { GoogleLoginButton } from '@/shared/components/ui/GoogleLoginButton';
 import { useRegisterForm } from '@/features/auth/hooks/useRegisterForm';
 import { styles } from '@/features/auth/styles/authForm.styles';
 
@@ -56,16 +55,6 @@ export default function Register() {
 				</Text>
 			</TouchableOpacity>
 
-			<View style={styles.separatorContainer}>
-				<View style={styles.line} />
-				<Text style={styles.separatorText}>ou</Text>
-				<View style={styles.line} />
-			</View>
-
-			<GoogleLoginButton
-				title="CADASTRAR COM O GOOGLE"
-				onPress={() => console.log('Google signup')}
-			/>
 		</AuthScreenWrapper>
 	);
 }

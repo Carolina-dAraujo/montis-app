@@ -52,9 +52,7 @@ export const getApiUrl = (): string => {
         return url;
     }
 
-    const url = API_CONFIG.production;
-    console.log('🔍 Using Production URL:', url);
-    return url;
+    return API_CONFIG.production;
 };
 
 // Instructions for setting up API connection:

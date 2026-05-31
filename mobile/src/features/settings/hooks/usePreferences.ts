@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
-import { apiService } from '@/services/api';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { settingsApi } from '@/features/settings/api';
+import { settingsQueryKeys } from '@/features/settings/queryKeys';
 import { storageService } from '@/shared/lib/storage';
 import { NotificationFrequency } from '@/features/onboarding/types';
 
@@ -9,7 +10,6 @@ export interface Preferences {
 	notificationFrequency: NotificationFrequency;
 	crisisSupport: boolean;
 	shareProgress: boolean;
-	// Campos extras do onboarding
 	displayName?: string;
 	phone?: string;
 	birthDate?: string;
@@ -29,105 +29,107 @@ export interface Permissions {
 	location: boolean;
 }
 
+const defaultPreferences: Preferences = {
+	dailyReminders: false,
+	notificationFrequency: NotificationFrequency.DAILY,
+	crisisSupport: false,
+	shareProgress: false,
+};
+
+const defaultPermissions: Permissions = {
+	notifications: false,
+	location: false,
+};
+
+async function getTokenOrThrow(): Promise<string> {
+	const token = await storageService.getAuthToken();
+	if (!token) throw new Error('Token não disponível');
+	return token;
+}
+
 export const usePreferences = () => {
-	const [preferences, setPreferences] = useState<Preferences>({
-		dailyReminders: false,
-		notificationFrequency: NotificationFrequency.DAILY,
-		crisisSupport: false,
-		shareProgress: false,
+	const queryClient = useQueryClient();
+
+	const preferencesQuery = useQuery({
+		queryKey: settingsQueryKeys.preferences(),
+		queryFn: async () => {
+			const token = await getTokenOrThrow();
+			const data = await settingsApi.getPreferences(token);
+			return {
+				...defaultPreferences,
+				...data,
+				notificationFrequency: data.notificationFrequency as NotificationFrequency,
+			};
+		},
 	});
-	
-	const [permissions, setPermissions] = useState<Permissions>({
-		notifications: false,
-		location: false,
+
+	const permissionsQuery = useQuery({
+		queryKey: settingsQueryKeys.permissions(),
+		queryFn: async () => {
+			const token = await getTokenOrThrow();
+			const data = await settingsApi.getPermissions(token);
+			return {
+				notifications: data.notifications.granted,
+				location: data.location.granted,
+			};
+		},
 	});
-	
-	const [isLoading, setIsLoading] = useState(false);
 
-	useEffect(() => {
-		loadPreferences();
-		loadPermissions();
-	}, []);
+	const updatePreferencesMutation = useMutation({
+		mutationFn: async (newPreferences: Partial<Preferences>) => {
+			const token = await getTokenOrThrow();
+			const current = preferencesQuery.data ?? defaultPreferences;
+			const updated = { ...current, ...newPreferences };
+			await settingsApi.updatePreferences(token, updated);
+			return updated;
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: settingsQueryKeys.preferences() });
+		},
+	});
 
-	const loadPreferences = async () => {
-		try {
-			const token = await storageService.getAuthToken();
-			if (token) {
-				const data = await apiService.getPreferences(token);
-				setPreferences({
-					...preferences,
-					...data,
-					notificationFrequency: data.notificationFrequency as NotificationFrequency,
-				});
-			}
-		} catch (error) {
-			console.error('Error loading preferences:', error);
-		}
-	};
-
-	const loadPermissions = async () => {
-		try {
-			const token = await storageService.getAuthToken();
-			if (token) {
-				const data = await apiService.getPermissions(token);
-				setPermissions({
-					notifications: data.notifications.granted,
-					location: data.location.granted,
-				});
-			}
-		} catch (error) {
-			console.error('Error loading permissions:', error);
-		}
-	};
+	const updatePermissionsMutation = useMutation({
+		mutationFn: async (newPermissions: Partial<Permissions>) => {
+			const token = await getTokenOrThrow();
+			const current = permissionsQuery.data ?? defaultPermissions;
+			const updated = { ...current, ...newPermissions };
+			await settingsApi.updatePermissions(token, {
+				notifications: updated.notifications,
+				location: updated.location,
+			});
+			return updated;
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: settingsQueryKeys.permissions() });
+		},
+	});
 
 	const updatePreferences = async (newPreferences: Partial<Preferences>) => {
 		try {
-			setIsLoading(true);
-			const updatedPreferences = { ...preferences, ...newPreferences };
-			const token = await storageService.getAuthToken();
-			
-			if (token) {
-				// Enviar todos os campos para o backend
-				await apiService.updatePreferences(token, updatedPreferences);
-				setPreferences(updatedPreferences);
-			}
-		} catch (error) {
-			console.error('Error updating preferences:', error);
+			await updatePreferencesMutation.mutateAsync(newPreferences);
+		} catch {
 			Alert.alert('Erro', 'Não foi possível salvar as preferências. Tente novamente.');
-		} finally {
-			setIsLoading(false);
 		}
 	};
 
 	const updatePermissions = async (newPermissions: Partial<Permissions>) => {
 		try {
-			setIsLoading(true);
-			const updatedPermissions = { ...permissions, ...newPermissions };
-			const token = await storageService.getAuthToken();
-			
-			if (token) {
-				await apiService.updatePermissions(token, {
-					notifications: updatedPermissions.notifications,
-					location: updatedPermissions.location,
-				});
-				
-				setPermissions(updatedPermissions);
-			}
-		} catch (error) {
-			console.error('Error updating permissions:', error);
+			await updatePermissionsMutation.mutateAsync(newPermissions);
+		} catch {
 			Alert.alert('Erro', 'Não foi possível salvar as permissões. Tente novamente.');
-		} finally {
-			setIsLoading(false);
 		}
 	};
 
+	const isLoading =
+		updatePreferencesMutation.isPending || updatePermissionsMutation.isPending;
+
 	return {
-		preferences,
-		permissions,
+		preferences: preferencesQuery.data ?? defaultPreferences,
+		permissions: permissionsQuery.data ?? defaultPermissions,
 		isLoading,
 		updatePreferences,
 		updatePermissions,
-		loadPreferences,
-		loadPermissions,
+		loadPreferences: () => preferencesQuery.refetch(),
+		loadPermissions: () => permissionsQuery.refetch(),
 	};
-}; 
+};

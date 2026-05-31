@@ -6,10 +6,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { ChevronLeft } from 'lucide-react-native';
 import FontAwesome from '@expo/vector-icons/build/FontAwesome';
-import { apiService } from '@/services/api';
+import { groupsApi } from '@/features/groups/api';
 import { storageService } from '@/shared/lib/storage';
 import { styles } from '@/features/services/styles/aa.styles';
-// import { apiService } from '@/services/api';
 
 interface AAGroup {
 	id: string;
@@ -47,7 +46,8 @@ export default function AaMeetings() {
 	const router = useRouter();
 	const insets = useSafeAreaInsets();
 	const [searchQuery, setSearchQuery] = useState('');
-	const [selectedFilter, setSelectedFilter] = useState<'all' | 'online' | 'in-person' | 'feminine'>('all');
+	type GroupFilter = 'all' | 'online' | 'in-person' | 'feminine';
+	const [selectedFilter, setSelectedFilter] = useState<GroupFilter>('all');
 	const [aaGroups, setAAGroups] = useState<{ groups: AAGroup[] }>({ groups: [] });
 	const [loadingAAGroups, setLoadingAAGroups] = useState(true);
 	const [userGroups, setUserGroups] = useState<string[]>([]);
@@ -85,8 +85,8 @@ export default function AaMeetings() {
 		try {
 			const token = await storageService.getAuthToken();
 			if (!token) return;
-			const groups = await apiService.getUserGroups(token);
-			setUserGroups(groups.map((g: any) => String(g.groupId ?? g.id ?? g.group_id)));
+			const groups = await groupsApi.getUserGroups(token);
+			setUserGroups(groups.map((g) => String(g.id)));
 		} catch (error) {
 			console.error('Error loading user groups:', error);
 			setUserGroups([]);
@@ -99,15 +99,16 @@ export default function AaMeetings() {
 			const token = await storageService.getAuthToken();
 			if (!token) throw new Error('Usuário não autenticado');
 
-			await apiService.addAAGroup(token, { groupId, notificationsEnabled: false });
+			await groupsApi.addAAGroup(token, { groupId, notificationsEnabled: false });
 
 			setUserGroups(prev => [...prev, groupId]);
 			Alert.alert('Sucesso', 'Adicionado aos seus grupos');
 
 			router.push('/(tabs)/groups');
-		} catch (error: any) {
+		} catch (error: unknown) {
 			console.error('Erro ao adicionar grupo:', error);
-			Alert.alert('Erro', error.message || 'Não foi possível adicionar o grupo');
+			const message = error instanceof Error ? error.message : 'Não foi possível adicionar o grupo';
+			Alert.alert('Erro', message);
 		} finally {
 			setAddingGroupId(null);
 		}
@@ -171,7 +172,7 @@ export default function AaMeetings() {
 								styles.filterButton,
 								selectedFilter === filter.key && styles.filterButtonActive,
 							]}
-							onPress={() => setSelectedFilter(filter.key as any)}
+							onPress={() => setSelectedFilter(filter.key as GroupFilter)}
 						>
 							<Text
 								style={[

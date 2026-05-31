@@ -13,7 +13,7 @@ Montis é um aplicativo de suporte à sobriedade voltado para adultos em recuper
 - Login com autenticação segura
 - Gerenciamento de perfis de usuário
 - Validação de senhas com regras específicas
-- Tokens JWT para sessões seguras
+- Tokens Firebase **ID token** no login/registro (header `Authorization: Bearer`)
 
 ### **Sobriety Tracking** 📊
 - Rastreamento de dias de sobriedade
@@ -52,19 +52,38 @@ A API aplica as mesmas regras de validação do frontend:
 
 ### **Authentication** (`/auth`)
 - `GET /auth/password-rules` - Obter regras de validação de senha
-- `POST /auth/register` - Registrar novo usuário
-- `POST /auth/login` - Fazer login
+- `POST /auth/register` - Registrar novo usuário (retorna Firebase ID token)
+- `POST /auth/login` - Fazer login (retorna Firebase ID token)
 - `GET /auth/profile` - Obter perfil do usuário (protegido)
+- `PUT /auth/onboarding` - Completar onboarding (protegido)
+- `GET /auth/onboarding` / `GET /auth/onboarding/status` - Dados e status de onboarding
+- `GET /auth/tracking/:date` - Registro diário de tracking (protegido)
+- `PUT /auth/tracking/:date` - Salvar registro diário (protegido)
+- `GET /auth/tracking/month?year=&month=` - Tracking do mês (`month` 1–12, protegido)
+- `GET /auth/debug/user-data` - Debug (apenas `NODE_ENV !== production`)
 
-### **Sobriety Tracking** (`/sobriety`)
-- `GET /sobriety/data` - Obter dados de sobriedade do usuário
-- `GET /sobriety/milestones` - Obter marcos disponíveis
-- `POST /sobriety/start` - Iniciar rastreamento de sobriedade
+### **Sobriety** (`/sobriety`)
+- `GET /sobriety/data` - Dados de sobriedade do RTDB (protegido)
+- `GET /sobriety/milestones` - Marcos disponíveis
+- `POST /sobriety/start` - Iniciar rastreamento
 - `POST /sobriety/relapse` - Registrar recaída
 
-### **Próximos Módulos** 🚧
+### **Crisis log** (`/crisis-log`)
+- `GET /crisis-log` - Listar entradas (protegido)
+- `POST /crisis-log` - Criar entrada (protegido)
+- `PUT /crisis-log/:id` - Atualizar entrada (protegido)
+- `DELETE /crisis-log/:id` - Remover entrada (protegido)
+
+### **Emergency** 
+- `GET/POST/PATCH/DELETE /emergency-contacts` - Contatos de emergência (protegido)
+- `POST /emergency-alerts` - Enviar alerta (protegido; SMS ainda planejado)
+
+### **Groups & preferences**
+- `/groups/*` - Grupos AA do usuário e notificações
+- `/preferences/*` - Preferências e permissões
+
+### **Planejado** 🚧
 - **Goals** (`/goals`) - Metas e conquistas
-- **Support** (`/support`) - Recursos de suporte
 - **Notifications** (`/notifications`) - Notificações push
 
 ## 🛠️ **Tecnologias**

@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/shared/theme/colors';
 import { useOnboarding } from '@/features/onboarding/context/OnboardingProvider';
 import { useAuth } from '@/features/auth/context/AuthProvider';
-import { apiService, OnboardingRequest } from '@/services/api';
+import { onboardingApi, type OnboardingRequest } from '@/features/onboarding/api';
 import { storageService } from '@/shared/lib/storage';
 import { primaryButtonStyles } from '@/features/onboarding/styles/primaryButton.styles';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -33,7 +33,7 @@ export default function Completion() {
 				onboardingPayload.sobrietyStartDate = onboardingData.sobrietyStartDate;
 			}
 
-			await apiService.completeOnboarding(token, onboardingPayload as OnboardingRequest);
+			await onboardingApi.completeOnboarding(token, onboardingPayload as OnboardingRequest);
 
 			// Salvar preferências também no endpoint /user/preferences
 			await updatePreferences({
@@ -48,7 +48,7 @@ export default function Completion() {
 
 			// Update user profile with display name
 			if (onboardingData.displayName) {
-				updateUser({ displayName: onboardingData.displayName });
+				await updateUser({ displayName: onboardingData.displayName });
 			}
 
 			markOnboardingComplete();

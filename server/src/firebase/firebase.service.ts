@@ -252,6 +252,35 @@ export class FirebaseService implements OnModuleInit {
 		return await this.getUserData(uid, 'preferences');
 	}
 
+	async getDailyTracking(uid: string, date: string): Promise<Record<string, unknown> | null> {
+		const data = await this.getUserData(uid, `dailyTracking/${date}`);
+		return data ?? null;
+	}
+
+	async saveDailyTracking(uid: string, date: string, data: Record<string, unknown>): Promise<void> {
+		await this.saveUserData(uid, data, `dailyTracking/${date}`);
+	}
+
+	async getDailyTrackingForMonth(
+		uid: string,
+		year: number,
+		month: number,
+	): Promise<Record<string, Record<string, unknown>>> {
+		const all = (await this.getUserData(uid, 'dailyTracking')) as Record<string, Record<string, unknown>> | null;
+		if (!all) {
+			return {};
+		}
+
+		const monthPrefix = `${year}-${String(month).padStart(2, '0')}`;
+		const result: Record<string, Record<string, unknown>> = {};
+		for (const [dateKey, value] of Object.entries(all)) {
+			if (dateKey.startsWith(monthPrefix)) {
+				result[dateKey] = value;
+			}
+		}
+		return result;
+	}
+
 	async getData(path: string): Promise<any> {
 		try {
 			const ref = this.database.ref(path);

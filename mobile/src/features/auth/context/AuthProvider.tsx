@@ -3,7 +3,12 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { authApi } from '@/features/auth/api';
 import { authQueryKeys } from '@/features/auth/queryKeys';
 import { storageService, StoredUserData } from '@/shared/lib/storage';
+import { isAuthError, isConnectivityError } from '@/shared/api/client';
+import { resolveUserDisplayName } from '@/shared/lib/displayName';
+import * as SecureStore from 'expo-secure-store';
 import type { OnboardingData } from '@/features/onboarding/types';
+
+/** Login/register store a Firebase ID token in SecureStore (not a custom token). */
 
 interface AuthContextType {
 	user: StoredUserData | null;
@@ -33,7 +38,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	const [onboardingCompletedOverride, setOnboardingCompletedOverride] = useState<boolean | null>(null);
 
 	useEffect(() => {
-		storageService.getAuthToken().then((stored) => setToken(stored));
+		void (async () => {
+			const [storedToken, storedUser] = await Promise.all([
+				storageService.getAuthToken(),
+				storageService.getUserData(),
+			]);
+			setToken(storedToken);
+			if (storedUser) {
+				setUser(storedUser);
+			}
+		})();
 	}, []);
 
 	const profileQuery = useQuery({
@@ -41,8 +55,29 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		queryFn: async () => {
 			if (!token) throw new Error('No token');
 			const profile = await authApi.getProfile(token);
-			await storageService.setUserData(profile);
-			return profile;
+
+			let onboardingDisplayName: string | undefined;
+			try {
+				const storedOnboarding = await SecureStore.getItemAsync('onboarding_data');
+				if (storedOnboarding) {
+					onboardingDisplayName = JSON.parse(storedOnboarding).displayName;
+				}
+			} catch {
+				// ignore parse errors
+			}
+
+			const mergedProfile = {
+				...profile,
+				displayName: resolveUserDisplayName({
+					displayName: profile.displayName,
+					email: profile.email,
+					onboardingDisplayName,
+					fallback: profile.displayName,
+				}),
+			};
+
+			await storageService.setUserData(mergedProfile);
+			return mergedProfile;
 		},
 		enabled: !!token,
 		retry: false,
@@ -66,25 +101,42 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	}, [profileQuery.data]);
 
 	useEffect(() => {
-		if (profileQuery.isError && token) {
-			void (async () => {
-				await storageService.clearAuthData();
-				setToken(null);
-				setUser(null);
-				setOnboardingCompletedOverride(null);
-				queryClient.clear();
-			})();
+		if (!profileQuery.isError || !token) return;
+
+		const error = profileQuery.error;
+		if (isConnectivityError(error)) {
+			// Keep stored token; user can retry when the backend is reachable again.
+			return;
 		}
-	}, [profileQuery.isError, token, queryClient]);
+
+		if (!isAuthError(error)) {
+			return;
+		}
+
+		void (async () => {
+			await storageService.clearAuthData();
+			setToken(null);
+			setUser(null);
+			setOnboardingCompletedOverride(null);
+			queryClient.clear();
+		})();
+	}, [profileQuery.isError, profileQuery.error, token, queryClient]);
 
 	const isAuthReady = token !== undefined;
-	const isAuthenticated = !!token && profileQuery.isSuccess;
+	const isAuthenticated =
+		!!token && (profileQuery.isSuccess || (!!user && isConnectivityError(profileQuery.error)));
 	const onboardingCompleted =
 		onboardingCompletedOverride ?? (onboardingQuery.data ?? (token ? null : null));
 
+	const profileUnavailableOffline =
+		!!token && isConnectivityError(profileQuery.error) && !profileQuery.isSuccess;
+
 	const isLoading =
 		!isAuthReady
-		|| (!!token && (profileQuery.isPending || (profileQuery.isSuccess && onboardingQuery.isPending)));
+		|| (!!token
+			&& profileQuery.isPending
+			&& !profileUnavailableOffline)
+		|| (!!token && profileQuery.isSuccess && onboardingQuery.isPending);
 
 	const login = async (email: string, password: string) => {
 		const response = await authApi.login({ email, password });

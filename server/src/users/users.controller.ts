@@ -1,13 +1,14 @@
-import { Controller, Post, Body, HttpCode, HttpStatus, Get, UseGuards, Put, Delete, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Controller, Post, Body, HttpCode, HttpStatus, Get, UseGuards, Put, Delete, Req, UploadedFile, UseInterceptors, Param, Query } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { UsersService } from "./users.service";
 import { RegisterUserDto, LoginUserDto, AuthResponseDto } from "./dtos/auth";
 import { UpdateProfileDto, UpdatePasswordDto } from "./dtos/profile";
 import { OnboardingDto } from "./dtos/onboarding";
+import { DailyTrackingDto } from "./dtos/tracking/daily-tracking.dto";
 import { AuthGuard } from "../auth/auth.guard";
 import { CurrentUser } from "../auth/current-user.decorator";
 import { getPasswordRules } from "../common/password.validator";
-import { BadRequestException } from "@nestjs/common";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags("Authentication")
@@ -215,6 +216,44 @@ export class UsersController {
 		return await this.usersService.deleteUserAccount(user.uid);
 	}
 
+	@Get("tracking/month")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
+	@ApiOperation({ summary: "Get daily tracking entries for a calendar month" })
+	async getDailyTrackingMonth(
+		@CurrentUser() user: any,
+		@Query('year') year: string,
+		@Query('month') month: string,
+	) {
+		const yearNum = parseInt(year, 10);
+		const monthNum = parseInt(month, 10);
+		if (Number.isNaN(yearNum) || Number.isNaN(monthNum)) {
+			throw new BadRequestException('Parâmetros year e month são obrigatórios.');
+		}
+		return await this.usersService.getDailyTrackingMonth(user.uid, yearNum, monthNum);
+	}
+
+	@Get("tracking/:date")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
+	@ApiOperation({ summary: "Get daily tracking for a date" })
+	async getDailyTracking(@CurrentUser() user: any, @Param('date') date: string) {
+		const data = await this.usersService.getDailyTracking(user.uid, date);
+		return data ?? null;
+	}
+
+	@Put("tracking/:date")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
+	@ApiOperation({ summary: "Save daily tracking for a date" })
+	async saveDailyTracking(
+		@CurrentUser() user: any,
+		@Param('date') date: string,
+		@Body() body: DailyTrackingDto,
+	) {
+		return await this.usersService.saveDailyTracking(user.uid, date, body);
+	}
+
 	@Get("onboarding/status")
 	@UseGuards(AuthGuard)
 	@ApiBearerAuth()
@@ -276,6 +315,9 @@ export class UsersController {
 		description: "Unauthorized",
 	})
 	async getUserData(@CurrentUser() user: any) {
+		if (process.env.NODE_ENV === 'production') {
+			throw new NotFoundException();
+		}
 		try {
 			const userData = await this.usersService.getAllUserData(user.uid);
 			return {
@@ -305,6 +347,9 @@ export class UsersController {
 		description: "Unauthorized",
 	})
 	async testOnboarding(@CurrentUser() user: any, @Body() onboardingData: any) {
+		if (process.env.NODE_ENV === 'production') {
+			throw new NotFoundException();
+		}
 		try {
 			return {
 				message: "Dados recebidos com sucesso",

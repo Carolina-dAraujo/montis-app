@@ -18,12 +18,38 @@ module.exports = defineConfig([
 	{
 		rules: {
 			'no-restricted-imports': [
-				'warn',
+				'error',
 				{
+					paths: [
+						{
+							name: '@/services/api',
+							message: 'Use @/features/<domain>/api instead.',
+						},
+						{
+							name: '@/contexts/AuthContext',
+							message: 'Use @/features/auth/context/AuthProvider.',
+						},
+						{
+							name: '@/contexts/OnboardingContext',
+							message: 'Use @/features/onboarding/context/OnboardingProvider.',
+						},
+					],
 					patterns: [
 						{
 							group: ['@/mobile/src/features/*'],
 							message: 'Use @/features/* instead.',
+						},
+						{
+							group: ['components/*', '@/components/*'],
+							message: 'Use @/shared/components/* instead.',
+						},
+						{
+							group: ['contexts/*', '@/contexts/*'],
+							message: 'Use @/features/*/context instead.',
+						},
+						{
+							group: ['services/*', '@/services/*'],
+							message: 'Use @/features/*/api or @/shared/lib/* instead.',
 						},
 					],
 				},

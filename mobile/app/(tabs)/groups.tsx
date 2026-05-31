@@ -1,1 +1,1 @@
-export { default } from '@/features/groups/views/grupos';
+export { default } from '@/features/groups/views/groups';

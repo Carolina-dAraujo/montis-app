@@ -1,4 +1,4 @@
-import TabBar from 'components/ui/TabBar';
+import TabBar from '@/shared/components/ui/TabBar';
 import { Tabs } from 'expo-router';
 
 export default function TabLayout() {
@@ -39,10 +39,6 @@ export default function TabLayout() {
 					title: 'Serviços',
 				}}
 			/>
-			{/* Legacy tab route names — redirect screens */}
-			<Tabs.Screen name="grupos" options={{ href: null }} />
-			<Tabs.Screen name="crise" options={{ href: null }} />
-			<Tabs.Screen name="ajuda" options={{ href: null }} />
 		</Tabs>
 	);
 }

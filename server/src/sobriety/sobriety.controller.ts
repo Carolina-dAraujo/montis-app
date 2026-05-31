@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards, Param } from "@nestjs/common";
+import { Controller, Get, Post, Body, UseGuards, NotFoundException } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { SobrietyService, SobrietyData, Milestone } from "./sobriety.service";
 import { AuthGuard } from "../auth/auth.guard";
@@ -43,7 +43,7 @@ export class SobrietyController {
 	async getSobrietyData(@CurrentUser() user: any): Promise<SobrietyData> {
 		const data = await this.sobrietyService.getUserSobrietyData(user.uid);
 		if (!data) {
-			throw new Error('Sobriety data not found');
+			throw new NotFoundException('Sobriety data not found');
 		}
 		return data;
 	}

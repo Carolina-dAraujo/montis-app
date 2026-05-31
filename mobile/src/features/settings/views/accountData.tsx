@@ -9,13 +9,19 @@ import { BottomSheet } from '@/shared/components/ui/BottomSheet';
 import { fieldConfig } from '@/shared/config/fieldConfig';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '@/features/auth/context/AuthProvider';
-import { apiService } from '@/services/api';
+import { useResolvedDisplayName } from '@/features/auth/hooks/useResolvedDisplayName';
+import { useOnboarding } from '@/features/onboarding/context/OnboardingProvider';
+import { resolveUserDisplayName } from '@/shared/lib/displayName';
+import { authApi } from '@/features/auth/api';
 import { storageService } from '@/shared/lib/storage';
 import { styles } from '@/features/settings/styles/accountData.styles';
 
 export default function AccountData() {
 	const router = useRouter();
 	const { user, logout, updateUser } = useAuth();
+	const { onboardingData } = useOnboarding();
+	const displayName = useResolvedDisplayName('');
+	const nameLabel = displayName || 'Adicionar nome';
 	const [profileImage, setProfileImage] = useState<string | null>(null);
 	const [showMoreOptions, setShowMoreOptions] = useState(false);
 	const scrollViewRef = useRef<ScrollView>(null);
@@ -32,8 +38,13 @@ export default function AccountData() {
 			const token = await storageService.getAuthToken();
 
 			if (token) {
-				const profile = await apiService.getProfile(token);
-				await updateUser(profile);
+				const profile = await authApi.getProfile(token);
+				const resolvedName = resolveUserDisplayName({
+					displayName: profile.displayName,
+					email: profile.email,
+					onboardingDisplayName: onboardingData.displayName,
+				});
+				await updateUser({ ...profile, displayName: resolvedName });
 			}
 		} catch (error) {
 			console.error('Error fetching profile:', error);
@@ -84,7 +95,7 @@ export default function AccountData() {
 						try {
 							const token = await storageService.getAuthToken();
 							if (token) {
-								await apiService.deleteAccount(token);
+								await authApi.deleteAccount(token);
 								await logout();
 								router.replace('/(auth)/login');
 							}
@@ -138,7 +149,7 @@ export default function AccountData() {
 			pathname: '/(config)/edit-field',
 			params: {
 				field,
-				value: field === 'name' ? user?.displayName || '' :
+				value: field === 'name' ? nameLabel === 'Adicionar nome' ? '' : nameLabel :
 					   field === 'phone' ? user?.phoneNumber || '' :
 					   field === 'email' ? user?.email || '' : '',
 				...config,
@@ -202,7 +213,7 @@ export default function AccountData() {
 						</View>
 					</Pressable>
 					<Pressable style={styles.nameContainer} onPress={() => handleFieldPress('name')}>
-						<Text style={styles.name}>{user?.displayName || 'Adicionar nome'}</Text>
+						<Text style={styles.name}>{nameLabel}</Text>
 						<FontAwesome6 name="edit" size={16} color={Colors.icon.gray} />
 					</Pressable>
 				</View>
