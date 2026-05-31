@@ -4,9 +4,9 @@
     "esModuleInterop": true,
     "strict": true,
     "paths": {
-      "@/*": [
-        "../*"
-      ]
+      "@/*": ["./*"],
+      "@/features/*": ["./src/features/*"],
+      "@/shared/*": ["./src/shared/*"]
     },
     "jsx": "react-jsx",
     "baseUrl": "."

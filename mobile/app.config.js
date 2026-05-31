@@ -12,14 +12,20 @@ export default {
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     ios: {
-      supportsTablet: true
+      supportsTablet: true,
+      infoPlist: {
+        NSAppTransportSecurity: {
+          NSAllowsLocalNetworking: true,
+        },
+      },
     },
     android: {
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#ffffff"
       },
-      edgeToEdgeEnabled: true
+      edgeToEdgeEnabled: true,
+      usesCleartextTraffic: true,
     },
     web: {
       bundler: "metro",
@@ -40,7 +46,8 @@ export default {
       "expo-secure-store"
     ],
     experiments: {
-      typedRoutes: false
+      typedRoutes: false,
+      tsconfigPaths: true,
     },
     extra: {
       // API Configuration

@@ -3,7 +3,18 @@ import { AppModule } from "./app.module";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { CustomValidationPipe } from "./common/validation.pipe";
-import * as express from 'express';
+import * as os from 'os';
+
+function getLanIpv4(): string | null {
+	for (const interfaces of Object.values(os.networkInterfaces())) {
+		for (const net of interfaces ?? []) {
+			if (net.family === 'IPv4' && !net.internal) {
+				return net.address;
+			}
+		}
+	}
+	return null;
+}
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -18,10 +29,15 @@ async function bootstrap() {
 
 	configureSwagger(app);
 	configureValidationPipe(app);
-	await app.listen(process.env.PORT ?? 3000);
+	const port = Number(process.env.PORT ?? 3000);
+	await app.listen(port, '0.0.0.0');
 
-	console.log(`🚀 Server running on: http://localhost:${process.env.PORT ?? 3000}`);
-	console.log(`📚 Swagger documentation: http://localhost:${process.env.PORT ?? 3000}/api`);
+	const lanIp = getLanIpv4();
+	console.log(`🚀 Server running on: http://localhost:${port}`);
+	if (lanIp) {
+		console.log(`📱 Use on your phone (mobile/.env): API_URL=http://${lanIp}:${port}`);
+	}
+	console.log(`📚 Swagger documentation: http://localhost:${port}/api`);
 }
 
 function configureSwagger(app: INestApplication) {

@@ -15,4 +15,19 @@ module.exports = defineConfig([
 	{
 		ignores: ['dist/*'],
 	},
+	{
+		rules: {
+			'no-restricted-imports': [
+				'warn',
+				{
+					patterns: [
+						{
+							group: ['@/mobile/src/features/*'],
+							message: 'Use @/features/* instead.',
+						},
+					],
+				},
+			],
+		},
+	},
 ]);

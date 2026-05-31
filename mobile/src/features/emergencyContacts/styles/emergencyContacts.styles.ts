@@ -1,0 +1,257 @@
+import { StyleSheet } from 'react-native';
+import { Colors } from '@/shared/theme/colors';
+
+export const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: Colors.light.background,
+	},
+	header: {
+		paddingBottom: 16,
+		paddingHorizontal: 20,
+	},
+	headerRow: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	backButton: {
+		paddingRight: 8,
+		paddingVertical: 8,
+	},
+	title: {
+		fontSize: 20,
+		fontWeight: 'bold',
+		color: Colors.light.text,
+	},
+	titleContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	content: {
+		flex: 1,
+	},
+	section: {
+		padding: 20,
+		paddingBottom: 10,
+	},
+	sectionTitle: {
+		fontSize: 18,
+		fontWeight: '600',
+		color: Colors.light.text,
+		marginBottom: 8,
+	},
+	sectionSubtitle: {
+		fontSize: 14,
+		color: Colors.light.icon,
+		lineHeight: 20,
+	},
+	contactsList: {
+		paddingHorizontal: 20,
+	},
+	contactCard: {
+		backgroundColor: 'white',
+		padding: 16,
+		borderRadius: 16,
+		marginBottom: 12,
+		flexDirection: 'row',
+		alignItems: 'center',
+		shadowColor: Colors.light.shadow,
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.1,
+		shadowRadius: 4,
+		elevation: 3,
+	},
+	contactAvatar: {
+		width: 48,
+		height: 48,
+		borderRadius: 24,
+		backgroundColor: Colors.lightGray,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginRight: 16,
+	},
+	contactInfo: {
+		flex: 1,
+	},
+	contactHeader: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginBottom: 8,
+		gap: 8,
+	},
+	contactName: {
+		fontSize: 16,
+		fontWeight: '600',
+		color: Colors.light.text,
+	},
+	statusBadge: {
+		paddingHorizontal: 8,
+		paddingVertical: 4,
+		borderRadius: 12,
+		backgroundColor: Colors.lightGray,
+	},
+	statusActive: {
+		backgroundColor: Colors.containers.blue + '20',
+	},
+	statusText: {
+		fontSize: 12,
+		fontWeight: '500',
+		color: Colors.light.icon,
+	},
+	statusTextActive: {
+		color: Colors.containers.blue,
+	},
+	contactDetails: {
+		gap: 4,
+	},
+	detailRow: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	contactPhone: {
+		fontSize: 14,
+		color: Colors.light.text,
+		marginLeft: 6,
+	},
+	contactRelationship: {
+		fontSize: 14,
+		color: Colors.light.icon,
+		marginLeft: 6,
+	},
+	contactActions: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 8,
+	},
+	actionButton: {
+		width: 40,
+		height: 40,
+		borderRadius: 20,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	editButton: {
+		backgroundColor: Colors.lightGray,
+	},
+	toggleButton: {
+		backgroundColor: Colors.lightGray,
+	},
+	moreButton: {
+		backgroundColor: Colors.lightGray,
+	},
+	deleteButton: {
+		backgroundColor: Colors.lightGray,
+	},
+	emptyState: {
+		alignItems: 'center',
+		padding: 40,
+	},
+	emptyIconContainer: {
+		width: 80,
+		height: 80,
+		borderRadius: 40,
+		backgroundColor: Colors.lightGray,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginBottom: 16,
+	},
+	emptyStateText: {
+		fontSize: 18,
+		fontWeight: '600',
+		color: Colors.light.text,
+		marginBottom: 8,
+		textAlign: 'center',
+	},
+	emptyStateSubtext: {
+		fontSize: 14,
+		color: Colors.light.icon,
+		textAlign: 'center',
+		lineHeight: 20,
+		paddingHorizontal: 20,
+	},
+	loadingContainer: {
+		alignItems: 'center',
+		padding: 40,
+	},
+	loadingIconContainer: {
+		width: 80,
+		height: 80,
+		borderRadius: 40,
+		backgroundColor: Colors.lightGray,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginBottom: 16,
+	},
+	loadingText: {
+		fontSize: 16,
+		color: Colors.light.text,
+		textAlign: 'center',
+	},
+	addButtonContainer: {
+		paddingHorizontal: 20,
+		paddingTop: 8,
+		paddingBottom: 20,
+	},
+	addButton: {
+		backgroundColor: 'white',
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 12,
+		borderRadius: 8,
+		borderWidth: 1,
+		borderColor: Colors.containers.blue,
+		shadowColor: Colors.light.shadow,
+		shadowOffset: { width: 0, height: 1 },
+		shadowOpacity: 0.1,
+		shadowRadius: 2,
+		elevation: 2,
+	},
+	addButtonEmpty: {
+		backgroundColor: 'white',
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 12,
+		borderRadius: 8,
+		marginTop: 20,
+		borderWidth: 1,
+		borderColor: Colors.containers.blue,
+		shadowColor: Colors.light.shadow,
+		shadowOffset: { width: 0, height: 1 },
+		shadowOpacity: 0.1,
+		shadowRadius: 2,
+		elevation: 2,
+	},
+	addButtonText: {
+		color: Colors.containers.blue,
+		fontSize: 14,
+		fontWeight: '500',
+		marginLeft: 6,
+	},
+	infoSection: {
+		padding: 20,
+		paddingTop: 10,
+	},
+	infoTitle: {
+		fontSize: 16,
+		fontWeight: '600',
+		color: Colors.light.text,
+		marginBottom: 12,
+	},
+	infoCard: {
+		backgroundColor: Colors.lightGray,
+		padding: 16,
+		borderRadius: 12,
+		marginBottom: 12,
+		flexDirection: 'row',
+		alignItems: 'flex-start',
+	},
+	infoText: {
+		fontSize: 14,
+		color: Colors.light.text,
+		marginLeft: 12,
+		flex: 1,
+		lineHeight: 20,
+	},
+});

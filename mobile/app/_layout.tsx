@@ -1,31 +1,24 @@
-import { Stack } from "expo-router"
-import { AuthProvider } from "../contexts/AuthContext"
-import { OnboardingProvider } from "../contexts/OnboardingContext"
+import { Stack } from 'expo-router';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider } from '@/features/auth/context/AuthProvider';
+import { OnboardingProvider } from '@/features/onboarding/context/OnboardingProvider';
+import { queryClient } from '@/shared/api/queryClient';
+import { useAuthNavigation } from '@/features/auth/hooks/useAuthNavigation';
 
-const StackLayout = () => {
-    return (
-        <AuthProvider>
-            <OnboardingProvider>
-                <Stack screenOptions={{ headerShown: false }}>
-                    <Stack.Screen name="index" />
-                    <Stack.Screen name="(tabs)" />
-                    <Stack.Screen name="(auth)/cadastro" />
-                                        <Stack.Screen name="(auth)/login" />
-                    <Stack.Screen name="onboarding/welcome" />
-                    <Stack.Screen name="onboarding/personalInfo" />
-                    <Stack.Screen name="onboarding/sobrietyStatus" />
-                    <Stack.Screen name="onboarding/sobrietyTimeline" />
-                    <Stack.Screen name="onboarding/sobrietyGoals" />
-                    <Stack.Screen name="onboarding/rehabilitationGoals" />
-                    <Stack.Screen name="onboarding/preferences" />
-                    <Stack.Screen name="onboarding/completion" />
-                    <Stack.Screen name="services/aa" />
-                    <Stack.Screen name="services/caps" />
-                    <Stack.Screen name="(config)/add-emergency-contact" />
-                </Stack>
-            </OnboardingProvider>
-        </AuthProvider>
-    )
+function RootNavigator() {
+	useAuthNavigation();
+
+	return <Stack screenOptions={{ headerShown: false }} />;
 }
 
-export default StackLayout
+export default function RootLayout() {
+	return (
+		<QueryClientProvider client={queryClient}>
+			<AuthProvider>
+				<OnboardingProvider>
+					<RootNavigator />
+				</OnboardingProvider>
+			</AuthProvider>
+		</QueryClientProvider>
+	);
+}

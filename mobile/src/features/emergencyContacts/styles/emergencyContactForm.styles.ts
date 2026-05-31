@@ -1,0 +1,177 @@
+import { StyleSheet } from 'react-native';
+import { Colors } from '@/shared/theme/colors';
+
+export const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: Colors.light.background,
+	},
+	header: {
+		paddingBottom: 16,
+		paddingHorizontal: 20,
+	},
+	headerRow: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	backButton: {
+		paddingRight: 8,
+		paddingVertical: 8,
+	},
+	title: {
+		fontSize: 20,
+		fontWeight: 'bold',
+		color: Colors.light.text,
+	},
+	titleContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	content: {
+		flex: 1,
+	},
+	heroSection: {
+		alignItems: 'center',
+		padding: 32,
+		paddingBottom: 24,
+	},
+	iconContainer: {
+		width: 80,
+		height: 80,
+		borderRadius: 40,
+		backgroundColor: Colors.lightGray,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginBottom: 16,
+	},
+	heroTitle: {
+		fontSize: 24,
+		fontWeight: 'bold',
+		color: Colors.light.text,
+		marginBottom: 8,
+		textAlign: 'center',
+	},
+	heroSubtitle: {
+		fontSize: 16,
+		color: Colors.light.icon,
+		textAlign: 'center',
+		lineHeight: 24,
+		paddingHorizontal: 20,
+	},
+	formSection: {
+		padding: 20,
+		paddingTop: 0,
+	},
+	inputContainer: {
+		marginBottom: 24,
+	},
+	inputLabel: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginBottom: 8,
+	},
+	labelText: {
+		fontSize: 16,
+		fontWeight: '600',
+		color: Colors.light.text,
+		marginLeft: 8,
+	},
+	input: {
+		borderWidth: 1,
+		borderColor: Colors.lightGray,
+		borderRadius: 12,
+		padding: 16,
+		fontSize: 16,
+		backgroundColor: 'white',
+		shadowColor: Colors.light.shadow,
+		shadowOffset: { width: 0, height: 1 },
+		shadowOpacity: 0.1,
+		shadowRadius: 2,
+		elevation: 2,
+		color: Colors.light.text,
+	},
+	inputFocused: {
+		borderColor: Colors.containers.blue,
+		borderWidth: 1.5,
+		shadowColor: Colors.containers.blue,
+		shadowOpacity: 0.1,
+		shadowRadius: 2,
+		elevation: 2,
+	},
+	infoSection: {
+		padding: 20,
+		paddingTop: 0,
+	},
+	infoCard: {
+		backgroundColor: Colors.lightGray,
+		padding: 16,
+		borderRadius: 12,
+		marginBottom: 12,
+		flexDirection: 'row',
+		alignItems: 'flex-start',
+	},
+	infoText: {
+		fontSize: 14,
+		color: Colors.light.text,
+		marginLeft: 12,
+		flex: 1,
+		lineHeight: 20,
+	},
+	bottomContainer: {
+		padding: 20,
+		paddingTop: 0,
+		marginTop: 20,
+	},
+	saveButton: {
+		backgroundColor: Colors.containers.blue,
+		padding: 16,
+		borderRadius: 12,
+		alignItems: 'center',
+		shadowColor: Colors.light.shadow,
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+	},
+	saveButtonDisabled: {
+		backgroundColor: Colors.lightGray,
+		shadowOpacity: 0,
+		elevation: 0,
+	},
+	saveButtonText: {
+		color: 'white',
+		fontSize: 16,
+		fontWeight: '600',
+	},
+	errorContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 20,
+	},
+	errorText: {
+		fontSize: 16,
+		color: Colors.light.icon,
+		textAlign: 'center',
+	},
+	loadingContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 20,
+	},
+	loadingIconContainer: {
+		width: 80,
+		height: 80,
+		borderRadius: 40,
+		backgroundColor: Colors.lightGray,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginBottom: 16,
+	},
+	loadingText: {
+		fontSize: 16,
+		color: Colors.light.text,
+		textAlign: 'center',
+	},
+});

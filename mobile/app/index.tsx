@@ -1,50 +1,27 @@
-import { Redirect } from "expo-router";
-import { useAuth } from "../contexts/AuthContext";
-import { LoadingScreen } from "../components/LoadingScreen";
-import { useEffect, useState } from "react";
-import { apiService } from "../services/api";
-import { storageService } from "../services/storage";
+import { Redirect } from 'expo-router';
+import { LoadingScreen } from '@/shared/components/LoadingScreen';
+import { useAppBootstrap } from '@/features/auth/hooks/useAppBootstrap';
 
-const StartPage = () => {
-    const { isAuthenticated, isLoading, user } = useAuth();
-    const [onboardingStatus, setOnboardingStatus] = useState<boolean | null>(null);
-    const [checkingOnboarding, setCheckingOnboarding] = useState(false);
+export default function StartPage() {
+	const {
+		isLoading,
+		isAuthenticated,
+		shouldShowOnboarding,
+		shouldShowHome,
+	} = useAppBootstrap();
 
-    useEffect(() => {
-        const checkOnboardingStatus = async () => {
-            if (isAuthenticated && user && !checkingOnboarding) {
-                setCheckingOnboarding(true);
-                try {
-                    const token = await storageService.getAuthToken();
-                    if (token) {
-                        const { onboardingCompleted } = await apiService.checkOnboardingStatus(token);
-                        setOnboardingStatus(onboardingCompleted);
-                    }
-                } catch (error) {
-                    console.error('Error checking onboarding status:', error);
-                    setOnboardingStatus(false);
-                } finally {
-                    setCheckingOnboarding(false);
-                }
-            }
-        };
+	if (isLoading) {
+		return <LoadingScreen message="Verificando autenticação..." />;
+	}
 
-        checkOnboardingStatus();
-    }, [isAuthenticated, user, checkingOnboarding]);
+	if (isAuthenticated) {
+		if (shouldShowOnboarding) {
+			return <Redirect href="/onboarding/welcome" />;
+		}
+		if (shouldShowHome) {
+			return <Redirect href="/(tabs)/home" />;
+		}
+	}
 
-    if (isLoading || (isAuthenticated && onboardingStatus === null)) {
-        return <LoadingScreen message="Verificando autenticação..." />;
-    }
-
-    if (isAuthenticated) {
-        if (onboardingStatus === false) {
-            return <Redirect href="/onboarding/welcome" />;
-        } else {
-            return <Redirect href="/(tabs)/home" />;
-        }
-    } else {
-        return <Redirect href="/(auth)/login" />;
-    }
-};
-
-export default StartPage;
+	return <Redirect href="/(auth)/login" />;
+}

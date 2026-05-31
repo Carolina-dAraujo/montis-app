@@ -1,43 +1,48 @@
-import TabBar from "components/ui/TabBar"
-import { Tabs } from "expo-router"
+import TabBar from 'components/ui/TabBar';
+import { Tabs } from 'expo-router';
 
 export default function TabLayout() {
-    return (
-        <Tabs
-            screenOptions={{
-                headerShown: false
-            }}
-            tabBar={props => <TabBar {...props}/>}>
-            <Tabs.Screen
-                name="home"
-                options={{
-                    title: "Home"
-                }}
-            />
-            <Tabs.Screen
-                name="grupos"
-                options={{
-                    title: "Grupos"
-                }}
-            />
-            <Tabs.Screen
-                name="crise"
-                options={{
-                    title: "Crise"
-                }}
-            />
-            <Tabs.Screen
-                name="agenda"
-                options={{
-                    title: "Agenda"
-                }}
-            />
-            <Tabs.Screen
-                name="services"
-                options={{
-                    title: "Serviços"
-                }}
-            />
-        </Tabs>
-    )
+	return (
+		<Tabs
+			screenOptions={{
+				headerShown: false,
+			}}
+			tabBar={(props) => <TabBar {...props} />}
+		>
+			<Tabs.Screen
+				name="home"
+				options={{
+					title: 'Home',
+				}}
+			/>
+			<Tabs.Screen
+				name="groups"
+				options={{
+					title: 'Grupos',
+				}}
+			/>
+			<Tabs.Screen
+				name="crisis"
+				options={{
+					title: 'Crise',
+				}}
+			/>
+			<Tabs.Screen
+				name="agenda"
+				options={{
+					title: 'Agenda',
+				}}
+			/>
+			<Tabs.Screen
+				name="services"
+				options={{
+					title: 'Serviços',
+				}}
+			/>
+			{/* Legacy tab route names — redirect screens */}
+			<Tabs.Screen name="grupos" options={{ href: null }} />
+			<Tabs.Screen name="crise" options={{ href: null }} />
+			<Tabs.Screen name="ajuda" options={{ href: null }} />
+		</Tabs>
+	);
 }

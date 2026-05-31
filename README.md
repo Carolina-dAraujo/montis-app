@@ -22,8 +22,8 @@ Montis é um aplicativo de suporte à sobriedade voltado para adultos em recuper
 ## 🚀 Como Rodar o Projeto
 
 ### **Pré-requisitos**
-- Node.js v18.19.1 ou superior
-- [Expo CLI](https://docs.expo.dev/get-started/installation/) (`npm install -g expo-cli`)
+- Node.js **v20.19.4** ou superior (o mobile usa `.nvmrc` — rode `nvm use` na pasta `mobile/`)
+- [Expo Go](https://expo.dev/go) no celular (SDK 54)
 - Conta no Firebase (para backend)
 
 ---
@@ -63,12 +63,13 @@ npm run start:dev
 
 ```bash
 cd mobile
+nvm use   # ou: nvm install 20.19.4
 
 # Instale as dependências
 npm install
 
 # Inicie o projeto com Expo
-npx expo start
+npx expo start -c
 
 # Use o Expo Go no seu celular para escanear o QR Code
 # ou rode em um emulador Android/iOS
