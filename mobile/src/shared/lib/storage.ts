@@ -10,6 +10,7 @@ export interface StoredUserData {
 
 class StorageService {
 	private readonly AUTH_TOKEN_KEY = 'auth_token';
+	private readonly REFRESH_TOKEN_KEY = 'refresh_token';
 	private readonly USER_DATA_KEY = 'user_data';
 	private readonly IS_LOGGED_IN_KEY = 'is_logged_in';
 
@@ -20,6 +21,24 @@ class StorageService {
 		} catch (error) {
 			console.error('Error saving auth token:', error);
 			throw error;
+		}
+	}
+
+	async setRefreshToken(refreshToken: string): Promise<void> {
+		try {
+			await SecureStore.setItemAsync(this.REFRESH_TOKEN_KEY, refreshToken);
+		} catch (error) {
+			console.error('Error saving refresh token:', error);
+			throw error;
+		}
+	}
+
+	async getRefreshToken(): Promise<string | null> {
+		try {
+			return await SecureStore.getItemAsync(this.REFRESH_TOKEN_KEY);
+		} catch (error) {
+			console.error('Error getting refresh token:', error);
+			return null;
 		}
 	}
 
@@ -67,6 +86,7 @@ class StorageService {
 	async clearAuthData(): Promise<void> {
 		try {
 			await SecureStore.deleteItemAsync(this.AUTH_TOKEN_KEY);
+			await SecureStore.deleteItemAsync(this.REFRESH_TOKEN_KEY);
 			await SecureStore.deleteItemAsync(this.USER_DATA_KEY);
 			await SecureStore.deleteItemAsync(this.IS_LOGGED_IN_KEY);
 		} catch (error) {

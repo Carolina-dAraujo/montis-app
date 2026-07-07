@@ -68,3 +68,4 @@ Type-only interfaces live in [`../contracts/`](../contracts/) and are imported a
 - Node **≥ 20.19.4** (`.nvmrc`)
 - `npx tsc --noEmit`, `npm test`, `npm run lint`
 - API tests use a fetch mock in `src/test/mockApi.ts` (jest setup)
+- Prefer `@montis/contracts/*`, `unknown` with narrowing, or generics over `any` in new code

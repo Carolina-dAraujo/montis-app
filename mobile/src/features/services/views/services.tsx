@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, SafeAreaView, Image } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, Image, ImageSourcePropType } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/shared/theme/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,7 +9,7 @@ interface CareOption {
 	id: string;
 	title: string;
 	description: string;
-	image: any;
+	image: ImageSourcePropType;
 	color: string;
 }
 

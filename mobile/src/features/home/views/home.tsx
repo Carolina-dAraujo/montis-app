@@ -4,6 +4,7 @@ import { HomeHeader } from '@/features/home/components/HomeHeader';
 import { SobrietyCounter } from '@/features/home/components/SobrietyCounter';
 import { DailyReminders } from '@/features/home/components/DailyReminders';
 import { styles } from '@/features/home/styles/home.styles';
+import { getTabBarScrollPadding } from '@/shared/components/ui/tabBarMetrics';
 
 export default function Home() {
 	const insets = useSafeAreaInsets();
@@ -15,7 +16,7 @@ export default function Home() {
 				style={styles.content}
 				contentContainerStyle={[
 					styles.contentContainer,
-					{ paddingBottom: insets.bottom + 80 },
+					{ paddingBottom: getTabBarScrollPadding(insets.bottom) },
 				]}
 				showsVerticalScrollIndicator={false}
 			>

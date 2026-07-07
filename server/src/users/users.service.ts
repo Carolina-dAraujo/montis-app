@@ -5,7 +5,17 @@ import { UpdateProfileDto, UpdatePasswordDto } from "./dtos/profile";
 import { OnboardingDto } from "./dtos/onboarding";
 import { DailyTrackingDto } from "./dtos/tracking/daily-tracking.dto";
 import { validatePassword } from "../common/password.validator";
+import { removeUndefinedValues } from "../common/remove-undefined";
+import type { UserProfile, UpdateProfileResponse, MessageResponse } from "@montis/contracts/profile";
+import type {
+	CompleteOnboardingResult,
+	OnboardingPreferences,
+} from "@montis/contracts/onboarding";
+import type { SobrietyRtdbRecord } from "@montis/contracts/sobriety-rtdb";
+import type { UserPreferences } from "@montis/contracts/preferences";
 import * as firebaseAdmin from "firebase-admin";
+import { UpdateRequest } from "firebase-admin/lib/auth/auth-config";
+import { Express } from "express";
 
 @Injectable()
 export class UsersService {
@@ -88,24 +98,15 @@ export class UsersService {
     }
   }
 
-  async completeOnboarding(uid: string, onboardingData: OnboardingDto): Promise<any> {
+  async completeOnboarding(uid: string, onboardingData: OnboardingDto): Promise<CompleteOnboardingResult> {
     try {
-      // Update user profile with onboarding data
-      const updateFields: any = {
+      const updateFields: UpdateRequest = {
         displayName: onboardingData.displayName,
       };
 
-      // Note: We'll skip updating phone number in Firebase Auth for now
-      // since it requires E.164 format and we're storing it in the database anyway
-      // if (onboardingData.phone) {
-      //   updateFields.phoneNumber = onboardingData.phone;
-      // }
-
-      // Update user in Firebase Auth
       const userRecord = await this.firebaseService.updateUser(uid, updateFields);
 
-      // Store onboarding preferences in Firebase Realtime Database
-      const onboardingPreferences: any = {
+      const onboardingPreferences: OnboardingPreferences = {
         displayName: onboardingData.displayName,
         birthDate: onboardingData.birthDate,
         sobrietyGoal: onboardingData.sobrietyGoal,
@@ -118,7 +119,6 @@ export class UsersService {
         onboardingCompletedAt: new Date().toISOString(),
       };
 
-      // Add address fields if provided
       if (onboardingData.address) {
         onboardingPreferences.address = onboardingData.address;
       }
@@ -131,34 +131,26 @@ export class UsersService {
       if (onboardingData.cep) {
         onboardingPreferences.cep = onboardingData.cep;
       }
-
-      // Add phone number to preferences (stored in database, not Firebase Auth)
       if (onboardingData.phone) {
         onboardingPreferences.phone = onboardingData.phone;
       }
-
-      // Only add sobrietyStartDate if it exists
       if (onboardingData.sobrietyStartDate) {
         onboardingPreferences.sobrietyStartDate = onboardingData.sobrietyStartDate;
       }
-
-      // Only add emergency contact info if they exist
       if (onboardingData.emergencyContactName) {
         onboardingPreferences.emergencyContactName = onboardingData.emergencyContactName;
       }
-
       if (onboardingData.emergencyContactPhone) {
         onboardingPreferences.emergencyContactPhone = onboardingData.emergencyContactPhone;
       }
 
-      // Clean undefined values from the data
-      const cleanOnboardingPreferences = this.removeUndefinedValues(onboardingPreferences);
+      const cleanOnboardingPreferences = removeUndefinedValues(
+        onboardingPreferences as Record<string, unknown>,
+      ) as Partial<OnboardingPreferences>;
 
-      // Save to Realtime Database
       await this.firebaseService.saveOnboardingData(uid, cleanOnboardingPreferences);
 
-      // Also save initial sobriety data
-      const sobrietyData: any = {
+      const sobrietyData: Partial<SobrietyRtdbRecord> = {
         userId: uid,
         lastDrinkDate: onboardingData.lastDrinkDate,
         currentStreak: 0,
@@ -168,12 +160,13 @@ export class UsersService {
         updatedAt: new Date().toISOString(),
       };
 
-      // Only add startDate if sobrietyStartDate exists
       if (onboardingData.sobrietyStartDate) {
         sobrietyData.startDate = onboardingData.sobrietyStartDate;
       }
 
-      const cleanSobrietyData = this.removeUndefinedValues(sobrietyData);
+      const cleanSobrietyData = removeUndefinedValues(
+        sobrietyData as Record<string, unknown>,
+      ) as Partial<SobrietyRtdbRecord>;
       await this.firebaseService.saveSobrietyData(uid, cleanSobrietyData);
 
       return {
@@ -183,7 +176,7 @@ export class UsersService {
         phoneNumber: userRecord.phoneNumber,
         onboardingCompleted: true,
         preferences: cleanOnboardingPreferences,
-        sobrietyData: cleanSobrietyData,
+        sobrietyData: cleanSobrietyData as Record<string, unknown>,
       };
     } catch (error) {
       console.error("Complete onboarding error:", error);
@@ -191,21 +184,11 @@ export class UsersService {
     }
   }
 
-  private removeUndefinedValues(obj: any): any {
-    const cleaned: any = {};
-    for (const [key, value] of Object.entries(obj)) {
-      if (value !== undefined && value !== null) {
-        cleaned[key] = value;
-      }
-    }
-    return cleaned;
-  }
-
   async verifyToken(token: string): Promise<firebaseAdmin.auth.DecodedIdToken> {
     return await this.firebaseService.verifyIdToken(token);
   }
 
-  async getUserProfile(uid: string): Promise<any> {
+  async getUserProfile(uid: string): Promise<UserProfile> {
     try {
       const userRecord = await this.firebaseService.getUser(uid);
 
@@ -233,15 +216,17 @@ export class UsersService {
       // Busca a URL da imagem de perfil, se existir
       let profileImage: string | undefined = undefined;
       try {
-        const userData = await this.firebaseService.getUserData(uid);
-        if (userData && userData.profileImage) {
+        const userData = await this.firebaseService.getUserData<{ profileImage?: string }>(uid);
+        if (userData?.profileImage) {
           profileImage = userData.profileImage;
         }
-      } catch (e) {}
+      } catch {
+        // profile image is optional
+      }
 
       return {
         uid: userRecord.uid,
-        email: userRecord.email,
+        email: userRecord.email ?? '',
         displayName,
         phoneNumber,
         profileImage,
@@ -252,9 +237,9 @@ export class UsersService {
     }
   }
 
-  async updateUserProfile(uid: string, updateData: UpdateProfileDto): Promise<any> {
+  async updateUserProfile(uid: string, updateData: UpdateProfileDto): Promise<UpdateProfileResponse> {
     try {
-      const updateFields: any = {};
+      const updateFields: UpdateRequest = {};
 
       if (updateData.displayName !== undefined) {
         updateFields.displayName = updateData.displayName;
@@ -273,15 +258,14 @@ export class UsersService {
       // Se o telefone foi atualizado, também atualiza em preferences no Realtime Database
       if (updateData.phone !== undefined) {
         // Busca as preferências atuais
-        const currentPreferences = await this.firebaseService.getPreferences(uid) || {};
-        // Atualiza apenas o campo phone, preservando os outros
-        const updatedPreferences = { ...currentPreferences, phone: updateData.phone };
+        const currentPreferences = (await this.firebaseService.getPreferences(uid)) ?? {};
+        const updatedPreferences: UserPreferences = { ...currentPreferences, phone: updateData.phone };
         await this.firebaseService.savePreferences(uid, updatedPreferences);
       }
 
       return {
         uid: userRecord.uid,
-        email: userRecord.email,
+        email: userRecord.email ?? '',
         displayName: userRecord.displayName,
         phoneNumber: userRecord.phoneNumber,
         message: "Perfil atualizado com sucesso",
@@ -315,7 +299,7 @@ export class UsersService {
     }
   }
 
-  async updateUserPassword(uid: string, passwordData: UpdatePasswordDto): Promise<any> {
+  async updateUserPassword(uid: string, passwordData: UpdatePasswordDto): Promise<MessageResponse> {
     try {
       const { currentPassword, newPassword } = passwordData;
 
@@ -341,7 +325,7 @@ export class UsersService {
     }
   }
 
-  async deleteUserAccount(uid: string): Promise<any> {
+  async deleteUserAccount(uid: string): Promise<MessageResponse> {
     try {
       await this.firebaseService.deleteUser(uid);
 
@@ -354,7 +338,7 @@ export class UsersService {
     }
   }
 
-  async getOnboardingStatus(uid: string): Promise<any> {
+  async getOnboardingStatus(uid: string): Promise<OnboardingPreferences | null> {
     try {
       const onboardingData = await this.firebaseService.getOnboardingData(uid);
       return onboardingData;
@@ -364,7 +348,7 @@ export class UsersService {
     }
   }
 
-  async getOnboardingData(uid: string): Promise<any> {
+  async getOnboardingData(uid: string): Promise<OnboardingPreferences | null> {
     try {
       const onboardingData = await this.firebaseService.getOnboardingData(uid);
       return onboardingData;
@@ -374,7 +358,7 @@ export class UsersService {
     }
   }
 
-  async getAllUserData(uid: string): Promise<any> {
+  async getAllUserData(uid: string): Promise<Record<string, unknown> | null> {
     try {
       const userData = await this.firebaseService.getUserData(uid);
       return userData;
@@ -384,7 +368,7 @@ export class UsersService {
     }
   }
 
-  async uploadProfileImage(uid: string, file: any): Promise<string> {
+  async uploadProfileImage(uid: string, file: Express.Multer.File): Promise<string> {
     // Faz upload para o Storage
     const imageUrl = await this.firebaseService.uploadProfileImage(uid, file);
     // Salva a URL em users/{uid}/profileImage no Realtime Database

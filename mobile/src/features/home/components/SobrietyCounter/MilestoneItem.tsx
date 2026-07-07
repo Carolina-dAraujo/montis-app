@@ -19,16 +19,16 @@ export function MilestoneItem({ milestone, isCompleted, isCurrent }: MilestoneIt
 	};
 
 	const renderIcon = () => {
-		const iconProps = {
-			name: isCompleted ? milestone.iconCompleted as any : milestone.icon as any,
-			size: 16,
-			color: getIconColor(),
-		};
+		const size = 16;
+		const color = getIconColor();
 
 		if (milestone.library === 'MaterialCommunityIcons') {
-			return <MaterialCommunityIcons {...iconProps} />;
+			const name = isCompleted ? milestone.iconCompleted : milestone.icon;
+			return <MaterialCommunityIcons name={name} size={size} color={color} />;
 		}
-		return <Ionicons {...iconProps} />;
+
+		const name = isCompleted ? milestone.iconCompleted : milestone.icon;
+		return <Ionicons name={name} size={size} color={color} />;
 	};
 
 	return (

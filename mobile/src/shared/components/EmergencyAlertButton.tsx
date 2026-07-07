@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, Alert, ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/shared/theme/colors';
 import { useEmergencyAlerts } from '@/features/emergencyContacts/hooks/useEmergencyAlerts';
+import type { SendEmergencyAlertDto } from '@/features/emergencyContacts/alertsApi';
 import * as Location from 'expo-location';
 
 interface EmergencyAlertButtonProps {
-	style?: any;
+	style?: StyleProp<ViewStyle>;
 }
 
 const EmergencyAlertButton: React.FC<EmergencyAlertButtonProps> = ({ style }) => {
@@ -25,7 +26,7 @@ const EmergencyAlertButton: React.FC<EmergencyAlertButtonProps> = ({ style }) =>
 					onPress: async () => {
 						try {
 							// Get current location
-							let locationData: any = undefined;
+							let locationData: SendEmergencyAlertDto['location'];
 							
 							try {
 								const { status } = await Location.requestForegroundPermissionsAsync();

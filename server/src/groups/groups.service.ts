@@ -39,6 +39,29 @@ export interface UserGroupData {
 	};
 }
 
+interface AAGroupRtdb {
+	id?: string;
+	groupId?: string;
+	name?: string;
+	groupName?: string;
+	address?: string;
+	city?: string;
+	neighborhood?: string;
+	online?: boolean;
+	monday?: string;
+	tuesday?: string;
+	wednesday?: string;
+	thursday?: string;
+	friday?: string;
+	saturday?: string;
+	sunday?: string;
+	schedule?: GroupSchedule;
+}
+
+interface StoredUserGroup extends Partial<AAGroup>, UserGroupData {
+	groupName?: string;
+}
+
 @Injectable()
 export class GroupsService {
 	constructor(private readonly firebaseService: FirebaseService) { }
@@ -63,7 +86,10 @@ export class GroupsService {
 
 	async getUserGroups(userId: string): Promise<AAGroup[]> {
 		try {
-			const groupsData = await this.firebaseService.getUserData(userId, 'groups');
+			const groupsData = await this.firebaseService.getUserData<Record<string, StoredUserGroup>>(
+				userId,
+				'groups',
+			);
 
 			if (!groupsData) {
 				return [];
@@ -75,18 +101,18 @@ export class GroupsService {
 				const group = groupsData[groupId];
 				groups.push({
 					id: groupId,
-					name: group.groupName,
-					address: group.address,
-					city: group.city,
-					neighborhood: group.neighborhood,
-					online: group.online || false,
-					monday: group.monday || '',
-					tuesday: group.tuesday || '',
-					wednesday: group.wednesday || '',
-					thursday: group.thursday || '',
-					friday: group.friday || '',
-					saturday: group.saturday || '',
-					sunday: group.sunday || '',
+					name: group.groupName ?? group.name ?? groupId,
+					address: group.address ?? '',
+					city: group.city ?? '',
+					neighborhood: group.neighborhood ?? '',
+					online: group.online ?? false,
+					monday: group.monday ?? '',
+					tuesday: group.tuesday ?? '',
+					wednesday: group.wednesday ?? '',
+					thursday: group.thursday ?? '',
+					friday: group.friday ?? '',
+					saturday: group.saturday ?? '',
+					sunday: group.sunday ?? '',
 					schedule: group.schedule,
 				});
 			});
@@ -115,23 +141,28 @@ export class GroupsService {
 		notificationsEnabled: boolean
 	): Promise<void> {
 		try {
-			const groupData = await this.firebaseService.getUserData(userId, `groups/${groupId}`);
+			const groupData = await this.firebaseService.getUserData<StoredUserGroup>(
+				userId,
+				`groups/${groupId}`,
+			);
 
 			if (!groupData) {
 				throw new Error("Group not found");
 			}
 
-			if (!groupData.meetingNotifications) {
-				groupData.meetingNotifications = {};
+			const meetingNotifications = groupData.meetingNotifications ?? {};
+
+			if (!meetingNotifications[day]) {
+				meetingNotifications[day] = {};
 			}
 
-			if (!groupData.meetingNotifications[day]) {
-				groupData.meetingNotifications[day] = {};
-			}
+			meetingNotifications[day][meetingIndex] = notificationsEnabled;
 
-			groupData.meetingNotifications[day][meetingIndex] = notificationsEnabled;
-
-			await this.firebaseService.saveUserData(userId, groupData, `groups/${groupId}`);
+			await this.firebaseService.saveUserData(
+				userId,
+				{ ...groupData, meetingNotifications },
+				`groups/${groupId}`,
+			);
 		} catch (error) {
 			console.error("Error updating meeting notification:", error);
 			throw new Error("Failed to update meeting notification");
@@ -140,9 +171,12 @@ export class GroupsService {
 
 	async getMeetingNotifications(userId: string, groupId: string): Promise<{ [day: string]: { [index: number]: boolean } }> {
 		try {
-			const groupData = await this.firebaseService.getUserData(userId, `groups/${groupId}`);
+			const groupData = await this.firebaseService.getUserData<StoredUserGroup>(
+				userId,
+				`groups/${groupId}`,
+			);
 
-			if (!groupData || !groupData.meetingNotifications) {
+			if (!groupData?.meetingNotifications) {
 				return {};
 			}
 
@@ -155,24 +189,24 @@ export class GroupsService {
 
 	async getAllAAGroups(): Promise<AAGroup[]> {
 		try {
-			const groupsData = await this.firebaseService.getData('aa-groups');
+			const groupsData = await this.firebaseService.getData<Record<string, AAGroupRtdb>>('aa-groups');
 			if (!groupsData) {
 				return [];
 			}
-			const groups: AAGroup[] = Object.values(groupsData).map((group: any) => ({
-				id: group.id || group.groupId,
-				name: group.name || group.groupName,
-				address: group.address,
-				city: group.city,
-				neighborhood: group.neighborhood,
-				online: group.online || false,
-				monday: group.monday || '',
-				tuesday: group.tuesday || '',
-				wednesday: group.wednesday || '',
-				thursday: group.thursday || '',
-				friday: group.friday || '',
-				saturday: group.saturday || '',
-				sunday: group.sunday || '',
+			const groups: AAGroup[] = Object.values(groupsData).map((group) => ({
+				id: group.id ?? group.groupId ?? '',
+				name: group.name ?? group.groupName ?? '',
+				address: group.address ?? '',
+				city: group.city ?? '',
+				neighborhood: group.neighborhood ?? '',
+				online: group.online ?? false,
+				monday: group.monday ?? '',
+				tuesday: group.tuesday ?? '',
+				wednesday: group.wednesday ?? '',
+				thursday: group.thursday ?? '',
+				friday: group.friday ?? '',
+				saturday: group.saturday ?? '',
+				sunday: group.sunday ?? '',
 				schedule: group.schedule,
 			}));
 			return groups;

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/shared/theme/colors';
-import { Linking } from 'react-native';
+import type { IoniconName } from '@/shared/types/icons';
 
 interface VirtualMeeting {
     id: string;
@@ -122,7 +122,7 @@ export const VirtualMeetings: React.FC = () => {
         );
     };
 
-    const getPlatformIcon = (platform: string) => {
+    const getPlatformIcon = (platform: string): IoniconName => {
         switch (platform) {
             case 'Zoom':
                 return 'videocam';
@@ -204,7 +204,7 @@ export const VirtualMeetings: React.FC = () => {
                         >
                             <View style={[styles.platformIcon, { backgroundColor: getPlatformColor(meeting.platform) }]}>
                                 <Ionicons
-                                    name={getPlatformIcon(meeting.platform) as any}
+                                    name={getPlatformIcon(meeting.platform)}
                                     size={20}
                                     color="white"
                                 />

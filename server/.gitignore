@@ -11,6 +11,7 @@ firebase-credentials.json
 
 # Build output
 dist/
+tsconfig.build.tsbuildinfo
 
 # Logs
 *.log

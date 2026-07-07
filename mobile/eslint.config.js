@@ -17,6 +17,7 @@ module.exports = defineConfig([
 	},
 	{
 		rules: {
+			'@typescript-eslint/no-explicit-any': 'warn',
 			'no-restricted-imports': [
 				'error',
 				{

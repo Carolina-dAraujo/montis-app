@@ -33,10 +33,17 @@ export default function SobrietyTimeline() {
 			return;
 		}
 
-		await updateOnboardingData({
-			sobrietyStartDate: sobrietyStartDate?.toISOString(),
-			lastDrinkDate: lastDrinkDate?.toISOString(),
-		});
+		if (isCurrentlySober) {
+			updateOnboardingData({
+				sobrietyStartDate: sobrietyStartDate?.toISOString(),
+				lastDrinkDate: undefined,
+			});
+		} else {
+			updateOnboardingData({
+				lastDrinkDate: lastDrinkDate?.toISOString(),
+				sobrietyStartDate: undefined,
+			});
+		}
 
 		router.push('/onboarding/sobriety-goals');
 	};

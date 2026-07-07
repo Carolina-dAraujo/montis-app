@@ -3,12 +3,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/shared/theme/colors';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import type { IoniconName } from '@/shared/types/icons';
 import { ConfigHeader } from '@/features/settings/components/ConfigHeader';
 import { styles } from '@/features/crisisSupport/styles/crisisResources.styles';
 
 export default function CrisisResources() {
     const router = useRouter();
-    const emergencyNumbers = [
+    const emergencyNumbers: {
+        name: string;
+        number: string;
+        description: string;
+        icon: IoniconName;
+    }[] = [
         {
             name: 'Centro de Valorização da Vida (CVV)',
             number: '188',
@@ -35,7 +41,11 @@ export default function CrisisResources() {
         }
     ];
 
-    const copingStrategies = [
+    const copingStrategies: {
+        title: string;
+        description: string;
+        icon: IoniconName;
+    }[] = [
         {
             title: 'Respiração 4-7-8',
             description: 'Inspire por 4 segundos, segure por 7, expire por 8',
@@ -138,7 +148,7 @@ export default function CrisisResources() {
                         >
                             <View style={styles.emergencyCardContent}>
                                 <View style={styles.emergencyIconContainer}>
-                                    <Ionicons name={item.icon as any} size={24} color={Colors.light.tint} />
+                                    <Ionicons name={item.icon} size={24} color={Colors.light.tint} />
                                 </View>
                                 <View style={styles.emergencyInfo}>
                                     <Text style={styles.emergencyName}>{item.name}</Text>
@@ -162,7 +172,7 @@ export default function CrisisResources() {
                         <View key={index} style={styles.copingCard}>
                             <View style={styles.copingCardContent}>
                                 <View style={styles.copingIconContainer}>
-                                    <Ionicons name={strategy.icon as any} size={20} color={Colors.light.tint} />
+                                    <Ionicons name={strategy.icon} size={20} color={Colors.light.tint} />
                                 </View>
                                 <View style={styles.copingInfo}>
                                     <Text style={styles.copingTitle}>{strategy.title}</Text>

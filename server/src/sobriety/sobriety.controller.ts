@@ -3,6 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagg
 import { SobrietyService, SobrietyData, Milestone } from "./sobriety.service";
 import { AuthGuard } from "../auth/auth.guard";
 import { CurrentUser } from "../auth/current-user.decorator";
+import { AuthenticatedUser } from "../auth/authenticated-user.types";
 @ApiTags("Sobriety")
 @Controller("sobriety")
 @UseGuards(AuthGuard)
@@ -40,7 +41,7 @@ export class SobrietyController {
 			}
 		}
 	})
-	async getSobrietyData(@CurrentUser() user: any): Promise<SobrietyData> {
+	async getSobrietyData(@CurrentUser() user: AuthenticatedUser): Promise<SobrietyData> {
 		const data = await this.sobrietyService.getUserSobrietyData(user.uid);
 		if (!data) {
 			throw new NotFoundException('Sobriety data not found');
@@ -79,7 +80,7 @@ export class SobrietyController {
 		description: "Relapse recorded successfully"
 	})
 	async recordRelapse(
-		@CurrentUser() user: any,
+		@CurrentUser() user: AuthenticatedUser,
 		@Body() body: { relapseDate: string }
 	): Promise<SobrietyData> {
 		const relapseDate = new Date(body.relapseDate);
@@ -93,7 +94,7 @@ export class SobrietyController {
 		description: "Sobriety tracking started successfully"
 	})
 	async startSobrietyTracking(
-		@CurrentUser() user: any,
+		@CurrentUser() user: AuthenticatedUser,
 		@Body() body: { startDate: string }
 	): Promise<SobrietyData> {
 		const startDate = new Date(body.startDate);

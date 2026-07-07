@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Colors } from '@/shared/theme/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { getTabBarHeight } from '@/shared/components/ui/tabBarMetrics';
 
 type CrisisButtonProps = {
 	onPress: () => void;
@@ -10,7 +11,7 @@ type CrisisButtonProps = {
 
 export function CrisisButton({ onPress }: CrisisButtonProps) {
 	const insets = useSafeAreaInsets();
-	const tabBarHeight = 60 + insets.bottom;
+	const tabBarHeight = getTabBarHeight(insets.bottom);
 
 	return (
 		<View style={[styles.container, { bottom: tabBarHeight + 20 }]}>

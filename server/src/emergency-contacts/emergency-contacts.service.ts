@@ -39,7 +39,7 @@ export class EmergencyContactsService {
 			for (const [id, data] of Object.entries(contactsData)) {
 				contacts.push({
 					id,
-					...(data as any),
+					...(data as Omit<EmergencyContact, 'id'>),
 				});
 			}
 

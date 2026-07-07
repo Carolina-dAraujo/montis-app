@@ -3,6 +3,7 @@ import { CreateEmergencyAlertDto } from './dtos';
 import { EmergencyAlert } from './entities/emergency-alert.entity';
 import { FirebaseService } from '../firebase/firebase.service';
 import { EmergencyContactsService } from '../emergency-contacts/emergency-contacts.service';
+import { EmergencyContact } from '../emergency-contacts/entities/emergency-contact.entity';
 
 @Injectable()
 export class EmergencyAlertsService {
@@ -41,7 +42,10 @@ export class EmergencyAlertsService {
 		};
 	}
 
-	private async sendSMSToContacts(contacts: any[], alertData: CreateEmergencyAlertDto): Promise<void> {
+	private async sendSMSToContacts(
+		contacts: EmergencyContact[],
+		alertData: CreateEmergencyAlertDto,
+	): Promise<void> {
 		const message = this.formatEmergencyMessage(alertData);
 
 		for (const contact of contacts) {
@@ -100,7 +104,7 @@ export class EmergencyAlertsService {
 			for (const [id, data] of Object.entries(alertsData)) {
 				alerts.push({
 					id,
-					...(data as any),
+					...(data as Omit<EmergencyAlert, 'id'>),
 				});
 			}
 

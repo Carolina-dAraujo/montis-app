@@ -1,9 +1,10 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import type { LucideIcon } from 'lucide-react-native';
 
 interface TrackingOption {
     id: string;
     label: string;
-    icon: any;
+    icon: LucideIcon;
     color: string;
 }
 

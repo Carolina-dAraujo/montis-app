@@ -36,4 +36,13 @@ export const Colors = {
 	black: '#000000',
 	input: '#E8E8E8',
 	lightGray: '#F3F3F3',
+	tabBar: {
+		blurIntensity: 25,
+		glassOverlay: 'rgba(222, 222, 225, 0.5)',
+		androidFallback: 'rgba(245, 245, 247, 0.92)',
+		iconInactive: '#94949A',
+		iconActive: '#3A6EA5',
+		iconActiveGlass: 'rgba(255, 255, 255, 0.88)',
+		crisis: '#E53935',
+	},
 };

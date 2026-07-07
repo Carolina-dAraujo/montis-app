@@ -16,6 +16,7 @@ import { useRouter } from 'expo-router';
 import { useUserGroups } from '@/features/groups/hooks/useUserGroups';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { styles } from '@/features/groups/styles/grupos.styles';
+import type { MaterialCommunityIconName } from '@/shared/types/icons';
 
 export default function Grupos() {
 	const auth = useAuth();
@@ -111,7 +112,7 @@ export default function Grupos() {
 		router.push('/services');
 	};
 
-	const getTypeIcon = (type: string) => {
+	const getTypeIcon = (type: string): MaterialCommunityIconName => {
 		switch (type) {
 			case 'virtual':
 				return 'monitor';
@@ -206,7 +207,7 @@ export default function Grupos() {
 									<Text style={styles.groupName}>{group.name}</Text>
 									<View style={[styles.typeBadge, { backgroundColor: getTypeColor(group.type) }]}>
 										<MaterialCommunityIcons
-											name={getTypeIcon(group.type) as any}
+											name={getTypeIcon(group.type)}
 											size={12}
 											color="#FFFFFF"
 										/>

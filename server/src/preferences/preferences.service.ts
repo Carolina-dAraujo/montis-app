@@ -22,11 +22,8 @@ export interface Permissions {
   };
 }
 
-function removeUndefined(obj: any) {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([_, v]) => v !== undefined)
-  );
-}
+import { removeUndefinedValues } from '../common/remove-undefined';
+import type { UserPreferences } from '@montis/contracts/preferences';
 
 @Injectable()
 export class PreferencesService {
@@ -42,23 +39,26 @@ export class PreferencesService {
       ? preferences.notificationFrequency 
       : 'never';
 
-    const prefsToSave = removeUndefined({
+    const prefsToSave = removeUndefinedValues({
       ...preferences,
-      notificationFrequency: notificationFrequency,
-    });
+      notificationFrequency,
+    } as Record<string, unknown>);
 
-    // Garantir que os campos obrigatórios estejam presentes
     const prefsForMap: Preferences = {
-      dailyReminders: typeof prefsToSave.dailyReminders === 'boolean' ? prefsToSave.dailyReminders : false,
-      notificationFrequency: typeof prefsToSave.notificationFrequency === 'string' ? prefsToSave.notificationFrequency : 'daily',
-      crisisSupport: typeof prefsToSave.crisisSupport === 'boolean' ? prefsToSave.crisisSupport : false,
-      shareProgress: typeof prefsToSave.shareProgress === 'boolean' ? prefsToSave.shareProgress : false,
+      dailyReminders:
+        typeof prefsToSave.dailyReminders === 'boolean' ? prefsToSave.dailyReminders : false,
+      notificationFrequency:
+        typeof prefsToSave.notificationFrequency === 'string'
+          ? prefsToSave.notificationFrequency
+          : 'daily',
+      crisisSupport:
+        typeof prefsToSave.crisisSupport === 'boolean' ? prefsToSave.crisisSupport : false,
+      shareProgress:
+        typeof prefsToSave.shareProgress === 'boolean' ? prefsToSave.shareProgress : false,
     };
     this.preferences.set(userId, prefsForMap);
 
-    // Salvar também no Firebase para manter sincronizado
-    console.log('Salvando no Firebase:', prefsToSave);
-    await this.firebaseService.savePreferences(userId, prefsToSave);
+    await this.firebaseService.savePreferences(userId, prefsToSave as UserPreferences);
 
     return { message: 'Preferências atualizadas com sucesso' };
   }

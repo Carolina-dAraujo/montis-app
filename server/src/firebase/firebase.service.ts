@@ -7,7 +7,9 @@ import { ConfigService } from "@nestjs/config";
 import axios from "axios";
 import { Storage } from '@google-cloud/storage';
 import * as path from 'path';
-import { Express } from 'express';
+import type { OnboardingPreferences } from '@montis/contracts/onboarding';
+import type { UserPreferences } from '@montis/contracts/preferences';
+import type { SobrietyRtdbRecord } from '@montis/contracts/sobriety-rtdb';
 
 @Injectable()
 export class FirebaseService implements OnModuleInit {
@@ -184,7 +186,7 @@ export class FirebaseService implements OnModuleInit {
 		}
 	}
 
-	async saveUserData(uid: string, data: any, path: string = ''): Promise<void> {
+	async saveUserData<T extends object>(uid: string, data: T, path: string = ''): Promise<void> {
 		try {
 			const ref = this.database.ref(`users/${uid}${path ? '/' + path : ''}`);
 			await ref.set(data);
@@ -194,19 +196,19 @@ export class FirebaseService implements OnModuleInit {
 		}
 	}
 
-	async getUserData(uid: string, path: string = ''): Promise<any> {
+	async getUserData<T = Record<string, unknown>>(uid: string, path: string = ''): Promise<T | null> {
 		try {
 			const ref = this.database.ref(`users/${uid}${path ? '/' + path : ''}`);
 			const snapshot = await ref.once('value');
 			const data = snapshot.val();
 
-			return data;
+			return data as T | null;
 		} catch (error) {
 			throw error;
 		}
 	}
 
-	async updateUserData(uid: string, data: any, path: string = ''): Promise<void> {
+	async updateUserData<T extends object>(uid: string, data: T, path: string = ''): Promise<void> {
 		try {
 			const ref = this.database.ref(`users/${uid}${path ? '/' + path : ''}`);
 			await ref.update(data);
@@ -224,7 +226,10 @@ export class FirebaseService implements OnModuleInit {
 		}
 	}
 
-	async saveOnboardingData(uid: string, onboardingData: any): Promise<void> {
+	async saveOnboardingData(
+		uid: string,
+		onboardingData: Partial<OnboardingPreferences>,
+	): Promise<void> {
 		await this.saveUserData(uid, {
 			...onboardingData,
 			onboardingCompleted: true,
@@ -232,24 +237,24 @@ export class FirebaseService implements OnModuleInit {
 		}, 'onboarding');
 	}
 
-	async getOnboardingData(uid: string): Promise<any> {
-		return await this.getUserData(uid, 'onboarding');
+	async getOnboardingData(uid: string): Promise<OnboardingPreferences | null> {
+		return await this.getUserData<OnboardingPreferences>(uid, 'onboarding');
 	}
 
-	async saveSobrietyData(uid: string, sobrietyData: any): Promise<void> {
+	async saveSobrietyData(uid: string, sobrietyData: Partial<SobrietyRtdbRecord>): Promise<void> {
 		await this.saveUserData(uid, sobrietyData, 'sobriety');
 	}
 
-	async getSobrietyData(uid: string): Promise<any> {
-		return await this.getUserData(uid, 'sobriety');
+	async getSobrietyData(uid: string): Promise<SobrietyRtdbRecord | null> {
+		return await this.getUserData<SobrietyRtdbRecord>(uid, 'sobriety');
 	}
 
-	async savePreferences(uid: string, preferences: any): Promise<void> {
+	async savePreferences(uid: string, preferences: UserPreferences): Promise<void> {
 		await this.saveUserData(uid, preferences, 'preferences');
 	}
 
-	async getPreferences(uid: string): Promise<any> {
-		return await this.getUserData(uid, 'preferences');
+	async getPreferences(uid: string): Promise<UserPreferences | null> {
+		return await this.getUserData<UserPreferences>(uid, 'preferences');
 	}
 
 	async getDailyTracking(uid: string, date: string): Promise<Record<string, unknown> | null> {
@@ -281,12 +286,12 @@ export class FirebaseService implements OnModuleInit {
 		return result;
 	}
 
-	async getData(path: string): Promise<any> {
+	async getData<T = unknown>(path: string): Promise<T | null> {
 		try {
 			const ref = this.database.ref(path);
 			const snapshot = await ref.once('value');
 
-			return snapshot.val();
+			return snapshot.val() as T | null;
 		} catch (error) {
 			throw error;
 		}
@@ -295,7 +300,7 @@ export class FirebaseService implements OnModuleInit {
 	/**
 	 * Faz upload da imagem de perfil para o Firebase Storage e retorna a URL pública
 	 */
-	async uploadProfileImage(uid: string, file: any): Promise<string> {
+	async uploadProfileImage(uid: string, file: Express.Multer.File): Promise<string> {
 		const ext = path.extname(file.originalname) || '.jpg';
 		const destination = `users/${uid}/profile${ext}`;
 		const bucket = this.storage.bucket(this.bucketName);

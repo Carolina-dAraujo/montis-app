@@ -53,6 +53,56 @@ export function isAuthError(error: unknown): boolean {
 	);
 }
 
+export function buildFetchInit(options: RequestInit = {}): RequestInit {
+	return {
+		...options,
+		headers: {
+			'Content-Type': 'application/json',
+			...options.headers,
+		},
+	};
+}
+
+function parseApiErrorMessage(errorData: unknown, status: number): string {
+	if (!errorData || typeof errorData !== 'object') {
+		return `HTTP ${status}`;
+	}
+
+	const body = errorData as {
+		message?: string | { message?: string; errors?: string[] };
+		errors?: string[];
+	};
+
+	if (Array.isArray(body.errors) && body.errors.length > 0) {
+		return body.errors.join('; ');
+	}
+
+	if (body.message && typeof body.message === 'object') {
+		const nested = body.message;
+		if (Array.isArray(nested.errors) && nested.errors.length > 0) {
+			return nested.errors.join('; ');
+		}
+		if (nested.message) {
+			return nested.message;
+		}
+	}
+
+	if (typeof body.message === 'string') {
+		return body.message;
+	}
+
+	return `HTTP ${status}`;
+}
+
+/** Parses JSON body; empty 200 responses become null (NestJS returns no body for null). */
+export async function parseResponseJson<T>(response: Response): Promise<T> {
+	const text = await response.text();
+	if (!text.trim()) {
+		return null as T;
+	}
+	return JSON.parse(text) as T;
+}
+
 export async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
 	const baseUrl = getApiUrl();
 	const url = `${baseUrl}${endpoint}`;
@@ -61,17 +111,27 @@ export async function request<T>(endpoint: string, options: RequestInit = {}): P
 
 	try {
 		const response = await fetch(url, {
-			headers: { 'Content-Type': 'application/json', ...options.headers },
-			...options,
+			...buildFetchInit(options),
 			signal: controller.signal,
 		});
 
+		const text = await response.text();
+
 		if (!response.ok) {
-			const errorData = await response.json().catch(() => ({ message: 'Network error' }));
-			throw new Error(errorData.message || `HTTP ${response.status}`);
+			let errorData: unknown;
+			try {
+				errorData = text.trim() ? JSON.parse(text) : { message: `HTTP ${response.status}` };
+			} catch {
+				errorData = { message: text || `HTTP ${response.status}` };
+			}
+			throw new Error(parseApiErrorMessage(errorData, response.status));
 		}
 
-		return await response.json();
+		if (!text.trim()) {
+			return null as T;
+		}
+
+		return JSON.parse(text) as T;
 	} catch (error) {
 		const mapped = mapNetworkError(error, baseUrl);
 		if (isConnectivityError(mapped)) {

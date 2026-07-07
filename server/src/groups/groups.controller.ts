@@ -3,6 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagg
 import { GroupsService } from "./groups.service";
 import { AuthGuard } from "../auth/auth.guard";
 import { CurrentUser } from "../auth/current-user.decorator";
+import { AuthenticatedUser } from "../auth/authenticated-user.types";
 
 @ApiTags("Groups")
 @Controller("groups")
@@ -35,7 +36,7 @@ export class GroupsController {
 		description: "Unauthorized",
 	})
 	async addAAGroup(
-		@CurrentUser() user: any,
+		@CurrentUser() user: AuthenticatedUser,
 		@Body() body: {
 			groupId: string;
 			notificationsEnabled: boolean;
@@ -94,7 +95,7 @@ export class GroupsController {
 		status: 401,
 		description: "Unauthorized",
 	})
-	async getUserGroups(@CurrentUser() user: any) {
+	async getUserGroups(@CurrentUser() user: AuthenticatedUser) {
 		try {
 			const groups = await this.groupsService.getUserGroups(user.uid);
 			return groups;
@@ -121,7 +122,7 @@ export class GroupsController {
 		description: "Unauthorized",
 	})
 	async updateGroupNotifications(
-		@CurrentUser() user: any,
+		@CurrentUser() user: AuthenticatedUser,
 		@Param('groupId') groupId: string,
 		@Body() body: { notificationsEnabled: boolean }
 	) {
@@ -153,7 +154,7 @@ export class GroupsController {
 		description: "Unauthorized",
 	})
 	async updateMeetingNotification(
-		@CurrentUser() user: any,
+		@CurrentUser() user: AuthenticatedUser,
 		@Param('groupId') groupId: string,
 		@Param('day') day: string,
 		@Param('meetingIndex') meetingIndex: string,
@@ -196,7 +197,7 @@ export class GroupsController {
 		description: "Unauthorized",
 	})
 	async getMeetingNotifications(
-		@CurrentUser() user: any,
+		@CurrentUser() user: AuthenticatedUser,
 		@Param('groupId') groupId: string
 	) {
 		try {

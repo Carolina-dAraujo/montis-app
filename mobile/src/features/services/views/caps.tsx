@@ -15,6 +15,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { ChevronLeft } from 'lucide-react-native';
 import { styles } from '@/features/services/styles/caps.styles';
+import type { MaterialCommunityIconName } from '@/shared/types/icons';
 
 interface CAPSService {
     id: string;
@@ -70,7 +71,7 @@ export default function Caps() {
         return matchesSearch;
     });
 
-    const getTypeIcon = (type: string) => {
+    const getTypeIcon = (type: string): MaterialCommunityIconName => {
         switch (type) {
             case 'online':
                 return 'monitor';
@@ -158,7 +159,7 @@ export default function Caps() {
                             <Text style={styles.serviceName}>{service.name}</Text>
                             <View style={[styles.typeBadge, { backgroundColor: getTypeColor(service.type) }]}>
                                 <MaterialCommunityIcons
-                                    name={getTypeIcon(service.type) as any}
+                                    name={getTypeIcon(service.type)}
                                     size={12}
                                     color="#FFFFFF"
                                 />

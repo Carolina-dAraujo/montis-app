@@ -4,12 +4,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/shared/theme/colors';
 import { useOnboarding } from '@/features/onboarding/context/OnboardingProvider';
 import { useAuth } from '@/features/auth/context/AuthProvider';
-import { onboardingApi, type OnboardingRequest } from '@/features/onboarding/api';
+import { onboardingApi } from '@/features/onboarding/api';
+import { buildOnboardingPayload } from '@/features/onboarding/lib/buildOnboardingPayload';
 import { storageService } from '@/shared/lib/storage';
 import { primaryButtonStyles } from '@/features/onboarding/styles/primaryButton.styles';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { styles } from '@/features/onboarding/styles/completion.styles';
 import { usePreferences } from '@/features/settings/hooks/usePreferences';
+import { NotificationFrequency } from '@/features/onboarding/types';
 
 export default function Completion() {
 	const router = useRouter();
@@ -25,20 +27,13 @@ export default function Completion() {
 				return;
 			}
 
-			const onboardingPayload: Record<string, any> = {
-				...onboardingData
-			};
+			const onboardingPayload = buildOnboardingPayload(onboardingData);
 
-			if (onboardingData.sobrietyStartDate) {
-				onboardingPayload.sobrietyStartDate = onboardingData.sobrietyStartDate;
-			}
+			await onboardingApi.completeOnboarding(token, onboardingPayload);
 
-			await onboardingApi.completeOnboarding(token, onboardingPayload as OnboardingRequest);
-
-			// Salvar preferências também no endpoint /user/preferences
 			await updatePreferences({
 				dailyReminders: onboardingData.dailyReminders,
-				notificationFrequency: onboardingData.notificationFrequency as any,
+				notificationFrequency: onboardingData.notificationFrequency as NotificationFrequency | undefined,
 				crisisSupport: onboardingData.crisisSupport,
 				shareProgress: onboardingData.shareProgress,
 			});
@@ -55,11 +50,10 @@ export default function Completion() {
 			router.replace('/(tabs)/home');
 		} catch (error) {
 			console.error('CompletionScreen - Error completing onboarding:', error);
-			Alert.alert(
-				'Erro',
-				'Não foi possível completar o onboarding. Tente novamente.',
-				[{ text: 'OK' }]
-			);
+			const message = error instanceof Error
+				? error.message
+				: 'Não foi possível completar o onboarding. Tente novamente.';
+			Alert.alert('Erro', message, [{ text: 'OK' }]);
 		}
 	};
 

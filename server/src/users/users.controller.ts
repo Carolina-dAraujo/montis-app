@@ -1,4 +1,5 @@
-import { Controller, Post, Body, HttpCode, HttpStatus, Get, UseGuards, Put, Delete, Req, UploadedFile, UseInterceptors, Param, Query } from "@nestjs/common";
+import { Controller, Post, Body, HttpCode, HttpStatus, Get, UseGuards, Put, Delete, Req, UploadedFile, UseInterceptors, Param, Query, Res } from "@nestjs/common";
+import type { Response } from "express";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { UsersService } from "./users.service";
 import { RegisterUserDto, LoginUserDto, AuthResponseDto } from "./dtos/auth";
@@ -10,6 +11,7 @@ import { CurrentUser } from "../auth/current-user.decorator";
 import { getPasswordRules } from "../common/password.validator";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthenticatedUser } from "../auth/authenticated-user.types";
 
 @ApiTags("Authentication")
 @Controller("auth")
@@ -100,7 +102,7 @@ export class UsersController {
 		status: 401,
 		description: "Unauthorized",
 	})
-	async completeOnboarding(@CurrentUser() user: any, @Body() onboardingData: OnboardingDto) {
+	async completeOnboarding(@CurrentUser() user: AuthenticatedUser, @Body() onboardingData: OnboardingDto) {
 		try {
 			const result = await this.usersService.completeOnboarding(user.uid, onboardingData);
 			return {
@@ -125,7 +127,7 @@ export class UsersController {
 		status: 401,
 		description: "Unauthorized",
 	})
-	async getProfile(@CurrentUser() user: any) {
+	async getProfile(@CurrentUser() user: AuthenticatedUser) {
 		return await this.usersService.getUserProfile(user.uid);
 	}
 
@@ -145,13 +147,8 @@ export class UsersController {
 		status: 401,
 		description: "Unauthorized",
 	})
-	async updateProfile(@CurrentUser() user: any, @Body() updateData: UpdateProfileDto) {
+	async updateProfile(@CurrentUser() user: AuthenticatedUser, @Body() updateData: UpdateProfileDto) {
 		try {
-			const updateFields: any = {};
-			if (updateData.displayName !== undefined) updateFields.displayName = updateData.displayName;
-			if (updateData.phone !== undefined) updateFields.phoneNumber = updateData.phone;
-			if (updateData.email !== undefined) updateFields.email = updateData.email;
-
 			const userRecord = await this.usersService.updateUserProfile(user.uid, updateData);
 
 			return {
@@ -183,7 +180,7 @@ export class UsersController {
 		status: 401,
 		description: "Unauthorized",
 	})
-	async updatePassword(@CurrentUser() user: any, @Body() passwordData: UpdatePasswordDto) {
+	async updatePassword(@CurrentUser() user: AuthenticatedUser, @Body() passwordData: UpdatePasswordDto) {
 		return await this.usersService.updateUserPassword(user.uid, passwordData);
 	}
 
@@ -191,7 +188,10 @@ export class UsersController {
 	@UseGuards(AuthGuard)
 	@ApiBearerAuth()
 	@UseInterceptors(FileInterceptor('file'))
-	async uploadProfileImage(@CurrentUser() user: any, @UploadedFile() file: any) {
+	async uploadProfileImage(
+		@CurrentUser() user: AuthenticatedUser,
+		@UploadedFile() file: Express.Multer.File,
+	) {
 		if (!file) {
 			throw new BadRequestException('Nenhum arquivo enviado');
 		}
@@ -212,7 +212,7 @@ export class UsersController {
 		status: 401,
 		description: "Unauthorized",
 	})
-	async deleteAccount(@CurrentUser() user: any) {
+	async deleteAccount(@CurrentUser() user: AuthenticatedUser) {
 		return await this.usersService.deleteUserAccount(user.uid);
 	}
 
@@ -221,7 +221,7 @@ export class UsersController {
 	@ApiBearerAuth()
 	@ApiOperation({ summary: "Get daily tracking entries for a calendar month" })
 	async getDailyTrackingMonth(
-		@CurrentUser() user: any,
+		@CurrentUser() user: AuthenticatedUser,
 		@Query('year') year: string,
 		@Query('month') month: string,
 	) {
@@ -237,9 +237,13 @@ export class UsersController {
 	@UseGuards(AuthGuard)
 	@ApiBearerAuth()
 	@ApiOperation({ summary: "Get daily tracking for a date" })
-	async getDailyTracking(@CurrentUser() user: any, @Param('date') date: string) {
+	async getDailyTracking(
+		@CurrentUser() user: AuthenticatedUser,
+		@Param('date') date: string,
+		@Res() res: Response,
+	) {
 		const data = await this.usersService.getDailyTracking(user.uid, date);
-		return data ?? null;
+		return res.status(HttpStatus.OK).json(data ?? null);
 	}
 
 	@Put("tracking/:date")
@@ -247,7 +251,7 @@ export class UsersController {
 	@ApiBearerAuth()
 	@ApiOperation({ summary: "Save daily tracking for a date" })
 	async saveDailyTracking(
-		@CurrentUser() user: any,
+		@CurrentUser() user: AuthenticatedUser,
 		@Param('date') date: string,
 		@Body() body: DailyTrackingDto,
 	) {
@@ -266,7 +270,7 @@ export class UsersController {
 		status: 401,
 		description: "Unauthorized",
 	})
-	async checkOnboardingStatus(@CurrentUser() user: any) {
+	async checkOnboardingStatus(@CurrentUser() user: AuthenticatedUser) {
 		try {
 			const onboardingData = await this.usersService.getOnboardingStatus(user.uid);
 			return {
@@ -292,7 +296,7 @@ export class UsersController {
 		status: 401,
 		description: "Unauthorized",
 	})
-	async getOnboardingData(@CurrentUser() user: any) {
+	async getOnboardingData(@CurrentUser() user: AuthenticatedUser) {
 		try {
 			const onboardingData = await this.usersService.getOnboardingData(user.uid);
 			return onboardingData;
@@ -314,7 +318,7 @@ export class UsersController {
 		status: 401,
 		description: "Unauthorized",
 	})
-	async getUserData(@CurrentUser() user: any) {
+	async getUserData(@CurrentUser() user: AuthenticatedUser) {
 		if (process.env.NODE_ENV === 'production') {
 			throw new NotFoundException();
 		}
@@ -346,7 +350,10 @@ export class UsersController {
 		status: 401,
 		description: "Unauthorized",
 	})
-	async testOnboarding(@CurrentUser() user: any, @Body() onboardingData: any) {
+	async testOnboarding(
+		@CurrentUser() user: AuthenticatedUser,
+		@Body() onboardingData: OnboardingDto,
+	) {
 		if (process.env.NODE_ENV === 'production') {
 			throw new NotFoundException();
 		}
