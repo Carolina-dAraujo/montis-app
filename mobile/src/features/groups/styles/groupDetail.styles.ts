@@ -28,6 +28,11 @@ export const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
+	headerAction: {
+		padding: 8,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
 	shareButton: {
 		padding: 8,
 	},

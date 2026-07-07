@@ -9,6 +9,7 @@ type GroupDetailHeaderProps = {
 	notificationsEnabled: boolean;
 	onBack: () => void;
 	onToggleNotifications: () => void;
+	onRemove?: () => void;
 	showNotificationToggle?: boolean;
 };
 
@@ -17,6 +18,7 @@ export function GroupDetailHeader({
 	notificationsEnabled,
 	onBack,
 	onToggleNotifications,
+	onRemove,
 	showNotificationToggle = true,
 }: GroupDetailHeaderProps) {
 	return (
@@ -24,19 +26,28 @@ export function GroupDetailHeader({
 			<TouchableOpacity style={styles.backButton} onPress={onBack}>
 				<ChevronLeft size={24} color={Colors.icon.gray} />
 			</TouchableOpacity>
-			<Text style={styles.headerTitle}>{title}</Text>
+			<Text style={styles.headerTitle} numberOfLines={1}>
+				{title}
+			</Text>
 			<View style={styles.headerSpacer} />
 			{showNotificationToggle ? (
-				<TouchableOpacity style={styles.notificationButton} onPress={onToggleNotifications}>
+				<TouchableOpacity style={styles.headerAction} onPress={onToggleNotifications}>
 					<MaterialCommunityIcons
 						name={notificationsEnabled ? 'bell' : 'bell-outline'}
 						size={20}
 						color={notificationsEnabled ? Colors.containers.blue : Colors.icon.gray}
 					/>
 				</TouchableOpacity>
-			) : (
-				<View style={styles.notificationButton} />
-			)}
+			) : null}
+			{onRemove ? (
+				<TouchableOpacity style={styles.headerAction} onPress={onRemove}>
+					<MaterialCommunityIcons
+						name="trash-can-outline"
+						size={20}
+						color={Colors.icon.gray}
+					/>
+				</TouchableOpacity>
+			) : null}
 		</View>
 	);
 }

@@ -21,6 +21,7 @@ export default function GroupDetail() {
 		openInMaps,
 		openInGoogleMaps,
 		openInWaze,
+		handleRemoveGroup,
 		goBack,
 	} = useGroupDetail();
 
@@ -50,6 +51,7 @@ export default function GroupDetail() {
 				notificationsEnabled={!!group.notificationsEnabled}
 				onBack={goBack}
 				onToggleNotifications={() => handleNotificationToggle(!group.notificationsEnabled)}
+				onRemove={handleRemoveGroup}
 			/>
 
 			<ScrollView showsVerticalScrollIndicator={false}>

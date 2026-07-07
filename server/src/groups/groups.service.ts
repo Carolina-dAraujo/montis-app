@@ -84,6 +84,24 @@ export class GroupsService {
 		}
 	}
 
+	async removeAAGroup(userId: string, groupId: string): Promise<void> {
+		try {
+			const groupData = await this.firebaseService.getUserData<StoredUserGroup>(
+				userId,
+				`groups/${groupId}`,
+			);
+
+			if (!groupData) {
+				throw new Error('Group not found');
+			}
+
+			await this.firebaseService.deleteUserData(userId, `groups/${groupId}`);
+		} catch (error) {
+			console.error("Error removing AA group:", error);
+			throw new Error("Failed to remove AA group");
+		}
+	}
+
 	async getUserGroups(userId: string): Promise<AAGroup[]> {
 		try {
 			const groupsData = await this.firebaseService.getUserData<Record<string, StoredUserGroup>>(
@@ -126,7 +144,11 @@ export class GroupsService {
 
 	async updateGroupNotifications(userId: string, groupId: string, notificationsEnabled: boolean): Promise<void> {
 		try {
-			await this.firebaseService.saveUserData(userId, { notificationsEnabled }, `groups/${groupId}`);
+			await this.firebaseService.updateUserData(
+				userId,
+				{ notificationsEnabled },
+				`groups/${groupId}`,
+			);
 		} catch (error) {
 			console.error("Error updating group notifications:", error);
 			throw new Error("Failed to update group notifications");
@@ -158,9 +180,9 @@ export class GroupsService {
 
 			meetingNotifications[day][meetingIndex] = notificationsEnabled;
 
-			await this.firebaseService.saveUserData(
+			await this.firebaseService.updateUserData(
 				userId,
-				{ ...groupData, meetingNotifications },
+				{ meetingNotifications },
 				`groups/${groupId}`,
 			);
 		} catch (error) {

@@ -26,7 +26,7 @@ export function ConfigHeader({
 		return (
 			<View style={[configLayoutStyles.header, containerStyle]}>
 				<View style={configLayoutStyles.headerRow}>
-					<TouchableOpacity onPress={onBack} style={configLayoutStyles.backButtonPadded}>
+					<TouchableOpacity onPress={onBack} style={configLayoutStyles.backButton}>
 						<Ionicons name="arrow-back" size={24} color={Colors.light.text} />
 					</TouchableOpacity>
 					<Text style={[configLayoutStyles.title, { flex: 1, textAlign: 'center' }]}>
@@ -45,7 +45,7 @@ export function ConfigHeader({
 	return (
 		<View style={[configLayoutStyles.headerCompact, containerStyle]}>
 			<View style={rightAction ? configLayoutStyles.headerRowSpaced : configLayoutStyles.headerRow}>
-				<TouchableOpacity style={configLayoutStyles.backButtonPadded} onPress={onBack}>
+				<TouchableOpacity style={configLayoutStyles.backButton} onPress={onBack}>
 					<ChevronLeft size={24} color={Colors.icon.gray} />
 				</TouchableOpacity>
 				<View style={titleStyle}>

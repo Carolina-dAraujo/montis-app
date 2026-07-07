@@ -1,13 +1,15 @@
 import { View, Text, TouchableOpacity, Alert, Linking, ScrollView, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '@/shared/theme/colors';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { useEmergencyAlerts } from '@/features/emergencyContacts/hooks/useEmergencyAlerts';
+import { getTabBarScrollPadding } from '@/shared/components/ui/tabBarMetrics';
 import { styles } from '@/features/crisis/styles/crise.styles';
 
 export default function CrisisTab() {
+	const insets = useSafeAreaInsets();
 	const { sendEmergencyAlert, loading } = useEmergencyAlerts();
 
 	const handleEmergencyAlert = () => {
@@ -103,7 +105,11 @@ export default function CrisisTab() {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+			<ScrollView
+				style={styles.scrollView}
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={{ paddingBottom: getTabBarScrollPadding(insets.bottom) }}
+			>
 				<View style={styles.header}>
 					<Text style={styles.title}>Crise</Text>
 					<Text style={styles.subtitle}>Acesso rápido a recursos de emergência</Text>

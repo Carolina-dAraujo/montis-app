@@ -10,3 +10,8 @@ export function getTabBarHeight(bottomInset: number): number {
 export function getTabBarScrollPadding(bottomInset: number, extra = 24): number {
 	return getTabBarHeight(bottomInset) + extra;
 }
+
+/** Bottom offset for FABs / floating controls above the tab bar pill. */
+export function getFloatingActionBottom(bottomInset: number, gap = 16): number {
+	return getTabBarHeight(bottomInset) + gap;
+}

@@ -8,6 +8,7 @@ export const configLayoutStyles = StyleSheet.create({
 	},
 	headerCompact: {
 		paddingBottom: 16,
+		paddingHorizontal: 20,
 	},
 	headerRow: {
 		flexDirection: 'row',
@@ -17,23 +18,17 @@ export const configLayoutStyles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		paddingRight: 20,
 	},
 	backButton: {
-		paddingRight: 8,
-		paddingVertical: 8,
-	},
-	backButtonPadded: {
+		marginLeft: -8,
 		padding: 8,
 	},
 	titleContainer: {
 		flex: 1,
 		alignItems: 'center',
-		paddingTop: 8,
 	},
 	titleContainerLeft: {
 		flex: 1,
-		paddingTop: 8,
 	},
 	title: {
 		fontSize: 20,
@@ -52,7 +47,8 @@ export const configLayoutStyles = StyleSheet.create({
 	rightAction: {
 		minWidth: 40,
 		alignItems: 'flex-end',
-		paddingTop: 8,
+		marginRight: -8,
+		padding: 8,
 	},
 	prontoButton: {
 		fontSize: 16,

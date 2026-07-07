@@ -5,7 +5,8 @@ import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from
 interface CalendarListProps {
     selectedDate: Date;
     onDateSelect: (date: Date) => void;
-    trackedDays?: string[]; // Array of date strings (e.g., date.toDateString())
+    trackedDays?: string[];
+    contentPaddingBottom?: number;
 }
 
 interface MonthData {
@@ -20,7 +21,12 @@ const GAP_BETWEEN_DAYS = 4;
 const DAYS_IN_WEEK = 7;
 const DAY_SIZE = (screenWidth - PADDING_HORIZONTAL - GAP_BETWEEN_DAYS * (DAYS_IN_WEEK * 2)) / DAYS_IN_WEEK;
 
-export default function CalendarList({ selectedDate, onDateSelect, trackedDays = [] }: CalendarListProps) {
+export default function CalendarList({
+    selectedDate,
+    onDateSelect,
+    trackedDays = [],
+    contentPaddingBottom = 16,
+}: CalendarListProps) {
     const router = useRouter();
     const [months, setMonths] = useState<MonthData[]>([]);
     const scrollViewRef = useRef<ScrollView>(null);
@@ -182,7 +188,7 @@ export default function CalendarList({ selectedDate, onDateSelect, trackedDays =
             ref={scrollViewRef}
             style={styles.container}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContent}
+            contentContainerStyle={[styles.scrollContent, { paddingBottom: contentPaddingBottom }]}
         >
             {months.map((monthData) => renderMonth(monthData))}
         </ScrollView>

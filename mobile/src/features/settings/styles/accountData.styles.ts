@@ -87,8 +87,7 @@ export const styles = StyleSheet.create({
 		gap: 24,
 	},
 	moreOptionsButton: {
-		paddingTop: 8,
-		paddingHorizontal: 8,
+		paddingHorizontal: 0,
 	},
 	deleteSection: {
 		paddingVertical: 16,

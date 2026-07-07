@@ -23,7 +23,6 @@ export const styles = StyleSheet.create({
 	content: {
 		paddingHorizontal: 20,
 		paddingTop: 16,
-		paddingBottom: 100,
 	},
 	loadingContainer: {
 		flex: 1,
@@ -87,7 +86,6 @@ export const styles = StyleSheet.create({
 	},
 	fab: {
 		position: 'absolute',
-		bottom: 20,
 		right: 20,
 		width: 56,
 		height: 56,
@@ -95,6 +93,7 @@ export const styles = StyleSheet.create({
 		backgroundColor: Colors.containers.blue,
 		justifyContent: 'center',
 		alignItems: 'center',
+		zIndex: 1000,
 		shadowColor: Colors.light.shadow,
 		shadowOffset: {
 			width: 0,

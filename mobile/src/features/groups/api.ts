@@ -18,6 +18,11 @@ export const groupsApi = {
 			{ method: 'POST', body: JSON.stringify(groupData) }
 		),
 
+	removeAAGroup: (token: string, groupId: string) =>
+		requestAuth<{ message: string }>(`/groups/group/${groupId}`, token, {
+			method: 'DELETE',
+		}),
+
 	updateGroupNotifications: (token: string, groupId: string, notificationsEnabled: boolean) =>
 		requestAuth<{ message: string }>(`/groups/group/${groupId}/notifications`, token, {
 			method: 'PUT',

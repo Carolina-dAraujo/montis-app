@@ -2,12 +2,13 @@ import CalendarList from '@/features/agenda/components/calendar';
 import { router } from 'expo-router';
 import React, { useState, useMemo } from 'react';
 import { Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { trackingApi } from '@/features/tracking/api';
 import { trackingQueryKeys } from '@/features/tracking/queryKeys';
 import { storageService } from '@/shared/lib/storage';
+import { getTabBarScrollPadding } from '@/shared/components/ui/tabBarMetrics';
 import { styles } from '@/features/agenda/styles/agenda.styles';
 
 function monthTrackedDays(monthData: Record<string, unknown>): string[] {
@@ -18,6 +19,7 @@ function monthTrackedDays(monthData: Record<string, unknown>): string[] {
 }
 
 export default function Agenda() {
+	const insets = useSafeAreaInsets();
 	const [selectedDate, setSelectedDate] = useState(new Date());
 	const queryClient = useQueryClient();
 	const now = new Date();
@@ -61,6 +63,7 @@ export default function Agenda() {
 				selectedDate={selectedDate}
 				onDateSelect={handleDateSelect}
 				trackedDays={trackedDays}
+				contentPaddingBottom={getTabBarScrollPadding(insets.bottom)}
 			/>
 		</SafeAreaView>
 	);

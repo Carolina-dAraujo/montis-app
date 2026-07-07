@@ -15,6 +15,10 @@ import { useAuth } from '@/features/auth/context/AuthProvider';
 import { useRouter } from 'expo-router';
 import { useUserGroups } from '@/features/groups/hooks/useUserGroups';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+	getFloatingActionBottom,
+	getTabBarScrollPadding,
+} from '@/shared/components/ui/tabBarMetrics';
 import { styles } from '@/features/groups/styles/grupos.styles';
 import type { MaterialCommunityIconName } from '@/shared/types/icons';
 
@@ -189,7 +193,10 @@ export default function Grupos() {
 				</View>
 			) : (
 				<ScrollView
-					style={[styles.content, { paddingBottom: 20 + insets.bottom }]}
+					style={styles.content}
+					contentContainerStyle={{
+						paddingBottom: getTabBarScrollPadding(insets.bottom, 72),
+					}}
 					showsVerticalScrollIndicator={false}
 				>
 					{groups.map((group) => (
@@ -217,19 +224,11 @@ export default function Grupos() {
 									</View>
 								</View>
 
-								<TouchableOpacity
-									style={styles.notificationButton}
-									onPress={(e) => {
-										e.stopPropagation();
-										router.push(`/group-detail/${group.id}`);
-									}}
-								>
-									<MaterialCommunityIcons
-										name="chevron-right"
-										size={20}
-										color={Colors.icon.gray}
-									/>
-								</TouchableOpacity>
+								<MaterialCommunityIcons
+									name="chevron-right"
+									size={20}
+									color={Colors.icon.gray}
+								/>
 							</View>
 						</TouchableOpacity>
 					))}
@@ -237,7 +236,11 @@ export default function Grupos() {
 			)}
 
 			{groups.length > 0 && (
-				<TouchableOpacity style={styles.fab} onPress={handleAddGroup}>
+				<TouchableOpacity
+					style={[styles.fab, { bottom: getFloatingActionBottom(insets.bottom) }]}
+					onPress={handleAddGroup}
+					activeOpacity={0.85}
+				>
 					<MaterialCommunityIcons name="plus" size={24} color="#FFFFFF" />
 				</TouchableOpacity>
 			)}

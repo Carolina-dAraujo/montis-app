@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Get, Put, Param } from "@nestjs/common";
+import { Controller, Post, Body, UseGuards, Get, Put, Delete, Param } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { GroupsService } from "./groups.service";
 import { AuthGuard } from "../auth/auth.guard";
@@ -102,6 +102,33 @@ export class GroupsController {
 		} catch (error) {
 			console.error("Get user groups error:", error);
 			throw new Error("Não foi possível carregar os grupos do usuário");
+		}
+	}
+
+	@Delete("group/:groupId")
+	@UseGuards(AuthGuard)
+	@ApiBearerAuth()
+	@ApiOperation({ summary: "Remove AA group from user's personal groups" })
+	@ApiResponse({
+		status: 200,
+		description: "AA group removed successfully",
+	})
+	@ApiResponse({
+		status: 401,
+		description: "Unauthorized",
+	})
+	async removeAAGroup(
+		@CurrentUser() user: AuthenticatedUser,
+		@Param('groupId') groupId: string,
+	) {
+		try {
+			await this.groupsService.removeAAGroup(user.uid, groupId);
+			return {
+				message: "Grupo removido com sucesso",
+			};
+		} catch (error) {
+			console.error("Remove AA group error:", error);
+			throw new Error("Não foi possível remover o grupo");
 		}
 	}
 

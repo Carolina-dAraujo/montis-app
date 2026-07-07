@@ -1,4 +1,5 @@
 import { Alert } from 'react-native';
+import { useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { groupsApi } from '@/features/groups/api';
 import { groupsQueryKeys } from '@/features/groups/queryKeys';
@@ -108,6 +109,16 @@ export function useUserGroups() {
 		},
 	});
 
+	const removeGroupMutation = useMutation({
+		mutationFn: async (groupId: string) => {
+			const token = await getTokenOrThrow();
+			await groupsApi.removeAAGroup(token, groupId);
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: groupsQueryKeys.all });
+		},
+	});
+
 	const handleNotificationToggle = async (groupId: string, enabled: boolean) => {
 		try {
 			await groupNotificationMutation.mutateAsync({ groupId, enabled });
@@ -134,12 +145,48 @@ export function useUserGroups() {
 		}
 	};
 
+	const handleRemoveGroup = async (groupId: string) => {
+		await removeGroupMutation.mutateAsync(groupId);
+	};
+
+	const confirmRemoveGroup = useCallback(
+		(group: Pick<AAGroup, 'id' | 'name'>, onRemoved?: () => void) => {
+			if (removeGroupMutation.isPending) {
+				return;
+			}
+
+			Alert.alert(
+				'Remover grupo',
+				`Tem certeza que deseja remover "${group.name}" dos seus grupos?`,
+				[
+					{ text: 'Cancelar', style: 'cancel' },
+					{
+						text: 'Remover',
+						style: 'destructive',
+						onPress: async () => {
+							try {
+								await removeGroupMutation.mutateAsync(group.id);
+								onRemoved?.();
+							} catch {
+								Alert.alert('Erro', 'Não foi possível remover o grupo. Tente novamente.');
+							}
+						},
+					},
+				],
+			);
+		},
+		[removeGroupMutation],
+	);
+
 	return {
 		groups: groupsQuery.data ?? [],
 		loading: groupsQuery.isPending,
+		removing: removeGroupMutation.isPending,
 		error: groupsQuery.error ? 'Erro ao carregar grupos' : null,
 		reloadGroups: () => groupsQuery.refetch(),
 		handleNotificationToggle,
 		handleMeetingNotificationToggle,
+		handleRemoveGroup,
+		confirmRemoveGroup,
 	};
 }

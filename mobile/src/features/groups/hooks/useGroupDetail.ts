@@ -12,9 +12,9 @@ const groupsData = require('@/data/groups.json');
 export function useGroupDetail() {
 	const { id } = useLocalSearchParams<{ id: string }>();
 	const router = useRouter();
+	const { confirmRemoveGroup, removing } = useUserGroups();
 	const [group, setGroup] = useState<AAGroup | null>(null);
 	const [loading, setLoading] = useState(true);
-	const { handleMeetingNotificationToggle } = useUserGroups();
 	const shimmerAnim = useRef(new Animated.Value(0)).current;
 
 	const loadGroupDetails = useCallback(async () => {
@@ -42,7 +42,10 @@ export function useGroupDetail() {
 								updatedGroup.schedule[day] = updatedGroup.schedule[day].map(
 									(meeting: { start: string; end: string; notificationsEnabled?: boolean }, index: number) => ({
 										...meeting,
-										notificationsEnabled: meetingNotifications[day]?.[index] ?? false,
+										notificationsEnabled: Boolean(
+											meetingNotifications[day]?.[index]
+											?? meetingNotifications[day]?.[String(index)],
+										),
 									})
 								);
 							}
@@ -111,6 +114,58 @@ export function useGroupDetail() {
 		}
 	}, [group]);
 
+	const handleMeetingNotificationToggle = useCallback(async (
+		groupId: string,
+		day: string,
+		meetingIndex: number,
+		enabled: boolean,
+	) => {
+		setGroup((prev) => {
+			if (!prev) {
+				return null;
+			}
+
+			const schedule = { ...prev.schedule };
+			const dayMeetings = [...(schedule[day] ?? [])];
+			const meeting = dayMeetings[meetingIndex];
+			if (!meeting) {
+				return prev;
+			}
+
+			dayMeetings[meetingIndex] = { ...meeting, notificationsEnabled: enabled };
+			schedule[day] = dayMeetings;
+			return { ...prev, schedule };
+		});
+
+		try {
+			const token = await storageService.getAuthToken();
+			if (!token) {
+				throw new Error('Usuário não autenticado');
+			}
+
+			await groupsApi.updateMeetingNotification(token, groupId, day, meetingIndex, enabled);
+		} catch (error) {
+			setGroup((prev) => {
+				if (!prev) {
+					return null;
+				}
+
+				const schedule = { ...prev.schedule };
+				const dayMeetings = [...(schedule[day] ?? [])];
+				const meeting = dayMeetings[meetingIndex];
+				if (!meeting) {
+					return prev;
+				}
+
+				dayMeetings[meetingIndex] = { ...meeting, notificationsEnabled: !enabled };
+				schedule[day] = dayMeetings;
+				return { ...prev, schedule };
+			});
+			console.error('Error updating meeting notification:', error);
+			Alert.alert('Erro', 'Não foi possível atualizar as notificações da reunião');
+		}
+	}, []);
+
 	const handleCall = useCallback(() => {
 		if (group?.link) {
 			Linking.openURL(group.link);
@@ -141,9 +196,18 @@ export function useGroupDetail() {
 		}
 	}, [group]);
 
+	const handleRemoveGroup = useCallback(() => {
+		if (!group) {
+			return;
+		}
+
+		confirmRemoveGroup(group, () => router.back());
+	}, [group, confirmRemoveGroup, router]);
+
 	return {
 		group,
 		loading,
+		removing,
 		shimmerAnim,
 		handleNotificationToggle,
 		handleMeetingNotificationToggle,
@@ -152,6 +216,7 @@ export function useGroupDetail() {
 		openInMaps,
 		openInGoogleMaps,
 		openInWaze,
+		handleRemoveGroup,
 		goBack: () => router.back(),
 	};
 }

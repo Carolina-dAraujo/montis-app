@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, TextInput, Image, ActivityIndicator, Alert } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { Colors } from '@/shared/theme/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -55,8 +55,13 @@ export default function AaMeetings() {
 
 	useEffect(() => {
 		loadAAGroups();
-		loadUserGroups();
 	}, []);
+
+	useFocusEffect(
+		useCallback(() => {
+			loadUserGroups();
+		}, []),
+	);
 
 	const loadAAGroups = async () => {
 		setLoadingAAGroups(true);

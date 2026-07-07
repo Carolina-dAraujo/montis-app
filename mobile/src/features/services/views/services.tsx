@@ -1,8 +1,9 @@
-import { View, Text, TouchableOpacity, SafeAreaView, Image, ImageSourcePropType } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, Image, ImageSourcePropType, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/shared/theme/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { getTabBarScrollPadding } from '@/shared/components/ui/tabBarMetrics';
 import { styles } from '@/features/services/styles/services.styles';
 
 interface CareOption {
@@ -47,30 +48,37 @@ export default function Services() {
 				</Text>
 			</View>
 
-			<View style={styles.options}>
-				{careOptions.map((option) => (
-					<TouchableOpacity
-						key={option.id}
-						style={styles.option}
-						onPress={() => handleOptionPress(option)}
-					>
-						<Image
-							source={option.image}
-							style={styles.serviceImage}
-							resizeMode="contain"
-						/>
-						<View style={styles.optionContent}>
-							<Text style={styles.optionTitle}>{option.title}</Text>
-							<Text style={styles.optionDescription}>{option.description}</Text>
-						</View>
-						<MaterialCommunityIcons
-							name="chevron-right"
-							size={20}
-							color={Colors.icon.gray}
-						/>
-					</TouchableOpacity>
-				))}
-			</View>
+			<ScrollView
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={{
+					paddingBottom: getTabBarScrollPadding(insets.bottom),
+				}}
+			>
+				<View style={styles.options}>
+					{careOptions.map((option) => (
+						<TouchableOpacity
+							key={option.id}
+							style={styles.option}
+							onPress={() => handleOptionPress(option)}
+						>
+							<Image
+								source={option.image}
+								style={styles.serviceImage}
+								resizeMode="contain"
+							/>
+							<View style={styles.optionContent}>
+								<Text style={styles.optionTitle}>{option.title}</Text>
+								<Text style={styles.optionDescription}>{option.description}</Text>
+							</View>
+							<MaterialCommunityIcons
+								name="chevron-right"
+								size={20}
+								color={Colors.icon.gray}
+							/>
+						</TouchableOpacity>
+					))}
+				</View>
+			</ScrollView>
 		</SafeAreaView>
 	);
 }
