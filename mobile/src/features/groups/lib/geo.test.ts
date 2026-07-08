@@ -48,21 +48,17 @@ describe('sortGroupsByNearMe', () => {
 		},
 	];
 
-	it('sorts in-person by distance and keeps virtual groups last alphabetically', () => {
+	it('sorts in-person groups by distance and excludes virtual groups', () => {
 		const sorted = sortGroupsByNearMe(groups, userCoords);
 
-		expect(sorted.map((group) => group.id)).toEqual([
-			'near',
-			'far',
-			'virtual-a',
-			'virtual-b',
-		]);
+		expect(sorted.map((group) => group.id)).toEqual(['near', 'far']);
 		expect(sorted[0].distanceKm).toBeLessThan(sorted[1].distanceKm ?? 0);
 	});
 
-	it('returns groups unchanged when user coords are missing', () => {
+	it('returns in-person groups alphabetically when user coords are missing', () => {
 		const sorted = sortGroupsByNearMe(groups, null);
-		expect(sorted).toHaveLength(groups.length);
+
+		expect(sorted.map((group) => group.id)).toEqual(['far', 'near']);
 		expect(sorted.every((group) => group.distanceKm == null)).toBe(true);
 	});
 
@@ -75,6 +71,6 @@ describe('sortGroupsByNearMe', () => {
 	it('excludes in-person groups beyond the max distance', () => {
 		const sorted = sortGroupsByNearMe(groups, userCoords, 1);
 
-		expect(sorted.map((group) => group.id)).toEqual(['near', 'virtual-a', 'virtual-b']);
+		expect(sorted.map((group) => group.id)).toEqual(['near']);
 	});
 });

@@ -19,44 +19,31 @@ function compareByName(a: NearMeGroup, b: NearMeGroup): number {
 	return a.name.localeCompare(b.name, 'pt-BR');
 }
 
+/**
+ * Returns only in-person groups within maxDistanceKm, sorted nearest first.
+ * Groups without coordinates are excluded when user location is available.
+ */
 export function sortGroupsByNearMe<T extends NearMeGroup>(
 	groups: T[],
 	userCoords: GeoCoordinates | null,
 	maxDistanceKm: number = NEAR_ME_MAX_DISTANCE_KM,
 ): NearMeGroupWithDistance<T>[] {
+	const inPersonGroups = groups.filter((group) => group.type === 'in-person');
+
 	if (!userCoords) {
-		return groups.map((group) => ({ ...group }));
+		return inPersonGroups
+			.sort(compareByName)
+			.map((group) => ({ ...group }));
 	}
 
-	const withDistance: NearMeGroupWithDistance<T>[] = groups.map((group) => {
-		if (group.type !== 'in-person' || !group.location) {
-			return { ...group };
-		}
-
-		return {
+	return inPersonGroups
+		.filter((group) => group.location != null)
+		.map((group) => ({
 			...group,
-			distanceKm: haversineDistanceKm(userCoords, group.location),
-		};
-	});
-
-	const inPersonWithDistance = withDistance
-		.filter(
-			(group) =>
-				group.type === 'in-person'
-				&& group.distanceKm != null
-				&& group.distanceKm <= maxDistanceKm,
-		)
+			distanceKm: haversineDistanceKm(userCoords, group.location!),
+		}))
+		.filter((group) => group.distanceKm <= maxDistanceKm)
 		.sort((a, b) => (a.distanceKm ?? 0) - (b.distanceKm ?? 0));
-
-	const inPersonWithoutDistance = withDistance
-		.filter((group) => group.type === 'in-person' && group.distanceKm == null)
-		.sort(compareByName);
-
-	const virtualGroups = withDistance
-		.filter((group) => group.type === 'virtual')
-		.sort(compareByName);
-
-	return [...inPersonWithDistance, ...inPersonWithoutDistance, ...virtualGroups];
 }
 
 export function getGroupDistanceKm(

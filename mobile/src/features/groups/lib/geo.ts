@@ -3,8 +3,11 @@ export type GeoCoordinates = {
 	longitude: number;
 };
 
-/** Max radius for "Perto de mim" in-person group results. */
+/** Default radius for "Perto de mim" in-person group results. */
 export const NEAR_ME_MAX_DISTANCE_KM = 10;
+
+/** Expanded radius when no groups are found at the default distance. */
+export const NEAR_ME_EXPANDED_DISTANCE_KM = 20;
 
 const EARTH_RADIUS_KM = 6371;
 

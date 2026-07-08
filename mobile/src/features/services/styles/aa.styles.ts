@@ -195,4 +195,16 @@ export const styles = StyleSheet.create({
 		color: Colors.icon.gray,
 		textAlign: 'center',
 	},
+	expandSearchButton: {
+		marginTop: 16,
+		paddingHorizontal: 20,
+		paddingVertical: 10,
+		borderRadius: 20,
+		backgroundColor: Colors.containers.blue,
+	},
+	expandSearchButtonText: {
+		fontSize: 14,
+		fontWeight: 'bold',
+		color: '#FFFFFF',
+	},
 });
