@@ -3,15 +3,14 @@ import {
     View,
     Text,
     TouchableOpacity,
-    SafeAreaView,
     ScrollView,
     TextInput,
     Image,
     Linking,
  } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/shared/theme/colors';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { ChevronLeft } from 'lucide-react-native';
 import { styles } from '@/features/services/styles/caps.styles';
@@ -63,7 +62,6 @@ const capsServices: CAPSService[] = [
 
 export default function Caps() {
     const router = useRouter();
-    const insets = useSafeAreaInsets();
     const [searchQuery, setSearchQuery] = useState('');
     const filteredServices = capsServices.filter(service => {
         const matchesSearch = service.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -118,7 +116,7 @@ export default function Caps() {
     };
 
     return (
-        <SafeAreaView style={[styles.container, { paddingTop: insets.top }]}>
+        <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.headerRow}>
                     				<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>

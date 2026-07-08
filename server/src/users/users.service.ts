@@ -1,6 +1,6 @@
 import { FirebaseService } from "src/firebase/firebase.service";
 import { Injectable, ConflictException, UnauthorizedException, BadRequestException } from "@nestjs/common";
-import { RegisterUserDto, LoginUserDto, AuthResponseDto } from "./dtos/auth";
+import { RegisterUserDto, LoginUserDto, AuthResponseDto, RefreshTokenDto, RefreshResponseDto } from "./dtos/auth";
 import { UpdateProfileDto, UpdatePasswordDto } from "./dtos/profile";
 import { OnboardingDto } from "./dtos/onboarding";
 import { DailyTrackingDto } from "./dtos/tracking/daily-tracking.dto";
@@ -21,8 +21,8 @@ import { Express } from "express";
 export class UsersService {
   constructor(private readonly firebaseService: FirebaseService) { }
 
-  /** Returns a Firebase ID token (not a custom token) for client Authorization headers. */
-  private async issueIdToken(uid: string): Promise<string> {
+  /** Returns Firebase ID + refresh tokens (not custom tokens) for client Authorization headers. */
+  private async issueTokens(uid: string): Promise<{ idToken: string; refreshToken: string }> {
     const customToken = await this.firebaseService.createCustomToken(uid);
     return this.firebaseService.exchangeCustomTokenForIdToken(customToken);
   }
@@ -39,10 +39,11 @@ export class UsersService {
         password: registerUserDto.password,
       });
 
-      const idToken = await this.issueIdToken(userRecord.uid);
+      const tokens = await this.issueTokens(userRecord.uid);
 
       return {
-        token: idToken,
+        token: tokens.idToken,
+        refreshToken: tokens.refreshToken,
         user: {
           uid: userRecord.uid,
           email: userRecord.email || "",
@@ -81,10 +82,11 @@ export class UsersService {
         loginUserDto.password
       );
 
-      const idToken = await this.issueIdToken(userRecord.uid);
+      const tokens = await this.issueTokens(userRecord.uid);
 
       return {
-        token: idToken,
+        token: tokens.idToken,
+        refreshToken: tokens.refreshToken,
         user: {
           uid: userRecord.uid,
           email: userRecord.email || "",
@@ -95,6 +97,19 @@ export class UsersService {
     } catch (error) {
       console.error("Login error:", error);
       throw new UnauthorizedException("Email ou senha incorretos");
+    }
+  }
+
+  async refreshSession(refreshTokenDto: RefreshTokenDto): Promise<RefreshResponseDto> {
+    try {
+      const tokens = await this.firebaseService.refreshIdToken(refreshTokenDto.refreshToken);
+      return {
+        token: tokens.idToken,
+        refreshToken: tokens.refreshToken,
+      };
+    } catch (error) {
+      console.error("Refresh session error:", error);
+      throw new UnauthorizedException("Invalid refresh token");
     }
   }
 

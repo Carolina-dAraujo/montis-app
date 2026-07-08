@@ -5,6 +5,11 @@ import { authQueryKeys } from '@/features/auth/queryKeys';
 import { storageService, StoredUserData } from '@/shared/lib/storage';
 import { isAuthError, isConnectivityError } from '@/shared/api/client';
 import { resolveUserDisplayName } from '@/shared/lib/displayName';
+import {
+	persistAuthSession,
+	refreshAuthSession,
+	setAuthTokenRefreshListener,
+} from '@/features/auth/session';
 import * as SecureStore from 'expo-secure-store';
 import type { OnboardingData } from '@/features/onboarding/types';
 
@@ -36,6 +41,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	const [token, setToken] = useState<string | null | undefined>(undefined);
 	const [user, setUser] = useState<StoredUserData | null>(null);
 	const [onboardingCompletedOverride, setOnboardingCompletedOverride] = useState<boolean | null>(null);
+
+	useEffect(() => {
+		setAuthTokenRefreshListener((newToken) => {
+			setToken(newToken);
+		});
+		return () => setAuthTokenRefreshListener(null);
+	}, []);
 
 	useEffect(() => {
 		void (async () => {
@@ -114,6 +126,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		}
 
 		void (async () => {
+			const newToken = await refreshAuthSession();
+			if (newToken) {
+				setToken(newToken);
+				await queryClient.invalidateQueries({ queryKey: authQueryKeys.all });
+				return;
+			}
+
 			await storageService.clearAuthData();
 			setToken(null);
 			setUser(null);
@@ -140,7 +159,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 	const login = async (email: string, password: string) => {
 		const response = await authApi.login({ email, password });
-		await storageService.setAuthToken(response.token);
+		await persistAuthSession(response);
 		await storageService.setUserData(response.user);
 		setToken(response.token);
 		setUser(response.user);
@@ -150,7 +169,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 	const register = async (email: string, password: string) => {
 		const response = await authApi.register({ email, password });
-		await storageService.setAuthToken(response.token);
+		await persistAuthSession(response);
 		await storageService.setUserData(response.user);
 		setToken(response.token);
 		setUser(response.user);

@@ -2,7 +2,7 @@ import { Controller, Post, Body, HttpCode, HttpStatus, Get, UseGuards, Put, Dele
 import type { Response } from "express";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { UsersService } from "./users.service";
-import { RegisterUserDto, LoginUserDto, AuthResponseDto } from "./dtos/auth";
+import { RegisterUserDto, LoginUserDto, AuthResponseDto, RefreshTokenDto, RefreshResponseDto } from "./dtos/auth";
 import { UpdateProfileDto, UpdatePasswordDto } from "./dtos/profile";
 import { OnboardingDto } from "./dtos/onboarding";
 import { DailyTrackingDto } from "./dtos/tracking/daily-tracking.dto";
@@ -84,6 +84,22 @@ export class UsersController {
 	})
 	async login(@Body() loginUserDto: LoginUserDto): Promise<AuthResponseDto> {
 		return await this.usersService.loginUser(loginUserDto);
+	}
+
+	@Post("refresh")
+	@HttpCode(HttpStatus.OK)
+	@ApiOperation({ summary: "Refresh authentication tokens" })
+	@ApiResponse({
+		status: 200,
+		description: "Tokens refreshed successfully",
+		type: RefreshResponseDto,
+	})
+	@ApiResponse({
+		status: 401,
+		description: "Invalid refresh token",
+	})
+	async refresh(@Body() refreshTokenDto: RefreshTokenDto): Promise<RefreshResponseDto> {
+		return await this.usersService.refreshSession(refreshTokenDto);
 	}
 
 	@Post("onboarding")

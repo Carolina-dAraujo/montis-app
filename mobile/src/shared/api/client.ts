@@ -150,13 +150,33 @@ export async function requestAuth<T>(
 	token: string,
 	options: RequestInit = {}
 ): Promise<T> {
-	return request<T>(endpoint, {
-		...options,
-		headers: {
-			Authorization: `Bearer ${token}`,
-			...options.headers,
-		},
-	});
+	try {
+		return await request<T>(endpoint, {
+			...options,
+			headers: {
+				Authorization: `Bearer ${token}`,
+				...options.headers,
+			},
+		});
+	} catch (error) {
+		if (!isAuthError(error)) {
+			throw error;
+		}
+
+		const { refreshAuthSession } = await import('@/features/auth/session');
+		const newToken = await refreshAuthSession();
+		if (!newToken) {
+			throw error;
+		}
+
+		return request<T>(endpoint, {
+			...options,
+			headers: {
+				Authorization: `Bearer ${newToken}`,
+				...options.headers,
+			},
+		});
+	}
 }
 
 export function getBaseUrl(): string {

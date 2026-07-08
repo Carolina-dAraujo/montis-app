@@ -1,7 +1,7 @@
-import { View, Text, TouchableOpacity, SafeAreaView, Image, ImageSourcePropType, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ImageSourcePropType, ScrollView } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/shared/theme/colors';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { getTabBarScrollPadding } from '@/shared/components/ui/tabBarMetrics';
 import { styles } from '@/features/services/styles/services.styles';
@@ -40,7 +40,7 @@ export default function Services() {
 	};
 
 	return (
-		<SafeAreaView style={[styles.container, { paddingTop: insets.top }]}>
+		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
 				<Text style={styles.title}>Encontrar serviços</Text>
 				<Text style={styles.subtitle}>

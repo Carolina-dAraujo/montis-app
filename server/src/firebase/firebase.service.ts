@@ -160,7 +160,7 @@ export class FirebaseService implements OnModuleInit {
 		return await this.firebaseApp.auth().getUser(uid);
 	}
 
-	async exchangeCustomTokenForIdToken(customToken: string): Promise<string> {
+	async exchangeCustomTokenForIdToken(customToken: string): Promise<{ idToken: string; refreshToken: string }> {
 		try {
 			const apiKey = this.configService.get<string>("FIREBASE_API_KEY");
 			if (!apiKey) {
@@ -175,14 +175,49 @@ export class FirebaseService implements OnModuleInit {
 				}
 			);
 
-			if (response.data && response.data.idToken) {
-				return response.data.idToken;
-			} else {
-				throw new UnauthorizedException("Failed to exchange custom token");
+			if (response.data?.idToken && response.data?.refreshToken) {
+				return {
+					idToken: response.data.idToken,
+					refreshToken: response.data.refreshToken,
+				};
 			}
+
+			throw new UnauthorizedException("Failed to exchange custom token");
 		} catch (error) {
 			console.error('Token exchange error:', error.response?.data || error.message);
 			throw new UnauthorizedException("Invalid custom token");
+		}
+	}
+
+	async refreshIdToken(refreshToken: string): Promise<{ idToken: string; refreshToken: string }> {
+		try {
+			const apiKey = this.configService.get<string>("FIREBASE_API_KEY");
+			if (!apiKey) {
+				throw new Error('FIREBASE_API_KEY not configured');
+			}
+
+			const response = await axios.post(
+				`https://securetoken.googleapis.com/v1/token?key=${apiKey}`,
+				new URLSearchParams({
+					grant_type: 'refresh_token',
+					refresh_token: refreshToken,
+				}).toString(),
+				{
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+				},
+			);
+
+			if (response.data?.id_token && response.data?.refresh_token) {
+				return {
+					idToken: response.data.id_token,
+					refreshToken: response.data.refresh_token,
+				};
+			}
+
+			throw new UnauthorizedException("Failed to refresh token");
+		} catch (error) {
+			console.error('Token refresh error:', error.response?.data || error.message);
+			throw new UnauthorizedException("Invalid refresh token");
 		}
 	}
 

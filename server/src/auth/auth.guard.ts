@@ -26,8 +26,8 @@ export class AuthGuard implements CanActivate {
 				request.user = decodedToken;
 				return true;
 			} catch (idTokenError) {
-				const idToken = await this.firebaseService.exchangeCustomTokenForIdToken(token);
-				const decodedToken = await this.firebaseService.verifyIdToken(idToken);
+				const tokens = await this.firebaseService.exchangeCustomTokenForIdToken(token);
+				const decodedToken = await this.firebaseService.verifyIdToken(tokens.idToken);
 				request.user = decodedToken;
 				return true;
 			}

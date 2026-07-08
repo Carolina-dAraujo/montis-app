@@ -2,19 +2,17 @@ import { useEffect, useRef } from 'react';
 import { 
 	View,
 	Text,
-	SafeAreaView,
 	ScrollView,
 	TouchableOpacity,
 	Alert,
 	Animated,
  } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '@/shared/theme/colors';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-// import { storageService } from '@/shared/lib/storage';
 import { useAuth } from '@/features/auth/context/AuthProvider';
 import { useRouter } from 'expo-router';
 import { useUserGroups } from '@/features/groups/hooks/useUserGroups';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
 	getFloatingActionBottom,
 	getTabBarScrollPadding,
@@ -140,7 +138,7 @@ export default function Grupos() {
 
 	if (auth.isLoading || loading) {
 		return (
-			<SafeAreaView style={[styles.container, { paddingTop: 50 }]}>
+			<SafeAreaView style={styles.container}>
 				<View style={styles.header}>
 					<Text style={styles.title}>Meus grupos</Text>
 					<Text style={styles.subtitle}>
@@ -167,7 +165,7 @@ export default function Grupos() {
 	}
 
 	return (
-		<SafeAreaView style={[styles.container, { paddingTop: 50 }]}>
+		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
 				<Text style={styles.title}>Meus grupos</Text>
 				<Text style={styles.subtitle}>

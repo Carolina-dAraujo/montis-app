@@ -1,68 +1,44 @@
 import { authApi } from '@/features/auth/api';
-import { storageService, StoredUserData } from '@/shared/lib/storage';
-import { isAuthError } from '@/shared/api/client';
-import { resolveUserDisplayName } from '@/shared/lib/displayName';
-import * as SecureStore from 'expo-secure-store';
+import { storageService } from '@/shared/lib/storage';
 
-async function mergeProfileWithOnboarding(profile: StoredUserData): Promise<StoredUserData> {
-	let onboardingDisplayName: string | undefined;
-	try {
-		const storedOnboarding = await SecureStore.getItemAsync('onboarding_data');
-		if (storedOnboarding) {
-			onboardingDisplayName = JSON.parse(storedOnboarding).displayName;
-		}
-	} catch {
-		// ignore parse errors
-	}
+let refreshInFlight: Promise<string | null> | null = null;
+let onTokenRefreshed: ((token: string) => void) | null = null;
 
-	return {
-		...profile,
-		displayName: resolveUserDisplayName({
-			displayName: profile.displayName,
-			email: profile.email,
-			onboardingDisplayName,
-			fallback: profile.displayName,
-		}),
-	};
+export function setAuthTokenRefreshListener(listener: ((token: string) => void) | null): void {
+	onTokenRefreshed = listener;
 }
 
 export async function refreshAuthSession(): Promise<string | null> {
-	const refreshToken = await storageService.getRefreshToken();
-	if (!refreshToken) {
-		return null;
+	if (refreshInFlight) {
+		return refreshInFlight;
 	}
 
-	const response = await authApi.refresh(refreshToken);
+	refreshInFlight = (async () => {
+		const refreshToken = await storageService.getRefreshToken();
+		if (!refreshToken) {
+			return null;
+		}
+
+		try {
+			const response = await authApi.refresh(refreshToken);
+			await storageService.setAuthToken(response.token);
+			await storageService.setRefreshToken(response.refreshToken);
+			onTokenRefreshed?.(response.token);
+			return response.token;
+		} catch {
+			return null;
+		} finally {
+			refreshInFlight = null;
+		}
+	})();
+
+	return refreshInFlight;
+}
+
+export async function persistAuthSession(response: {
+	token: string;
+	refreshToken: string;
+}): Promise<void> {
 	await storageService.setAuthToken(response.token);
 	await storageService.setRefreshToken(response.refreshToken);
-	await storageService.setUserData(response.user);
-	return response.token;
-}
-
-export async function fetchProfileWithToken(token: string): Promise<StoredUserData> {
-	const profile = await authApi.getProfile(token);
-	const mergedProfile = await mergeProfileWithOnboarding(profile);
-	await storageService.setUserData(mergedProfile);
-	return mergedProfile;
-}
-
-export async function fetchProfileWithRefresh(
-	token: string,
-	onTokenRefreshed?: (newToken: string) => void,
-): Promise<StoredUserData> {
-	try {
-		return await fetchProfileWithToken(token);
-	} catch (error) {
-		if (!isAuthError(error)) {
-			throw error;
-		}
-
-		const newToken = await refreshAuthSession();
-		if (!newToken) {
-			throw error;
-		}
-
-		onTokenRefreshed?.(newToken);
-		return await fetchProfileWithToken(newToken);
-	}
 }

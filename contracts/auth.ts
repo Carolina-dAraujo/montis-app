@@ -6,6 +6,12 @@ export interface AuthUser {
 
 export interface AuthResponse {
 	token: string;
+	refreshToken: string;
 	user: AuthUser;
 	message: string;
+}
+
+export interface RefreshAuthResponse {
+	token: string;
+	refreshToken: string;
 }

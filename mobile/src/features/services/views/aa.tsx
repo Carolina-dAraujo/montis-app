@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, TextInput, Image, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, TextInput, Image, ActivityIndicator, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { Colors } from '@/shared/theme/colors';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { ChevronLeft } from 'lucide-react-native';
 import FontAwesome from '@expo/vector-icons/build/FontAwesome';
@@ -44,7 +44,6 @@ const weekDays = [
 
 export default function AaMeetings() {
 	const router = useRouter();
-	const insets = useSafeAreaInsets();
 	const [searchQuery, setSearchQuery] = useState('');
 	type GroupFilter = 'all' | 'online' | 'in-person' | 'feminine';
 	const [selectedFilter, setSelectedFilter] = useState<GroupFilter>('all');
@@ -132,7 +131,7 @@ export default function AaMeetings() {
 	});
 
 	return (
-		<SafeAreaView style={[styles.container, { paddingTop: insets.top }]}>
+		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
 				<View style={styles.headerRow}>
 					<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>

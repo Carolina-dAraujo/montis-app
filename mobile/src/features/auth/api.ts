@@ -12,6 +12,7 @@ export interface LoginRequest {
 
 export interface AuthResponse {
 	token: string;
+	refreshToken: string;
 	user: {
 		uid: string;
 		email: string;
@@ -19,6 +20,11 @@ export interface AuthResponse {
 		phoneNumber?: string;
 	};
 	message: string;
+}
+
+export interface RefreshAuthResponse {
+	token: string;
+	refreshToken: string;
 }
 
 export interface UpdateProfileRequest {
@@ -45,6 +51,12 @@ export const authApi = {
 
 	login: (userData: LoginRequest) =>
 		request<AuthResponse>('/auth/login', { method: 'POST', body: JSON.stringify(userData) }),
+
+	refresh: (refreshToken: string) =>
+		request<RefreshAuthResponse>('/auth/refresh', {
+			method: 'POST',
+			body: JSON.stringify({ refreshToken }),
+		}),
 
 	getPasswordRules: () => request<{ rules: string[] }>('/auth/password-rules'),
 
