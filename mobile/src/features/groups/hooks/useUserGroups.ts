@@ -39,6 +39,10 @@ export interface AAGroup {
 	link?: string;
 	isFeminine?: boolean;
 	description?: string;
+	location?: {
+		latitude: number;
+		longitude: number;
+	};
 	notificationsEnabled?: boolean;
 	addedAt?: string;
 }

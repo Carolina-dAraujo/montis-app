@@ -176,4 +176,23 @@ export const styles = StyleSheet.create({
 		borderRadius: 16,
 		backgroundColor: Colors.containers.blue,
 	},
+	locationHintContainer: {
+		paddingHorizontal: 20,
+		paddingBottom: 12,
+	},
+	locationHintText: {
+		fontSize: 13,
+		color: Colors.icon.gray,
+	},
+	emptyStateContainer: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		paddingVertical: 32,
+		paddingHorizontal: 16,
+	},
+	emptyStateText: {
+		fontSize: 15,
+		color: Colors.icon.gray,
+		textAlign: 'center',
+	},
 });

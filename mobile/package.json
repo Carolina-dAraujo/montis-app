@@ -10,6 +10,7 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "api:url": "node scripts/print-api-url.js",
+    "geocode:groups": "node scripts/geocode-groups.js",
     "test": "jest"
   },
   "dependencies": {

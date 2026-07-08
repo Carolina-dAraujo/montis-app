@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, TextInput, Image, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter, useFocusEffect } from 'expo-router';
@@ -8,6 +8,9 @@ import { ChevronLeft } from 'lucide-react-native';
 import FontAwesome from '@expo/vector-icons/build/FontAwesome';
 import { groupsApi } from '@/features/groups/api';
 import { storageService } from '@/shared/lib/storage';
+import { useNearMeLocation } from '@/features/groups/hooks/useNearMeLocation';
+import { formatDistanceKm, NEAR_ME_MAX_DISTANCE_KM } from '@/features/groups/lib/geo';
+import { sortGroupsByNearMe } from '@/features/groups/lib/sortGroupsByNearMe';
 import { styles } from '@/features/services/styles/aa.styles';
 
 interface AAGroup {
@@ -30,6 +33,10 @@ interface AAGroup {
 	link?: string;
 	isFeminine?: boolean;
 	description?: string;
+	location?: {
+		latitude: number;
+		longitude: number;
+	};
 }
 
 const weekDays = [
@@ -47,10 +54,12 @@ export default function AaMeetings() {
 	const [searchQuery, setSearchQuery] = useState('');
 	type GroupFilter = 'all' | 'online' | 'in-person' | 'feminine';
 	const [selectedFilter, setSelectedFilter] = useState<GroupFilter>('all');
+	const [nearMeEnabled, setNearMeEnabled] = useState(false);
 	const [aaGroups, setAAGroups] = useState<{ groups: AAGroup[] }>({ groups: [] });
 	const [loadingAAGroups, setLoadingAAGroups] = useState(true);
 	const [userGroups, setUserGroups] = useState<string[]>([]);
 	const [addingGroupId, setAddingGroupId] = useState<string | null>(null);
+	const { coords, loading: loadingLocation, error: locationError, requestLocation } = useNearMeLocation();
 
 	useEffect(() => {
 		loadAAGroups();
@@ -130,6 +139,33 @@ export default function AaMeetings() {
 		return matchesSearch && matchesFilter;
 	});
 
+	const displayedGroups = useMemo((): (AAGroup & { distanceKm?: number })[] => {
+		if (!nearMeEnabled) {
+			return filteredGroups.map((group) => ({ ...group, distanceKm: undefined }));
+		}
+
+		return sortGroupsByNearMe(filteredGroups, coords);
+	}, [filteredGroups, nearMeEnabled, coords]);
+
+	const handleNearMeToggle = async () => {
+		if (nearMeEnabled) {
+			setNearMeEnabled(false);
+			return;
+		}
+
+		setSelectedFilter('in-person');
+		setNearMeEnabled(true);
+		await requestLocation();
+	};
+
+	const showLocationHint = nearMeEnabled && !coords && !loadingLocation && !!locationError;
+	const showEmptyNearMe =
+		nearMeEnabled
+		&& !!coords
+		&& !loadingLocation
+		&& displayedGroups.length === 0;
+	const nearMeRadiusLabel = formatDistanceKm(NEAR_ME_MAX_DISTANCE_KM);
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
@@ -164,8 +200,43 @@ export default function AaMeetings() {
 
 			<View style={styles.filters}>
 				<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+					<TouchableOpacity
+						style={[
+							styles.filterButton,
+							selectedFilter === 'all' && styles.filterButtonActive,
+						]}
+						onPress={() => setSelectedFilter('all')}
+					>
+						<Text
+							style={[
+								styles.filterText,
+								selectedFilter === 'all' && styles.filterTextActive,
+							]}
+						>
+							Todos
+						</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={[
+							styles.filterButton,
+							nearMeEnabled && styles.filterButtonActive,
+						]}
+						onPress={handleNearMeToggle}
+					>
+						{loadingLocation && nearMeEnabled ? (
+							<ActivityIndicator size="small" color={nearMeEnabled ? '#FFFFFF' : Colors.icon.gray} />
+						) : (
+							<Text
+								style={[
+									styles.filterText,
+									nearMeEnabled && styles.filterTextActive,
+								]}
+							>
+								Perto de mim
+							</Text>
+						)}
+					</TouchableOpacity>
 					{[
-						{ key: 'all', label: 'Todos' },
 						{ key: 'in-person', label: 'Presencial' },
 						{ key: 'online', label: 'Online' },
 						{ key: 'feminine', label: 'Feminino' },
@@ -191,8 +262,29 @@ export default function AaMeetings() {
 				</ScrollView>
 			</View>
 
+			{showLocationHint ? (
+				<View style={styles.locationHintContainer}>
+					<Text style={styles.locationHintText}>{locationError}</Text>
+				</View>
+			) : null}
+
+			{nearMeEnabled && coords && !loadingLocation ? (
+				<View style={styles.locationHintContainer}>
+					<Text style={styles.locationHintText}>
+						Mostrando grupos presenciais a até {nearMeRadiusLabel}
+					</Text>
+				</View>
+			) : null}
+
 			<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-				{filteredGroups.map((group) => {
+				{showEmptyNearMe ? (
+					<View style={styles.emptyStateContainer}>
+						<Text style={styles.emptyStateText}>
+							Nenhum grupo presencial encontrado a até {nearMeRadiusLabel}.
+						</Text>
+					</View>
+				) : null}
+				{displayedGroups.map((group) => {
 					const alreadyAdded = userGroups.includes(String(group.id));
 						return (
 						<View key={group.id} style={styles.serviceCard}>
@@ -235,6 +327,12 @@ export default function AaMeetings() {
 									<View style={styles.infoRow}>
 										<MaterialCommunityIcons name="city" size={16} color={Colors.icon.gray} />
 										<Text style={{ ...styles.infoText, marginLeft: 8 }}>{group.address.neighborhood ? group.address.neighborhood + ' - ' : ''}{group.address.city} - {group.address.state}</Text>
+									</View>
+								)}
+								{group.type === 'in-person' && group.distanceKm != null && (
+									<View style={styles.infoRow}>
+										<MaterialCommunityIcons name="map-marker-distance" size={16} color={Colors.icon.gray} />
+										<Text style={styles.infoText}>{formatDistanceKm(group.distanceKm)}</Text>
 									</View>
 								)}
 								{weekDays.map(day => {
